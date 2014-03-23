@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Picturefill
-Version: 0.1-alpha
+Plugin Name: Picturefill WP helper
+Version: 0.1-beta
 Description: A helper class for creating the markup required for PictureFill (and more!)
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
-Plugin URI: http://github.com/stefanledin/picturefill
+Plugin URI: https://github.com/stefanledin/picturefill-wp-helper
 */
 
 class Picturefill
