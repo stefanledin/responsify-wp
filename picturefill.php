@@ -104,7 +104,7 @@ class Style extends Picturefill
 				$css .= '@media screen and (min-width: '.$this->images[$i-1][1].'px) {';
 					$css .= $selector . '{';
 						$css .= 'background-image: url("'.$this->images[$i][0].'");';
-					$css .= $selector . '}';
+					$css .= '}';
 				$css .= '}';
 			}
 		$css .= '</style>';
