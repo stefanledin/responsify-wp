@@ -12,15 +12,17 @@ class Picturefill
 		$this->getImageSizes();
 		// 2. Hämta bilderna i antingen de valda storlekarna eller alla förinställda.
 		$sizes = (isset($settings['sizes'])) ? $settings['sizes'] : $this->imageSizes;
-		$this->images = $this->getImages($sizes);
+		$this->images = $this->getImages($sizes, $settings['notBiggerThan']);
 		// 3. Sortera bilderna i storleksordning
 		$this->orderImages();
 	}
-	public function getImages($sizes)
+	public function getImages($sizes, $notBiggerThan = null)
 	{
 		$images = array();
 		foreach ($sizes as $size) {
-			array_push($images, $this->getImage($size));
+			$image = $this->getImage($size);
+			array_push($images, $image);
+			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
 		return $images;
 	}
