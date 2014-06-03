@@ -5,7 +5,7 @@ This is a little Wordpress plugin that helps you with responsive images. It's ba
 In short, it generates all the necessary markup that is required by Picturefill. All you have to do is to pass the attachment ID as an argument.  The plugin will then find all sizes of the image, including your custom image sizes, and generate the markup.
 ###Example
 ````php
-<?php Picture::create('element', 27); ?>
+<?php echo Picture::create('element', 27); ?>
 ```` 
 This will create the following markup:
 ````html
@@ -27,7 +27,7 @@ You can also specify which sizes that should be used:
 	
 ````php
 <?php 
-Picture::create('element', 27, array(
+echo Picture::create('element', 27, array(
 	'sizes' => array('medium', 'large', 'full')
 )); 
 ?>
@@ -37,7 +37,7 @@ What if it's some kind of header image that can be changed later by the administ
 Instead, you could do this:
 ````php
 <?php
-Picture::create('style', 27, array(
+echo Picture::create('style', 27, array(
 	'selector' => '#header'
 ));
 ?>
