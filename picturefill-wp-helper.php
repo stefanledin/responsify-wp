@@ -35,7 +35,7 @@ class Picturefill_WP_Helper
 
 	public function enqueue_scripts()
 	{
-		wp_enqueue_script( 'picturefill', plugins_url('/picturefill.js', __FILE__) );
+		wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.js', __FILE__),  null, null, true);
 	}
 
 	/**
