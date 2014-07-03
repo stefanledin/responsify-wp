@@ -4,10 +4,12 @@ class Picturefill
 	protected $imageSizes = array();
 	protected $id;
 	protected $images;
+	protected $settings;
 
 	public function __construct($id, $settings)
 	{
 		$this->id = $id;
+		$this->settings = $settings;
 		// 1. Hämta alla förinställda bildstorlekar
 		$this->getImageSizes();
 		// 2. Hämta bilderna i antingen de valda storlekarna eller alla förinställda.

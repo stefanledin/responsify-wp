@@ -6,26 +6,49 @@ class Element extends Picturefill
 	public function __construct($id, $settings)
 	{
 		parent::__construct($id, $settings);
-		$this->markup = $this->buildMarkup();
+		$this->setAttributes();
+		$this->markup = $this->createMarkup();
 	}
 
-	protected function buildMarkup()
+	protected function setAttributes()
 	{
-		$alt = $this->getImageAttributes();
-		$markup = '<span data-picture data-alt="'.$alt.'">';
-			$markup .= '<span data-src="'.$this->images[0][0].'"></span>';
+		$defaultAttributes = array(
+			'picture_span' => array(
+				'data-alt' => $this->getImageMeta('alt')
+			)
+		);
+		$this->settings['attributes'] = array_replace_recursive($defaultAttributes, $this->settings['attributes']);
+	}
+
+	protected function createMarkup()
+	{
+		$picture_span_attributes = $this->createAttributes($this->settings['attributes']['picture_span']);
+		$src_span_attributes = $this->createAttributes($this->settings['attributes']['src_span']);
+
+		$markup = '<span data-picture '.$picture_span_attributes.'>';
+			$markup .= '<span data-src="'.$this->images[0][0].'" '.$src_span_attributes.'></span>';
 			for ($i=1; $i < count($this->images); $i++) { 
-				$markup .= '<span data-src="'.$this->images[$i][0].'" data-media="(min-width: '.$this->images[$i-1][1].'px)"></span>';
+				$markup .= '<span data-src="'.$this->images[$i][0].'" data-media="(min-width: '.$this->images[$i-1][1].'px)" '.$src_span_attributes.'></span>';
 			}
 			$markup .= '<noscript>';
-				$markup .= '<img src="'.$this->images[0][0].'" alt="'.$alt.'">';
+				$markup .= '<img src="'.$this->images[0][0].'" alt="'.$this->getImageMeta('alt').'">';
 			$markup .= '</noscript>';
 		$markup .= '</span>';
 		return $markup;
 	}
 
-	protected function getImageAttributes()
+	protected function getImageMeta( $meta )
 	{
-		return get_post_meta($this->id, '_wp_attachment_image_alt', true);
+		return get_post_meta( $this->id, '_wp_attachment_image_'.$meta, true );
+	}
+
+	protected function createAttributes( $attr )
+	{
+		$attributes = '';
+		foreach ( $attr as $attribute => $value ) {
+			$attributes .= $attribute . '="'.$value.'" ';
+		}
+		// Removes the extra space after the last attribute
+		return substr($attributes, 0, -1);
 	}
 }
