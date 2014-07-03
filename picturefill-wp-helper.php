@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Picturefill WP helper
-Version: 1.1
+Version: 1.2
 Description: A helper class for creating the markup required for PictureFill (and more!)
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
@@ -15,7 +15,7 @@ require 'includes/picture.php';
 
 class Picturefill_WP_Helper
 {
-	const VERSION = '1.1';
+	const VERSION = '1.2';
 
 	protected static $instance = null;
 
