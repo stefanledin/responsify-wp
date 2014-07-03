@@ -15,9 +15,14 @@ class Element extends Picturefill
 		$defaultAttributes = array(
 			'picture_span' => array(
 				'data-alt' => $this->getImageMeta('alt')
-			)
+			),
+			'src_span' => array()
 		);
-		$this->settings['attributes'] = array_replace_recursive($defaultAttributes, $this->settings['attributes']);
+		if (isset($this->settings['attributes'])) {
+			$this->settings['attributes'] = array_replace_recursive($defaultAttributes, $this->settings['attributes']);
+		} else {
+			$this->settings['attributes'] = $defaultAttributes;
+		}
 	}
 
 	protected function createMarkup()

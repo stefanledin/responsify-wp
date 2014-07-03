@@ -42,9 +42,10 @@ class Picturefill_WP_Helper
 	 * This breaks SRP and should be abstracted to another class.
 	 */
 	public function filter_images ( $content ) {
-		$content = preg_replace_callback('/<img (.*) \/>\s*/', function ($match) {
+		$self = $this;
+		$content = preg_replace_callback('/<img (.*) \/>\s*/', function ($match) use ($self) {
 			preg_match('/src="([^"]+)"/', $match[0], $src);
-			$id = $this->url_to_attachment_id($src[1]);
+			$id = $self->url_to_attachment_id($src[1]);
 			$picture = Picture::create('element', $id, array(
 				'notBiggerThan' => $src[1]
 			));
@@ -52,7 +53,7 @@ class Picturefill_WP_Helper
 		}, $content);
 	    return $content;
 	}
-	protected function url_to_attachment_id ( $image_url ) {
+	public function url_to_attachment_id ( $image_url ) {
 		// Thx to https://github.com/kylereicks/picturefill.js.wp/blob/master/inc/class-model-picturefill-wp.php
 		global $wpdb;
 		$original_image_url = $image_url;
