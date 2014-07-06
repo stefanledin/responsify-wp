@@ -10,8 +10,12 @@
 		array_push($image_sizes, 'full');
 
 		$html = '<ul>';
-		foreach ($image_sizes as $image_size) {
-			$checked_attribute = (($options[$image_size]) ? 'checked="checked"' : '');
+		foreach ( $image_sizes as $image_size ) {
+			if ( !$options ) {
+				$checked_attribute = 'checked="checked"';
+			} else {
+				$checked_attribute = (($options[$image_size]) ? 'checked="checked"' : '');
+			}
 			$html .= '<li>';
 				$html .= '<label>';
 					$html .= '<input name="selected_sizes['.$image_size.']" '.$checked_attribute.' type="checkbox">'.$image_size;
@@ -19,7 +23,8 @@
 			$html .= '</li>';
 		}
 		$html .= '</ul>';
-		
+		echo $html;
+
 		submit_button( 'Save' );
 		?>
 	</form>
