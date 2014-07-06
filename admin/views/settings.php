@@ -5,7 +5,7 @@
 		<?php
 		settings_fields( 'responsive-images-helper-settings' );
 		do_settings_sections( 'responsive-images-helper-settings' );
-		$options = get_option('selected_sizes');
+		$options = get_option( 'selected_sizes' );
 		$image_sizes = get_intermediate_image_sizes();
 		array_push($image_sizes, 'full');
 

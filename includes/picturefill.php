@@ -6,7 +6,7 @@ class Picturefill
 	protected $images;
 	protected $settings;
 
-	public function __construct($id, $settings)
+	public function __construct( $id, $settings )
 	{
 		$this->id = $id;
 		$this->settings = $settings;
@@ -18,10 +18,10 @@ class Picturefill
 		// 3. Sortera bilderna i storleksordning
 		$this->orderImages();
 	}
-	public function getImages($sizes, $notBiggerThan = null)
+	public function getImages( $sizes, $notBiggerThan = null )
 	{
 		$images = array();
-		foreach ($sizes as $size) {
+		foreach ( $sizes as $size ) {
 			$image = $this->getImage($size);
 			array_push($images, $image);
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
@@ -29,9 +29,9 @@ class Picturefill
 		return $images;
 	}
 
-	protected function getImage($size)
+	protected function getImage( $size )
 	{
-		return wp_get_attachment_image_src($this->id, $size);
+		return wp_get_attachment_image_src( $this->id, $size );
 	}
 
 	protected function orderImages()
@@ -43,7 +43,7 @@ class Picturefill
 	
 	protected function getImageSizes()
 	{
-		$selected_sizes = get_option('selected_sizes');
+		$selected_sizes = get_option( 'selected_sizes' );
 		$this->imageSizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
 		array_push($this->imageSizes, 'full');
 	}

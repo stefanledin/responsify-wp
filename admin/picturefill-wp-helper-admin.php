@@ -1,7 +1,5 @@
 <?php
-/**
-* fjpgd
-*/
+
 class Picturefill_WP_Helper_Admin
 {
 	protected static $instance = null;
