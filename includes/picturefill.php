@@ -43,7 +43,8 @@ class Picturefill
 	
 	protected function getImageSizes()
 	{
-		$this->imageSizes = get_intermediate_image_sizes();
+		$selected_sizes = get_option('selected_sizes');
+		$this->imageSizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
 		array_push($this->imageSizes, 'full');
 	}
 }
