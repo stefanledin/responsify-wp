@@ -1,13 +1,13 @@
 <?php
 
-class Picturefill_WP_Helper_Admin
+class Responsify_WP_Admin
 {
 	protected static $instance = null;
 	protected $plugin;
 
 	public function __construct()
 	{
-		$this->plugin = Picturefill_WP_Helper::get_instance();
+		$this->plugin = Responsify_WP::get_instance();
 		add_action( 'admin_menu', array( $this, 'add_settings_to_menu') );
 		add_action( 'admin_init', array( $this, 'register_plugin_settings' ) );
 	}
@@ -21,7 +21,7 @@ class Picturefill_WP_Helper_Admin
 
 	public function add_settings_to_menu()
 	{
-		$plask = add_options_page( 'Responsive Images Helper', 'RIH Settings', 'manage_options', 'picturefill-wp-helper', array( $this, 'view_settings_page' ) );
+		$plask = add_options_page( 'Responsify WP', 'RWP Settings', 'manage_options', 'responsify-wp', array( $this, 'view_settings_page' ) );
 	}
 
 	public function view_settings_page()
@@ -31,7 +31,7 @@ class Picturefill_WP_Helper_Admin
 
 	public function register_plugin_settings()
 	{
-		register_setting( 'responsive-images-helper-settings', 'selected_sizes' );
+		register_setting( 'responsify-wp-settings', 'selected_sizes' );
 	}
 
 }

@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Picturefill WP helper
-Version: 1.2
-Description: A helper class for creating the markup required for PictureFill (and more!)
+Plugin Name: Responsify WP
+Version: 1.3
+Description: A WordPress plugin that creates the markup for responsive images.
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
-Plugin URI: https://github.com/stefanledin/picturefill-wp-helper
+Plugin URI: https://github.com/stefanledin/responsify-wp
 */
 
 require 'includes/picturefill.php';
@@ -13,9 +13,9 @@ require 'includes/element.php';
 require 'includes/style.php';
 require 'includes/picture.php';
 
-class Picturefill_WP_Helper
+class Responsify_WP
 {
-	const VERSION = '1.2';
+	const VERSION = '1.3';
 
 	protected static $instance = null;
 
@@ -69,9 +69,9 @@ class Picturefill_WP_Helper
 	}
 }
 
-add_action( 'plugins_loaded', array( 'Picturefill_WP_Helper', 'get_instance') );
+add_action( 'plugins_loaded', array( 'Responsify_WP', 'get_instance') );
 
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/picturefill-wp-helper-admin.php' );
-	add_action( 'plugins_loaded', array( 'Picturefill_WP_Helper_Admin', 'get_instance' ) );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/responsify-wp-admin.php' );
+	add_action( 'plugins_loaded', array( 'Responsify_WP_Admin', 'get_instance' ) );
 }
