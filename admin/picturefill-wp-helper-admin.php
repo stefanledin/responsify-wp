@@ -21,7 +21,7 @@ class Picturefill_WP_Helper_Admin
 
 	public function add_settings_to_menu()
 	{
-		$plask = add_options_page( 'Page title', 'Menu title', 'manage_options', 'picturefill-wp-helper', array( $this, 'view_settings_page' ) );
+		$plask = add_options_page( 'Responsive Images Helper', 'RIH Settings', 'manage_options', 'picturefill-wp-helper', array( $this, 'view_settings_page' ) );
 	}
 
 	public function view_settings_page()
