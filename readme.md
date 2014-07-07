@@ -1,4 +1,4 @@
-#Picturefill WP helper
+#Responsify WP
 This is a little Wordpress plugin that helps you with responsive images. It's based on the excellent
 [Picturefill script](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com).  
 ##What it does
