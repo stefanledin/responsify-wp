@@ -14,7 +14,7 @@
 			if ( !$options ) {
 				$checked_attribute = 'checked="checked"';
 			} else {
-				$checked_attribute = (($options[$image_size]) ? 'checked="checked"' : '');
+				$checked_attribute = ((isset($options[$image_size])) ? 'checked="checked"' : '');
 			}
 			$html .= '<li>';
 				$html .= '<label>';
