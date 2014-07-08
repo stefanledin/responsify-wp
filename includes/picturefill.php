@@ -45,6 +45,8 @@ class Picturefill
 	{
 		$selected_sizes = get_option( 'selected_sizes' );
 		$this->imageSizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
-		array_push($this->imageSizes, 'full');
+		if ( !in_array('full', $this->imageSizes) ) {
+			array_push($this->imageSizes, 'full');
+		}
 	}
 }
