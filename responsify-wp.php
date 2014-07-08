@@ -12,6 +12,7 @@ require 'includes/picturefill.php';
 require 'includes/element.php';
 require 'includes/style.php';
 require 'includes/picture.php';
+require 'includes/content_filter.php';
 
 class Responsify_WP
 {
@@ -22,7 +23,7 @@ class Responsify_WP
 	public function __construct()
 	{
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_filter( 'the_content', array( $this, 'filter_images' ) );
+		$content_filter = new Content_Filter;
 	}
 
 	public static function get_instance()
@@ -38,35 +39,6 @@ class Responsify_WP
 		wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.js', __FILE__),  null, null, true);
 	}
 
-	/**
-	 * This breaks SRP and should be abstracted to another class.
-	 */
-	public function filter_images ( $content ) {
-		$self = $this;
-		$content = preg_replace_callback('/<img (.*) \/>\s*/', function ($match) use ($self) {
-			preg_match('/src="([^"]+)"/', $match[0], $src);
-			$id = $self->url_to_attachment_id($src[1]);
-			$picture = Picture::create('element', $id, array(
-				'notBiggerThan' => $src[1]
-			));
-			return $picture;
-		}, $content);
-	    return $content;
-	}
-	public function url_to_attachment_id ( $image_url ) {
-		// Thx to https://github.com/kylereicks/picturefill.js.wp/blob/master/inc/class-model-picturefill-wp.php
-		global $wpdb;
-		$original_image_url = $image_url;
-		$image_url = preg_replace('/^(.+?)(-\d+x\d+)?\.(jpg|jpeg|png|gif)((?:\?|#).+)?$/i', '$1.$3', $image_url);
-		$prefix = $wpdb->prefix;
-		$attachment_id = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $prefix . "posts" . " WHERE guid='%s';", $image_url ));
-		if ( !empty($attachment_id) ) {
-			return $attachment_id[0];
-		} else {
-			$attachment_id = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $prefix . "posts" . " WHERE guid='%s';", $original_image_url ));
-		}
-		return !empty($attachment_id) ? $attachment_id[0] : false;
-	}
 }
 
 add_action( 'plugins_loaded', array( 'Responsify_WP', 'get_instance') );
