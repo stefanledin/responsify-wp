@@ -25,10 +25,12 @@ class Content_Filter
 			$settings = array(
 				'notBiggerThan' => $src[1]
 			);
-			array_push($settings, $self->user_settings);
-			echo '<pre>';
-				print_r($settings);
-			echo '</pre>';
+			// Can't this be done in a better way?
+			if ( $self->user_settings ) {
+				foreach ( $self->user_settings as $user_setting_key => $user_setting_value ) {
+					$settings[$user_setting_key] = $user_setting_value;
+				}
+			}
 			$picture = Picture::create( 'element', $id, $settings );
 			return $picture;
 		}, $content);
