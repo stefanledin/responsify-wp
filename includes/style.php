@@ -13,12 +13,12 @@ class Style extends Picturefill
 	{
 		$css = '<style>';
 			$css .= $selector . ' {';
-				$css .= 'background-image: url("'.$this->images[0][0].'");';
+				$css .= 'background-image: url("'.$this->images[0]['src'].'");';
 			$css .= '}';
 			for ($i=1; $i < count($this->images); $i++) { 
-				$css .= '@media screen and (min-width: '.$this->images[$i-1][1].'px) {';
+				$css .= '@media screen and ('.$this->images[$i]['media_query'].') {';
 					$css .= $selector . '{';
-						$css .= 'background-image: url("'.$this->images[$i][0].'");';
+						$css .= 'background-image: url("'.$this->images[$i]['src'].'");';
 					$css .= '}';
 				$css .= '}';
 			}

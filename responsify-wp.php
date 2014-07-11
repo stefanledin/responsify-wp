@@ -8,6 +8,7 @@ Author URI: http://stefanledin.com
 Plugin URI: https://github.com/stefanledin/responsify-wp
 */
 
+require 'includes/media_queries.php';
 require 'includes/picturefill.php';
 require 'includes/element.php';
 require 'includes/style.php';

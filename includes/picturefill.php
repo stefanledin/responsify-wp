@@ -17,13 +17,21 @@ class Picturefill
 		$this->images = $this->getImages($sizes, $settings['notBiggerThan']);
 		// 3. Sortera bilderna i storleksordning
 		$this->orderImages();
+		// 4. Räkna ut vilka media queries bilderna ska ha
+		$media_queries = new Media_Queries($this->images);
+		$this->images = $media_queries->set();
 	}
 	public function getImages( $sizes, $notBiggerThan = null )
 	{
 		$images = array();
 		foreach ( $sizes as $size ) {
 			$image = $this->getImage($size);
-			array_push($images, $image);
+			array_push($images, array(
+				'src' => $image[0],
+				'size' => $size,
+				'width' => $image[1],
+				'height' => $image[2]
+			));
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
 		return $images;
@@ -37,7 +45,7 @@ class Picturefill
 	protected function orderImages()
 	{
 		usort($this->images, function($img1, $img2) {
-			return $img1[1] < $img2[1] ? -1 : 1;
+			return $img1['width'] < $img2['width'] ? -1 : 1;
 		});
 	}
 	

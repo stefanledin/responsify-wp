@@ -31,12 +31,12 @@ class Element extends Picturefill
 		$src_span_attributes = $this->createAttributes($this->settings['attributes']['src_span']);
 
 		$markup = '<span data-picture '.$picture_span_attributes.'>';
-			$markup .= '<span data-src="'.$this->images[0][0].'" '.$src_span_attributes.'></span>';
+			$markup .= '<span data-src="'.$this->images[0]['src'].'" '.$src_span_attributes.'></span>';
 			for ($i=1; $i < count($this->images); $i++) { 
-				$markup .= '<span data-src="'.$this->images[$i][0].'" data-media="(min-width: '.$this->images[$i-1][1].'px)" '.$src_span_attributes.'></span>';
+				$markup .= '<span data-src="'.$this->images[$i]['src'].'" data-media="('.$this->images[$i]['media_query'].')" '.$src_span_attributes.'></span>';
 			}
 			$markup .= '<noscript>';
-				$markup .= '<img src="'.$this->images[0][0].'" alt="'.$this->getImageMeta('alt').'">';
+				$markup .= '<img src="'.$this->images[0]['src'].'" alt="'.$this->getImageMeta('alt').'">';
 			$markup .= '</noscript>';
 		$markup .= '</span>';
 		return $markup;
