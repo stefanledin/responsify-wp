@@ -18,7 +18,8 @@ class Picturefill
 		// 3. Sortera bilderna i storleksordning
 		$this->orderImages();
 		// 4. Räkna ut vilka media queries bilderna ska ha
-		$media_queries = new Media_Queries($this->images);
+		$user_media_queries = (isset($settings['media_queries'])) ? $settings['media_queries'] : null;
+		$media_queries = new Media_Queries( $this->images, $user_media_queries );
 		$this->images = $media_queries->set();
 	}
 	public function getImages( $sizes, $notBiggerThan = null )
