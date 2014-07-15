@@ -1,5 +1,5 @@
 #Responsify WP
-This is a little Wordpress plugin that helps you with responsive images. It's based on the excellent
+This is a Wordpress plugin that helps you with responsive images. It's based on the excellent
 [Picturefill script](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com).  
 ##What it does
 In short, it will replace all ``<img>`` tags within ``the_content`` with the markup that is required by Picturefill.
@@ -43,7 +43,8 @@ But once you have activated the plugin, it will look like this instead:
 Congratulations! You're now serving images with an appropriate size to the users.  
 The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the with of the "previous" image.  
-Any **custom sizes** of the image will also be found and used.
+Any **custom sizes** of the image will also be found and used.  
+It is possible to **select which sizes** that should be used from the RWP settings page inside WordPress.
 
 ##Functions
 If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
@@ -140,14 +141,62 @@ echo Picture::create( $type, $attachment_id, $settings );
 These are the settings that is currently avaliable:
 
 * **sizes** (array): The image sizes that you want to use.
+* **media_queries** (array): An associative array of names of the image sizes and a custom media query.
 * **attributes** (array): An associative array of attribute names and values that you want to have on the ``span`` tags.
 
-####Example
+####Example - sizes
 
 ````php
 <?php
 $settings = array(
-	'sizes' => array('medium', 'large'),
+	'sizes' => array('medium', 'large')
+);
+?>
+````
+
+````html
+<span data-picture>
+	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
+	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
+	<noscript>
+		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
+	</noscript>
+</span>
+````
+
+####Example - custom media queries
+
+````php
+<?php
+$settings = array(
+	'sizes' => array('thumbnail', 'medium', 'large'),
+	'media_queries' => array(
+		'medium' => 'min-width: 500px',
+		'large' => 'min-width: 1024px'
+	)
+);
+?>
+````
+
+Notice that you **should not** specify a media query for the smallest image size. You **must** specify a media query for 
+all the selected image sizes.
+
+````html
+<span data-picture>
+	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
+	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 550px)"></span>
+	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 1024px)"></span>
+	<noscript>
+		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+	</noscript>
+</span>
+````
+
+####Example - attributes
+
+````php
+<?php
+$settings = array(
 	'attributes' => array(
 		'picture_span' => array(
 			'id' => 'picture-element',
@@ -161,12 +210,12 @@ $settings = array(
 ?>
 ````
 
-That turns into...
-
 ````html
 <span data-picture id="picture-element" data-alt="Overrides the alternative text of the image">
+	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
 	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
 	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
+	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" data-media="(min-width: 1024px)"></span>
 	<noscript>
 		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
 	</noscript>
