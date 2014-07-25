@@ -44,7 +44,7 @@ Congratulations! You're now serving images with an appropriate size to the users
 The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the with of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.  
-It is possible to **select which sizes** that should be used from the RWP settings page inside WordPress.
+It is also possible to **select which sizes** that should be used from the RWP settings page inside WordPress.
 
 ##Functions
 If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
@@ -156,7 +156,7 @@ $settings = array(
 
 ````html
 <span data-picture>
-	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
+	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg"></span>
 	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
 	<noscript>
 		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
