@@ -42,7 +42,7 @@ But once you have activated the plugin, it will look like this instead:
 
 Congratulations! You're now serving images with an appropriate size to the users.  
 The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
-The **media queries** are based on the with of the "previous" image.  
+The **media queries** are based on the width of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.  
 It is also possible to **select which sizes** that should be used from the RWP settings page inside WordPress.
 
