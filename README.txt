@@ -20,7 +20,7 @@ For example, you might have a template that looks like this:
 		<?php the_content();?>
 	</article>
 
-This might output something like this:
+That will output something like this:
 	
 	<article>
 		<h1>Hello world</h1>
@@ -97,5 +97,6 @@ Full documentation and examples can be found at [GitHub](https://github.com/stef
 
 1. Use the Picture::create() function to generate Picturefill markup inside your templates.
 2. Congratulations! A responsive header image.
-3. You can also generate CSS and media queries for large background images.
+3. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
+4. A <style> tag will be created and contains the generated media queries for the background.
 
