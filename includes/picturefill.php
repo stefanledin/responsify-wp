@@ -25,14 +25,19 @@ class Picturefill
 	public function getImages( $sizes, $notBiggerThan = null )
 	{
 		$images = array();
+		$image_srcs = array();
+
 		foreach ( $sizes as $size ) {
 			$image = $this->getImage($size);
-			array_push($images, array(
-				'src' => $image[0],
-				'size' => $size,
-				'width' => $image[1],
-				'height' => $image[2]
-			));
+			if ( !in_array($image[0], $image_srcs) ) {
+				array_push($images, array(
+					'src' => $image[0],
+					'size' => $size,
+					'width' => $image[1],
+					'height' => $image[2]
+				));
+				array_push($image_srcs, $image[0]);
+			}
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
 		return $images;
