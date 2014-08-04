@@ -1,7 +1,12 @@
 #Responsify WP
-This is a Wordpress plugin that helps you with responsive images. It's based on the excellent
-[Picturefill script](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com).  
-##What it does
+Responsify WP is the WordPress plugin that cares about responsive images. It's based on the excellent
+[Picturefill polyfill](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com).  
+###Content
+- [Description](#description)
+- [Settings](#settings)
+- [Functions](#functions)
+
+##<a name="description">Description</a>
 In short, it will replace all ``<img>`` tags within ``the_content`` with the markup that is required by Picturefill.
 For example, you might have a template that looks like this:  
 
@@ -44,7 +49,20 @@ Congratulations! You're now serving images with an appropriate size to the users
 The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the width of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.  
-It is also possible to **select which sizes** that should be used from the RWP settings page inside WordPress.
+
+##<a name="settings">Settings</a>
+You can **select which image sizes** that the plugin should use from the RWP settings page.  
+These settings can be overwritten from your templates. 
+
+````php
+<?php
+$posts = get_posts( array(
+	'post_type' => 'portfolio',
+	'rwp_settings' => array(
+		'sizes' => array('large', 'full')
+	)
+) );
+````
 
 ##Functions
 If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
