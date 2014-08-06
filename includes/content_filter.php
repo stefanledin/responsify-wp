@@ -2,7 +2,7 @@
 
 class Content_Filter
 {
-	protected $user_settings;
+	public $user_settings;
 
 	public function __construct()
 	{
