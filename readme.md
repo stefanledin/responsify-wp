@@ -4,9 +4,18 @@ Responsify WP is the WordPress plugin that cares about responsive images. It's b
 ###Content
 - [Description](#description)
 - [Settings](#settings)
+	- [Sizes](#settings-sizes)
+	- [Media queries](#settings-media-queries)
 - [Functions](#functions)
+	- [Element](#functions-element)
+	- [Style](#functions-style)
+	- [Reference](#functions-reference)
+		- [Settings](#functions-reference-settings)
+		- [Example - sizes](#functions-reference-example-sizes)
+		- [Example - custom media queries](#functions-reference-example-custom-media-queries)
+		- [Example - attributes](#functions-reference-example-attributes)
 
-##<a name="description">Description</a>
+##<a name="description"></a>Description
 In short, it will replace all ``<img>`` tags within ``the_content`` with the markup that is required by Picturefill.
 For example, you might have a template that looks like this:  
 
@@ -50,23 +59,70 @@ The different versions of the image in the example above is in the standard ``th
 The **media queries** are based on the width of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.  
 
-##<a name="settings">Settings</a>
+##<a name="settings"></a>Settings
+###<a name"settings-sizes"></a>Sizes
 You can **select which image sizes** that the plugin should use from the RWP settings page.  
 These settings can be overwritten from your templates. 
 
 ````php
 <?php
+
+// Using get_posts()
 $posts = get_posts( array(
 	'post_type' => 'portfolio',
 	'rwp_settings' => array(
 		'sizes' => array('large', 'full')
 	)
 ) );
+
+// Using WP_Query()
+$query = new WP_Query( array(
+	'category_name' => 'wordpress',
+	'rwp_settings' => array(
+		'sizes' => array('large', 'full')
+	)
+) );
+if ( $query->have_posts() ) {
+	// ...
+}
+?>
 ````
 
-##Functions
-If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
+###<a name"settings-media-queries"></a>Media queries
+It's also possible to specify your own media queries for the different image sizes.
 
+````php
+<?php
+$posts = get_posts(array(
+	'post_type' => 'portfolio',
+	'rwp_settings' => array(
+		'sizes' => array('thumbnail', 'medium', 'large'),
+		'media_queries' => array(
+			'medium' => 'min-width: 500px',
+			'large' => 'min-width: 1024px'
+		)
+	)
+));
+?>
+````
+
+In the example above, ``thumbnail`` is the smallest image size and should therefore have no media query specified. 
+``medium`` will be selected if the screen is 500 px or larger. The same goes for ``large`` if the screen is at least 1024 px.
+
+````html
+<span data-picture data-alt="Image description">
+	<span data-src="[url-to-thumbnail].jpg"></span>
+	<span data-src="[url-to-medium].jpg" data-media="(min-width: 500px)"></span>
+	<span data-src="[url-to-large].jpg" data-media="(min-width: 1024px)"></span>
+	<noscript>
+		<img src="[url-to-thumbnail].jpg" alt="Image description">
+	</noscript>
+</span>
+````
+
+##<a name="functions"></a>Functions  
+If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
+###<a name="functions-element"></a>Element
 ````php
 <?php echo Picture::create( 'element', $attachment_id ); ?>
 ```` 
@@ -102,8 +158,8 @@ echo Picture::create( 'element', $thumbnail_id, array(
 ?>
 ````
 
-###Background images
-But what's the deal with the first argument? ``element``? Well, there might be times when you have a ``div`` with a very large background image. It's very easy to replace the image with a smaller one using media queries in your stylesheet, but that requires you to hard code the filename.  
+###<a name="functions-style"></a>Style
+There might be times when you have a ``div`` with a very large background image. It's very easy to replace the image with a smaller one using media queries in your stylesheet, but that requires you to hard code the filename.  
 What if it's some kind of header image that can be changed later by the administrator of the site? In that case, you cannot hard code the filename inside your stylesheet.  
 You might have done something like this in the past:
 
@@ -141,9 +197,22 @@ This will generate a ``style`` tag containing the following:
 	
 ````
 
-You can of course specify the sizes that you wanna use in the same way as in the previous example. 
+You can of course specify sizes and media queries here to.
 
-##Function reference
+````php
+<?php
+echo Picture::create( 'style', $dynamic_header_image_ID, array(
+	'selector' => '#hero',
+	'sizes' => array('medium', 'large', 'full'),
+	'media_queries' => array(
+		'large' => 'min-width: 500px',
+		'full' => 'min-width 1024px'
+	)
+) );
+?>
+````
+
+###<a name="reference"></a>Reference
 
 ````php
 <?php
@@ -155,14 +224,14 @@ echo Picture::create( $type, $attachment_id, $settings );
 * **$attachment_id**: (integer) (required). The ID of the attachment.
 * **$settings**: (array) (optional).
 
-###Settings
+####<a name="reference-settings"></a>Settings
 These are the settings that is currently avaliable:
 
 * **sizes** (array): The image sizes that you want to use.
 * **media_queries** (array): An associative array of names of the image sizes and a custom media query.
 * **attributes** (array): An associative array of attribute names and values that you want to have on the ``span`` tags.
 
-####Example - sizes
+#####<a name="functions-reference-example-sizes"></a>Example - sizes
 
 ````php
 <?php
@@ -182,7 +251,7 @@ $settings = array(
 </span>
 ````
 
-####Example - custom media queries
+#####<a name="functions-reference-example-custom-media-queries"></a>Example - custom media queries
 
 ````php
 <?php
@@ -210,7 +279,7 @@ all the selected image sizes.
 </span>
 ````
 
-####Example - attributes
+#####<a name="functions-reference-example-attributes"></a>Example - attributes
 
 ````php
 <?php

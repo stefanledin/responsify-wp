@@ -2,8 +2,8 @@
 Contributors: stefanledin
 Tags: responsive images, picture, picture element, picture markup, picturefill, images, responsive background
 Requires at least: 3.8.1
-Tested up to: 3.9.1
-Stable tag: 1.4
+Tested up to: 4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,7 +47,33 @@ But once you have activated the plugin, it will look like this instead:
 The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the width of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.  
-It is also possible to **select which sizes** that should be used from the RWP settings page inside WordPress.
+
+### Settings
+You can **select which image sizes** that the plugin should use from the RWP settings page.  
+These settings can be overwritten from your templates.  
+
+
+	<?php
+
+	// Using get_posts()
+	$posts = get_posts( array(
+		'post_type' => 'portfolio',
+		'rwp_settings' => array(
+			'sizes' => array('large', 'full')
+		)
+	) );
+
+	// Using WP_Query()
+	$query = new WP_Query( array(
+		'category_name' => 'wordpress',
+		'rwp_settings' => array(
+			'sizes' => array('large', 'full')
+		)
+	) );
+	if ( $query->have_posts() ) {
+		// ...
+	}
+	?>
 
 ### Picture::create()
 In your templates, you can use the ``Picture::create()`` function to generate Picturefill markup.  
@@ -95,8 +121,31 @@ Full documentation and examples can be found at [GitHub](https://github.com/stef
 
 == Screenshots ==
 
-1. Use the Picture::create() function to generate Picturefill markup inside your templates.
-2. Congratulations! A responsive header image.
-3. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
-4. A <style> tag will be created and contains the generated media queries for the background.
+1. Select the image sizes that you want to use in your templates. It's also 
+possible to specify your own media queries.
+2. Use the Picture::create() function to generate Picturefill markup inside your templates.
+3. Congratulations! A responsive header image.
+4. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
+5. A <style> tag will be created and contains the generated media queries for the background.
+
+== Changelog ==
+
+= 1.4.1 =
+* Bugfix. If an image doesn't exists in a selected size, WordPress returns the full size image instead. That would break the media queries.  
+* Tested with WordPress 4 beta 2.
+* Improved documentation.
+
+= 1.4 =
+* Now it's possible to set custom media queries.
+
+= 1.3 =
+* Settings can be passed in the query.
+
+= 1.2 =
+* The content filter now works on PHP 5.3
+
+== Upgrade Notice ==
+
+= 1.4.1 =
+Bugfix. If an image doesn't exists in a selected size, WordPress returns the full size image instead. That would break the media queries.
 
