@@ -7,7 +7,7 @@ class Content_Filter
 	public function __construct()
 	{
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
-		add_filter( 'the_content', array( $this, 'filter_images' ) );
+		add_filter( 'the_content', array( $this, 'filter_images' ), 11 );
 	}
 
 	public function get_user_settings( $query )
