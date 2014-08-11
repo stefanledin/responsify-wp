@@ -130,6 +130,9 @@ possible to specify your own media queries.
 
 == Changelog ==
 
+= 1.4.3 =
+* Bugfix. If an image is beeing inserted by a shortcode, the generated markup could be replaced.
+
 = 1.4.2 =
 * Bugfix. On PHP 5.3.28, the plugin could make the site crash. Not anymore!
 
@@ -148,6 +151,9 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+
+= 1.4.3 =
+Bugfix. If an image is beeing inserted by a shortcode, the generated markup could be replaced.
 
 = 1.4.2 =
 Bugfix. On PHP 5.3.28, the plugin could make the site crash. Not anymore!
