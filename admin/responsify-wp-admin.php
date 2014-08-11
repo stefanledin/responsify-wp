@@ -32,6 +32,7 @@ class Responsify_WP_Admin
 	public function register_plugin_settings()
 	{
 		register_setting( 'responsify-wp-settings', 'selected_sizes' );
+		register_setting( 'responsify-wp-settings', 'globally_active' );
 	}
 
 }

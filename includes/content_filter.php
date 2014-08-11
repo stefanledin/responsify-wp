@@ -7,7 +7,10 @@ class Content_Filter
 	public function __construct()
 	{
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
-		add_filter( 'the_content', array( $this, 'filter_images' ) );
+		
+		if ( get_option( 'globally_active' ) == 'on' ) {
+			add_filter( 'the_content', array( $this, 'filter_images' ) );
+		}
 	}
 
 	public function get_user_settings( $query )
