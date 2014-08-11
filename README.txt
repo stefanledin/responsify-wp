@@ -130,6 +130,9 @@ possible to specify your own media queries.
 
 == Changelog ==
 
+= 1.4.2 =
+* Bugfix. On PHP 5.3.28, the plugin could make the site crash. Not anymore!
+
 = 1.4.1 =
 * Bugfix. If an image doesn't exists in a selected size, WordPress returns the full size image instead. That would break the media queries.  
 * Tested with WordPress 4 beta 2.
@@ -145,6 +148,9 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+
+= 1.4.2 =
+Bugfix. On PHP 5.3.28, the plugin could make the site crash. Not anymore!
 
 = 1.4.1 =
 Bugfix. If an image doesn't exists in a selected size, WordPress returns the full size image instead. That would break the media queries.
