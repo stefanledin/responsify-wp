@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Responsify WP
-Version: 1.4.2
+Version: 1.5.0
 Description: A WordPress plugin that creates the markup for responsive images.
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
@@ -11,13 +11,14 @@ Plugin URI: https://github.com/stefanledin/responsify-wp
 require 'includes/media_queries.php';
 require 'includes/picturefill.php';
 require 'includes/element.php';
+require 'includes/span.php';
 require 'includes/style.php';
 require 'includes/picture.php';
 require 'includes/content_filter.php';
 
 class Responsify_WP
 {
-	const VERSION = '1.4.2';
+	const VERSION = '1.5.0';
 
 	protected static $instance = null;
 
