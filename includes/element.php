@@ -7,29 +7,42 @@ class Element extends Picturefill
 	{
 		parent::__construct($id, $settings);
 		$this->setAttributes();
-		$this->markup = $this->createMarkup();
+		$element = get_option( 'selected_element', 'span' );
+		$this->markup = $this->createMarkup( $element );
 	}
 
-	protected function setAttributes()
+	public function setAttributes()
 	{
-		$defaultAttributes = array(
+		$default_attributes = array(
 			'picture_span' => array(
 				'data-alt' => $this->getImageMeta('alt')
 			),
 			'src_span' => array()
 		);
-		if (isset($this->settings['attributes'])) {
-			$this->settings['attributes'] = array_replace_recursive($defaultAttributes, $this->settings['attributes']);
+		if ( isset($this->settings['attributes']) ) {
+			$this->settings['attributes'] = array_replace_recursive($default_attributes, $this->settings['attributes']);
 		} else {
-			$this->settings['attributes'] = $defaultAttributes;
+			$this->settings['attributes'] = $default_attributes;
 		}
 	}
 
-	protected function createMarkup()
+	protected function createMarkup( $element )
+	{
+		switch ( $element ) {
+			case 'picture':
+				return $this->picture();
+				break;
+			
+			default:
+				return $this->span();
+				break;
+		}
+	}
+
+	protected function span()
 	{
 		$picture_span_attributes = $this->createAttributes($this->settings['attributes']['picture_span']);
 		$src_span_attributes = $this->createAttributes($this->settings['attributes']['src_span']);
-
 		$markup = '<span data-picture '.$picture_span_attributes.'>';
 			$markup .= '<span data-src="'.$this->images[0]['src'].'" '.$src_span_attributes.'></span>';
 			for ($i=1; $i < count($this->images); $i++) { 
