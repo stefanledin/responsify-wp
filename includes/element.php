@@ -13,12 +13,23 @@ class Element extends Picturefill
 
 	public function setAttributes()
 	{
-		$default_attributes = array(
-			'picture_span' => array(
-				'data-alt' => $this->getImageMeta('alt')
-			),
-			'src_span' => array()
-		);
+		if ( get_option( 'selected_element' ) == 'picture' ) {
+			$default_attributes = array(
+				'picture' => array(),
+				'source' => array(),
+				'img' => array(
+					'alt' => $this->getImageMeta('alt')
+				)
+			);
+		} else {
+			$default_attributes = array(
+				'picture_span' => array(
+					'data-alt' => $this->getImageMeta('alt')
+				),
+				'src_span' => array()
+			);
+		}
+
 		if ( isset($this->settings['attributes']) ) {
 			$this->settings['attributes'] = array_replace_recursive($default_attributes, $this->settings['attributes']);
 		} else {
@@ -32,7 +43,6 @@ class Element extends Picturefill
 			case 'picture':
 				return $this->picture();
 				break;
-			
 			default:
 				return $this->span();
 				break;
@@ -52,6 +62,28 @@ class Element extends Picturefill
 				$markup .= '<img src="'.$this->images[0]['src'].'" alt="'.$this->getImageMeta('alt').'">';
 			$markup .= '</noscript>';
 		$markup .= '</span>';
+		return $markup;
+	}
+
+	protected function picture()
+	{
+		$picture_attributes = $this->createAttributes($this->settings['attributes']['picture']);
+		$source_attributes = $this->createAttributes($this->settings['attributes']['source']);
+		$img_attributes = $this->createAttributes($this->settings['attributes']['img']);
+
+		// The Picture element wants to have the largest image first.
+		$this->images = array_reverse($this->images);
+
+		$markup = '<picture '.$picture_attributes.'>';
+			$markup .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
+			for ($i=0; $i < count($this->images)-1; $i++) { 
+				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="(min-width: '.$this->images[$i+1]['width'].'px)">';
+			}
+			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
+			$markup .= '<!--[if IE 9]></video><![endif]-->';
+			$markup .= '<img srcset="'.$this->images[0]['src'].'" '.$img_attributes.'>';
+		$markup .= '</picture>';
+
 		return $markup;
 	}
 

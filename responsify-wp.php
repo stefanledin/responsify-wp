@@ -11,7 +11,6 @@ Plugin URI: https://github.com/stefanledin/responsify-wp
 require 'includes/media_queries.php';
 require 'includes/picturefill.php';
 require 'includes/element.php';
-require 'includes/span.php';
 require 'includes/style.php';
 require 'includes/picture.php';
 require 'includes/content_filter.php';
@@ -38,7 +37,12 @@ class Responsify_WP
 
 	public function enqueue_scripts()
 	{
-		wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.js', __FILE__),  null, null, true);
+		$selected_element = get_option( 'selected_element', 'span' );
+		if ( $selected_element == 'picture' ) {
+			wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.2.1.0.js', __FILE__),  null, null, true);
+		} else {
+			wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.1.2.1.js', __FILE__),  null, null, true);
+		}
 	}
 
 }
