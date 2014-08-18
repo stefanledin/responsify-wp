@@ -9,7 +9,7 @@ class Content_Filter
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
 		
 		if ( get_option( 'globally_active' ) == 'on' ) {
-			add_filter( 'the_content', array( $this, 'filter_images' ) );
+			add_filter( 'the_content', array( $this, 'filter_images' ), 11 );
 		}
 	}
 
