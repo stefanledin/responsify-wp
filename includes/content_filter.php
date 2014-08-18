@@ -22,11 +22,15 @@ class Content_Filter
 
 	public function filter_images ( $content ) {
 		$self = $this;
-		$content = preg_replace_callback('/<img (.*) \/>\s*/', function ($match) use ($self) {
+		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self) {
 			preg_match('/src="([^"]+)"/', $match[0], $src);
+			preg_match('/class="([^"]+)"/', $match[0], $css_class);
 			$id = $self->url_to_attachment_id($src[1]);
 			$settings = array(
-				'notBiggerThan' => $src[1]
+				'notBiggerThan' => $src[1],
+				'attributes' => array(
+					'img' => array('class' => $css_class[1])
+				)
 			);
 			// Can't this be done in a better way?
 			if ( $self->user_settings ) {
