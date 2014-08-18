@@ -1,8 +1,5 @@
 <?php
-$active = get_option( 'globally_active' );
-if ( $active == 'false' ) {
-	$active = 'off';
-}
+$active = get_option( 'globally_active', 'off' );
 ?>
 <h3><?php _e('Globally active'); ?></h3>
 <p><?php _e('Lorem ipsum dolor sit amet'); ?></p>
