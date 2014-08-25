@@ -9,6 +9,7 @@ class Responsify_WP_Admin
 	{
 		$this->plugin = Responsify_WP::get_instance();
 		add_action( 'admin_menu', array( $this, 'add_settings_to_menu') );
+		add_action( 'admin_menu', array( $this, 'enqueue_scripts') );
 		add_action( 'admin_init', array( $this, 'register_plugin_settings' ) );
 	}
 
@@ -22,6 +23,12 @@ class Responsify_WP_Admin
 	public function add_settings_to_menu()
 	{
 		$plask = add_options_page( 'Responsify WP', 'RWP Settings', 'manage_options', 'responsify-wp', array( $this, 'view_settings_page' ) );
+	}
+
+	public function enqueue_scripts()
+	{
+		wp_enqueue_style( 'rwp_stylesheet', plugins_url( '/css/responsify-wp.css', __FILE__ ), null, null );
+		wp_enqueue_script( 'rwp_scripts', plugins_url( '/js/responsify-wp.js', __FILE__ ), array('jquery'), null, true );
 	}
 
 	public function view_settings_page()
