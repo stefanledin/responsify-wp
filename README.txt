@@ -2,8 +2,8 @@
 Contributors: stefanledin
 Tags: responsive images, picture, picture element, picture markup, picturefill, images, responsive background
 Requires at least: 3.8.1
-Tested up to: 4.0
-Stable tag: 1.4.3
+Tested up to: 4.0 beta 3
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,7 +44,20 @@ But once you have activated the plugin, it will look like this instead:
 		</span>
 	</article>
 
-The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
+You can also choose to use the new ``picture`` element instead: 
+
+	<article>
+		<h1>Hello world</h1>
+		<p>Lorem ipsum dolor sit amet...</p>
+		<picture>
+		    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" media="(min-width: 1024px)">
+		    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
+		    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 150px)">
+		    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+		</picture>
+	</article>
+
+The different versions of the image in the examples above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the width of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.  
 
@@ -129,6 +142,10 @@ possible to specify your own media queries.
 5. A <style> tag will be created and contains the generated media queries for the background.
 
 == Changelog ==
+= 1.5.0 =
+* Now it's possible to select if you want to use <span> or the real <picture> element.
+* It's also possible to only use the Picture::create() without replacing any <img> tags in the content.
+* Bugfixes.
 
 = 1.4.3 =
 * Bugfix. If an image is beeing inserted by a shortcode, the generated markup could be replaced.
@@ -151,6 +168,8 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+=1.5.0
+Added the possibility to choose if you want to use <span> or the real <picture> element. Also bugfixes. 
 
 = 1.4.3 =
 Bugfix. If an image is beeing inserted by a shortcode, the generated markup could be replaced.
