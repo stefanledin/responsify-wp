@@ -8,7 +8,7 @@ class Content_Filter
 	{
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
 		
-		if ( get_option( 'globally_active' ) == 'on' ) {
+		if ( get_option( 'globally_active', 'on' ) == 'on' ) {
 			add_filter( 'the_content', array( $this, 'filter_images' ), 11 );
 		}
 	}
