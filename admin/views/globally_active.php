@@ -1,5 +1,5 @@
 <?php
-$active = get_option( 'globally_active', 'off' );
+$active = get_option( 'globally_active', 'on' );
 ?>
 <h3><?php _e('Globally active'); ?></h3>
 <p>
