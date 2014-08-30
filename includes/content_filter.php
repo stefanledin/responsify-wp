@@ -25,18 +25,23 @@ class Content_Filter
 			preg_match('/src="([^"]+)"/', $match[0], $src);
 			preg_match('/class="([^"]+)"/', $match[0], $css_class);
 			$id = $self->url_to_attachment_id($src[1]);
+
+			// If no ID is found, the image might be an external, hotlinked one.
+			if ( !$id ) return $match[0];
 			$settings = array(
 				'notBiggerThan' => $src[1],
 				'attributes' => array(
 					'img' => array('class' => $css_class[1])
 				)
 			);
+			
 			// Can't this be done in a better way?
 			if ( $self->user_settings ) {
 				foreach ( $self->user_settings as $user_setting_key => $user_setting_value ) {
 					$settings[$user_setting_key] = $user_setting_value;
 				}
 			}
+
 			$picture = Picture::create( 'element', $id, $settings );
 			return $picture;
 		}, $content);
