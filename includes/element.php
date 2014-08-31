@@ -17,14 +17,12 @@ class Element extends Picturefill
 			$default_attributes = array(
 				'picture' => array(),
 				'source' => array(),
-				'img' => array(
-					'alt' => $this->getImageMeta('alt')
-				)
+				'img' => array()
 			);
 		} else {
 			$default_attributes = array(
 				'picture_span' => array(
-					'data-alt' => $this->getImageMeta('alt')
+					'data-alt' => $this->settings['attributes']['img']['alt']
 				),
 				'src_span' => array()
 			);
@@ -59,7 +57,7 @@ class Element extends Picturefill
 				$markup .= '<span data-src="'.$this->images[$i]['src'].'" data-media="('.$this->images[$i]['media_query'].')" '.$src_span_attributes.'></span>';
 			}
 			$markup .= '<noscript>';
-				$markup .= '<img src="'.$this->images[0]['src'].'" alt="'.$this->getImageMeta('alt').'">';
+				$markup .= '<img src="'.$this->images[0]['src'].'" alt="'.$this->settings['attributes']['img']['alt'].'">';
 			$markup .= '</noscript>';
 		$markup .= '</span>';
 		return $markup;
@@ -85,11 +83,6 @@ class Element extends Picturefill
 		$markup .= '</picture>';
 
 		return $markup;
-	}
-
-	protected function getImageMeta( $meta )
-	{
-		return get_post_meta( $this->id, '_wp_attachment_image_'.$meta, true );
 	}
 
 	protected function createAttributes( $attr )

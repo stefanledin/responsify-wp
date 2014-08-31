@@ -19,32 +19,56 @@ class Content_Filter
 		}
 	}
 
+	public function get_attributes( $imageNode )
+	{
+		$dom = new DOMDocument();
+		$dom->loadHTML($imageNode);
+		$image = $dom->getElementsByTagName('img')->item(0);
+		$attributes = array();
+		foreach ( $image->attributes as $attr ) {
+			$attributes[$attr->nodeName] = $attr->nodeValue;
+		}
+		return $attributes;
+	}
+
 	public function filter_images ( $content ) {
+		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
+
+		// Find and replace all <img>
 		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self) {
-			preg_match('/src="([^"]+)"/', $match[0], $src);
-			preg_match('/class="([^"]+)"/', $match[0], $css_class);
-			$id = $self->url_to_attachment_id($src[1]);
+			$image_attributes = $self->get_attributes($match[0]);
+			$src = $image_attributes['src'];
+			// We don't wanna have an src attribute on the <img>
+			unset($image_attributes['src']);
+
+			$id = $self->url_to_attachment_id($src);
 
 			// If no ID is found, the image might be an external, hotlinked one.
 			if ( !$id ) return $match[0];
+
+			// Basic settings for Picture::create()
 			$settings = array(
-				'notBiggerThan' => $src[1],
+				'notBiggerThan' => $src,
 				'attributes' => array(
-					'img' => array('class' => $css_class[1])
+					'img' => $image_attributes
 				)
 			);
-			
-			// Can't this be done in a better way?
+
+			// Add user settings to the $settings array. 
+			// (Can't this be done in a better way?)
 			if ( $self->user_settings ) {
 				foreach ( $self->user_settings as $user_setting_key => $user_setting_value ) {
 					$settings[$user_setting_key] = $user_setting_value;
 				}
 			}
 
+			// Create responsive image markup.
 			$picture = Picture::create( 'element', $id, $settings );
+
 			return $picture;
 		}, $content);
+
 	    return $content;
 	}
 
