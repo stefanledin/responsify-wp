@@ -144,6 +144,7 @@ possible to specify your own media queries.
 == Changelog ==
 = 1.5.1 =
 * All attributes on the original img tag are now preserved and passed on to the new element.
+* External images will be ignored.
 * Bugfixes
 * Thanks to habannah for all of her help with pointing out issues with RWP.
 
@@ -175,6 +176,7 @@ possible to specify your own media queries.
 == Upgrade Notice ==
 = 1.5.1 =
 * All attributes on the original img tag are now preserved and passed on to the new element.
+* External images will be ignored.
 * Bugfixes
 
 = 1.5.0 =
