@@ -2,8 +2,8 @@
 Contributors: stefanledin
 Tags: responsive images, picture, picture element, picture markup, picturefill, images, responsive background
 Requires at least: 3.8.1
-Tested up to: 4.0-RC1
-Stable tag: 1.5.1
+Tested up to: 4.0
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -142,6 +142,9 @@ possible to specify your own media queries.
 5. A <style> tag will be created and contains the generated media queries for the background.
 
 == Changelog ==
+= 1.5.2 =
+* Bugfix. Custom media queries works with the picture element now.
+
 = 1.5.1 =
 * All attributes on the original img tag are now preserved and passed on to the new element.
 * External images will be ignored.
@@ -174,6 +177,9 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.5.2 =
+* Bugfix. Custom media queries works with the picture element now.
+
 = 1.5.1 =
 * All attributes on the original img tag are now preserved and passed on to the new element.
 * External images will be ignored.
