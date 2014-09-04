@@ -51,6 +51,7 @@ class Element extends Picturefill
 	{
 		$picture_span_attributes = $this->createAttributes($this->settings['attributes']['picture_span']);
 		$src_span_attributes = $this->createAttributes($this->settings['attributes']['src_span']);
+		
 		$markup = '<span data-picture '.$picture_span_attributes.'>';
 			$markup .= '<span data-src="'.$this->images[0]['src'].'" '.$src_span_attributes.'></span>';
 			for ($i=1; $i < count($this->images); $i++) { 
@@ -68,20 +69,19 @@ class Element extends Picturefill
 		$picture_attributes = $this->createAttributes($this->settings['attributes']['picture']);
 		$source_attributes = $this->createAttributes($this->settings['attributes']['source']);
 		$img_attributes = $this->createAttributes($this->settings['attributes']['img']);
-
+		
 		// The Picture element wants to have the largest image first.
 		$this->images = array_reverse($this->images);
 
 		$markup = '<picture '.$picture_attributes.'>';
 			$markup .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 			for ($i=0; $i < count($this->images)-1; $i++) { 
-				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="(min-width: '.$this->images[$i+1]['width'].'px)">';
+				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="('.$this->images[$i]['media_query'].')">';
 			}
 			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
 			$markup .= '<!--[if IE 9]></video><![endif]-->';
 			$markup .= '<img srcset="'.$this->images[0]['src'].'" '.$img_attributes.'>';
 		$markup .= '</picture>';
-
 		return $markup;
 	}
 
