@@ -19,6 +19,12 @@ class Element extends Picturefill
 				'source' => array(),
 				'img' => array()
 			);
+		} elseif ( get_option( 'selected_element' ) == 'srcset' ) {
+			$default_attributes = array(
+				'picture' => array(),
+				'source' => array(),
+				'img' => array()
+			);
 		} else {
 			$default_attributes = array(
 				'picture_span' => array(
@@ -40,6 +46,9 @@ class Element extends Picturefill
 		switch ( $element ) {
 			case 'picture':
 				return $this->picture();
+				break;
+			case 'srcset':
+				return $this->srcset();
 				break;
 			default:
 				return $this->span();
@@ -82,6 +91,28 @@ class Element extends Picturefill
 			$markup .= '<!--[if IE 9]></video><![endif]-->';
 			$markup .= '<img srcset="'.$this->images[0]['src'].'" '.$img_attributes.'>';
 		$markup .= '</picture>';
+		return $markup;
+	}
+
+	protected function srcset()
+	{
+		$picture_attributes = $this->createAttributes($this->settings['attributes']['picture']);
+		$source_attributes = $this->createAttributes($this->settings['attributes']['source']);
+		$img_attributes = $this->createAttributes($this->settings['attributes']['img']);
+
+		$markup = '<img ';
+		$markup .= 'sizes="100vw" ';
+		$markup .= 'srcset="';
+		for ($i=0; $i < count($this->images); $i++) {
+			$markup .= ''.$this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
+		}
+		// Removes the last comma
+		$markup = substr($markup, 0, -2);
+
+		$markup .= '" ';
+		$markup .= 'alt="'.$this->getImageMeta('alt').'" ';
+		$markup .= 'src="'.$this->images[0]['src'].'" ';
+		$markup .= '>';
 		return $markup;
 	}
 
