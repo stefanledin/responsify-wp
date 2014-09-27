@@ -19,13 +19,13 @@ class Element extends Picturefill
 				'source' => array(),
 				'img' => array()
 			);
-		} elseif ( get_option( 'selected_element' ) == 'srcset' ) {
+		}
+        if ( get_option( 'selected_element' ) == 'img' ) {
 			$default_attributes = array(
-				'picture' => array(),
-				'source' => array(),
 				'img' => array()
 			);
-		} else {
+		}
+        if ( get_option( 'selected_element' ) == 'span' ) {
 			$default_attributes = array(
 				'picture_span' => array(
 					'data-alt' => ($this->settings['attributes']['img']['alt']) ? $this->settings['attributes']['img']['alt'] : $this->getImageMeta('alt')
@@ -47,10 +47,10 @@ class Element extends Picturefill
 			case 'picture':
 				return $this->picture();
 				break;
-			case 'srcset':
+			case 'img':
 				return $this->srcset();
 				break;
-			default:
+			case 'span':
 				return $this->span();
 				break;
 		}
@@ -96,22 +96,19 @@ class Element extends Picturefill
 
 	protected function srcset()
 	{
-		$picture_attributes = $this->createAttributes($this->settings['attributes']['picture']);
-		$source_attributes = $this->createAttributes($this->settings['attributes']['source']);
 		$img_attributes = $this->createAttributes($this->settings['attributes']['img']);
 
 		$markup = '<img ';
-		$markup .= 'sizes="100vw" ';
-		$markup .= 'srcset="';
-		for ($i=0; $i < count($this->images); $i++) {
-			$markup .= ''.$this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
-		}
-		// Removes the last comma
-		$markup = substr($markup, 0, -2);
+            $markup .= 'sizes="100vw" ';
+            $markup .= 'srcset="';
+            for ($i=0; $i < count($this->images); $i++) {
+                $markup .= ''.$this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
+            }
+            // Removes the last comma
+            $markup = substr($markup, 0, -2);
 
-		$markup .= '" ';
-		$markup .= 'alt="'.$this->getImageMeta('alt').'" ';
-		$markup .= 'src="'.$this->images[0]['src'].'" ';
+            $markup .= '" ';
+            $markup .= $img_attributes;
 		$markup .= '>';
 		return $markup;
 	}
