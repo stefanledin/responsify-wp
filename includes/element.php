@@ -7,7 +7,7 @@ class Element extends Picturefill
 	{
 		parent::__construct($id, $settings);
 		$this->setAttributes();
-		$element = get_option( 'selected_element', 'span' );
+		$element = get_option( 'selected_element', 'img' );
 		$this->markup = $this->createMarkup( $element );
 	}
 
@@ -34,9 +34,11 @@ class Element extends Picturefill
 			);
 		}
 
-		if ( isset($this->settings['attributes']) ) {
-			$this->settings['attributes'] = array_replace_recursive($default_attributes, $this->settings['attributes']);
-		} else {
+		if ( isset($this->settings['attributes']['img']) ) {
+            $this->settings['attributes'] = array_replace_recursive($default_attributes, $this->settings['attributes']['img']);
+        } elseif ( isset($this->settings['attributes']) ) {
+            $this->settings['attributes'] = array_replace_recursive($default_attributes, $this->settings['attributes']);
+        } else {
 			$this->settings['attributes'] = $default_attributes;
 		}
 	}
