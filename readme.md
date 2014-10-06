@@ -4,19 +4,23 @@ Responsify WP is the WordPress plugin that cares about responsive images. It's b
 ###Content
 - [Description](#description)
 - [Settings](#settings)
-	- [Sizes](#settings-sizes)
+	- [Image sizes](#settings-image-sizes)
+	- [Sizes attribute](#settings-sizes-attribute)
 	- [Media queries](#settings-media-queries)
 - [Functions](#functions)
-	- [Element](#functions-element)
+	- [Element/Img](#functions-element)
 	- [Style](#functions-style)
 	- [Reference](#functions-reference)
 		- [Settings](#functions-reference-settings)
 		- [Example - sizes](#functions-reference-example-sizes)
 		- [Example - custom media queries](#functions-reference-example-custom-media-queries)
 		- [Example - attributes](#functions-reference-example-attributes)
+		    - [img](#functions-reference-example-attributes-img)
+		    - [picture](#functions-reference-example-attributes-picture)
+		    - [span](#functions-reference-example-attributes-span)
 
 ##<a name="description"></a>Description
-In short, it will replace all ``<img>`` tags within ``the_content`` with the markup that is required by Picturefill.
+In short, it will turn all``<img>`` tags within ``the_content`` into responsive images.
 For example, you might have a template that looks like this:  
 
 ````html
@@ -42,26 +46,48 @@ But once you have activated the plugin, it will look like this instead:
 <article>
 	<h1>Hello world</h1>
 	<p>Lorem ipsum dolor sit amet...</p>
-	<span data-picture data-alt="Image description">
-		<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
-		<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
-		<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
-		<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" data-media="(min-width: 1024px)"></span>
-		<noscript>
-			<img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
-		</noscript>
-	</span>
+	<img sizes="100vw" 
+	    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w,
+	    example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
+	    example.com/wp-content/uploads/2014/03/IMG_4540.jpg <image-width>"
+	    src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
 </article>
 ````
 
-Congratulations! You're now serving images with an appropriate size to the users.  
-The different versions of the image in the example above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
-The **media queries** are based on the width of the "previous" image.  
+On the RWP settings page, you can select between using an ``<img>`` tag with ``sizes``/``srcset`` attributes and the ``<picture>`` element.
+
+````html
+<picture>
+    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" media="(min-width: 1024px)">
+    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
+    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 150px)">
+    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+</picture>
+````
+
+Congratulations! You're now serving images with an appropriate size to the users.    
+The different versions of the image in the examples above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 Any **custom sizes** of the image will also be found and used.  
+The **media queries** that the ``picture`` element are using is based on the width of the "previous" image.  
+
+RWP also has support for the old markup pattern that uses ``<span>`` tags. However, this solution has some 
+limitations and is not the recommended.
+
+````html
+<span data-picture data-alt="Image description">
+    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
+    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
+    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
+    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" data-media="(min-width: 1024px)"></span>
+    <noscript>
+        <img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+    </noscript>
+</span>
+````
 
 ##<a name="settings"></a>Settings
-###<a name"settings-sizes"></a>Sizes
-You can **select which image sizes** that the plugin should use from the RWP settings page.  
+###<a name"settings-image-sizes"></a>Image sizes
+You can **select which image sizes** that the plugin should use from the settings page.  
 These settings can be overwritten from your templates. 
 
 ````php
@@ -88,8 +114,32 @@ if ( $query->have_posts() ) {
 ?>
 ````
 
+###<a name"settings-sizes-attribute"></a>Sizes attribute
+By default, ``<img>`` tags with ``sizes``/``srcset`` is the selected markup pattern. ``100vw`` is the default value of 
+the ``sizes`` attribute, but it's possible to specify your own. 
+````php
+<?php
+$posts = get_posts(array(
+	'post_type' => 'portfolio',
+	'rwp_settings' => array(
+		'sizes' => array('medium', 'large'),
+		'attributes' => array(
+			'sizes' => '(min-width: 500px) 1024px, 300px'
+		)
+	)
+));
+?>
+````
+
+This will produce the following:
+````html
+<img srcset="medium.jpg 300w, large.jpg 1024w" sizes="(min-width: 500px) 1024px, 300px)" src="medium.jpg">
+````
+
+``large.jpg`` will be selected when the window width is at least 500px. On smaller screens, ``medium.jpg`` will be selected.  
+
 ###<a name"settings-media-queries"></a>Media queries
-It's also possible to specify your own media queries for the different image sizes.
+If you've selected the ``picture`` element in the settings, you can specify your own media queries for the different image sizes.
 
 ````php
 <?php
@@ -110,22 +160,25 @@ In the example above, ``thumbnail`` is the smallest image size and should theref
 ``medium`` will be selected if the screen is 500 px or larger. The same goes for ``large`` if the screen is at least 1024 px.
 
 ````html
-<span data-picture data-alt="Image description">
-	<span data-src="[url-to-thumbnail].jpg"></span>
-	<span data-src="[url-to-medium].jpg" data-media="(min-width: 500px)"></span>
-	<span data-src="[url-to-large].jpg" data-media="(min-width: 1024px)"></span>
-	<noscript>
-		<img src="[url-to-thumbnail].jpg" alt="Image description">
-	</noscript>
-</span>
+<picture>
+    <source srcset="[url-to-large].jpg" media="(min-width: 1024px)">
+    <source srcset="[url-to-medium].jpg" media="(min-width: 500px)">
+    <img srcset="[url-to-thumbnail].jpg" alt="Image description">
+</picture>
 ````
 
 ##<a name="functions"></a>Functions  
 If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
-###<a name="functions-element"></a>Element
+###<a name="functions-element"></a>Element / Img
+Based on an attachment ID, you can generate either a ``picture`` **element** or a **img** tag with ``srcset``/``sizes`` attributes.
+
 ````php
-<?php echo Picture::create( 'element', $attachment_id ); ?>
-```` 
+<?php echo Picture::create( 'img', $attachment_id ); ?>
+````
+ 
+ ````php
+ <?php echo Picture::create( 'element', $attachment_id ); ?>
+ ````
 
 Let's say that you have the following markup for a very large header image:
 
@@ -212,7 +265,7 @@ echo Picture::create( 'style', $dynamic_header_image_ID, array(
 ?>
 ````
 
-###<a name="reference"></a>Reference
+###<a name="functions-reference"></a>Reference
 
 ````php
 <?php
@@ -220,11 +273,11 @@ echo Picture::create( $type, $attachment_id, $settings );
 ?>
 ````
 
-* **$type**: (string) (required). 'element' or 'style'.
+* **$type**: (string) (required). 'img', 'element' or 'style'.
 * **$attachment_id**: (integer) (required). The ID of the attachment.
 * **$settings**: (array) (optional).
 
-####<a name="reference-settings"></a>Settings
+####<a name="functions-reference-settings"></a>Settings
 These are the settings that is currently avaliable:
 
 * **sizes** (array): The image sizes that you want to use.
@@ -238,17 +291,22 @@ These are the settings that is currently avaliable:
 $settings = array(
 	'sizes' => array('medium', 'large')
 );
+
+echo Picture::create( 'img', $attachment_id, $settings );
+echo Picture::create( 'element', $attachment_id, $settings );
 ?>
 ````
 
 ````html
-<span data-picture>
-	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg"></span>
-	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
-	<noscript>
-		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
-	</noscript>
-</span>
+<img sizes="100vw"
+    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
+    example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w"
+    src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
+    
+<picture>
+    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
+    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
+</picture>
 ````
 
 #####<a name="functions-reference-example-custom-media-queries"></a>Example - custom media queries
@@ -262,6 +320,7 @@ $settings = array(
 		'large' => 'min-width: 1024px'
 	)
 );
+echo Picture::create( 'element', $attachment_id, $settings );
 ?>
 ````
 
@@ -269,17 +328,67 @@ Notice that you **should not** specify a media query for the smallest image size
 all the selected image sizes.
 
 ````html
-<span data-picture>
-	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
-	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 550px)"></span>
-	<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 1024px)"></span>
-	<noscript>
-		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
-	</noscript>
-</span>
+<picture>
+    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 1024px)">
+    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 500px)">
+    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+</picture>
 ````
 
 #####<a name="functions-reference-example-attributes"></a>Example - attributes
+
+######<a name="functions-reference-example-attributes-img"></a>img
+
+````php
+<?php
+$settings = array(
+	'attributes' => array(
+		'id' => 'responsive-image'
+	)
+);
+echo Picture::create( 'img', $attachment_id, $settings );
+?>
+````
+
+````html
+<img id="responsive-image" sizes="100vw" 
+	    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w,
+	    example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
+	    example.com/wp-content/uploads/2014/03/IMG_4540.jpg <image-width>"
+	    src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+````
+
+######<a name="functions-reference-example-attributes-picture"></a>picture
+
+````php
+<?php
+$settings = array(
+	'attributes' => array(
+		'picture' => array(
+			'id' => 'picture-element'
+		),
+		'source' => array(
+			'data-foo' => 'bar'
+		),
+		'img' => array(
+		    'id' => 'responsive-image'
+		)
+	)
+);
+echo Picture::create( 'element', $attachment_id, $settings );
+?>
+````
+
+````html
+<picture id="picture-element">
+    <source data-foo="bar" srcset="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" media="(min-width: 1024px)">
+    <source data-foo="bar" srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
+    <source data-foo="bar" srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 150px)">
+    <img id="responsive-image" srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+</picture>
+````
+
+######<a name="functions-reference-example-attributes-span"></a>span
 
 ````php
 <?php
@@ -294,6 +403,7 @@ $settings = array(
 		)
 	)
 );
+echo Picture::create( 'element', $attachment_id, $settings );
 ?>
 ````
 

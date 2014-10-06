@@ -33,18 +33,14 @@ But once you have activated the plugin, it will look like this instead:
 	<article>
 		<h1>Hello world</h1>
 		<p>Lorem ipsum dolor sit amet...</p>
-		<span data-picture data-alt="Image description">
-			<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
-			<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
-			<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
-			<span data-src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" data-media="(min-width: 1024px)"></span>
-			<noscript>
-				<img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
-			</noscript>
-		</span>
+		<img sizes="100vw"
+            srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w,
+            example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
+            example.com/wp-content/uploads/2014/03/IMG_4540.jpg <image-width>"
+            src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
 	</article>
 
-You can also choose to use the new ``picture`` element instead: 
+You can also choose to use the ``picture`` element instead:
 
 	<article>
 		<h1>Hello world</h1>
@@ -59,7 +55,7 @@ You can also choose to use the new ``picture`` element instead:
 
 The different versions of the image in the examples above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the width of the "previous" image.  
-Any **custom sizes** of the image will also be found and used.  
+Any **custom sizes** of the image will also be found and used.
 
 ### Settings
 You can **select which image sizes** that the plugin should use from the RWP settings page.  
@@ -102,6 +98,11 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 	<header>
 		<?php
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+
+		// Generate an <img> tag with srcset/sizes attributes.
+		echo Picture::create( 'img', $thumbnail_id );
+
+		// Generate a <picture> element
 		echo Picture::create( 'element', $thumbnail_id );
 		?>
 	</header>
