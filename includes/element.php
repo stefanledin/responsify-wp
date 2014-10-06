@@ -22,7 +22,7 @@ class Element extends Picturefill
 		}
         if ( get_option( 'selected_element' ) == 'img' ) {
 			$default_attributes = array(
-				'img' => array()
+                'sizes' => '100vw'
 			);
 		}
         if ( get_option( 'selected_element' ) == 'span' ) {
@@ -48,7 +48,7 @@ class Element extends Picturefill
 				return $this->picture();
 				break;
 			case 'img':
-				return $this->srcset();
+				return $this->img();
 				break;
 			case 'span':
 				return $this->span();
@@ -94,15 +94,14 @@ class Element extends Picturefill
 		return $markup;
 	}
 
-	protected function srcset()
+	protected function img()
 	{
-		$img_attributes = $this->createAttributes($this->settings['attributes']['img']);
+		$img_attributes = $this->createAttributes($this->settings['attributes']);
 
 		$markup = '<img ';
-            $markup .= 'sizes="100vw" ';
             $markup .= 'srcset="';
             for ($i=0; $i < count($this->images); $i++) {
-                $markup .= ''.$this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
+                $markup .= $this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
             }
             // Removes the last comma
             $markup = substr($markup, 0, -2);
