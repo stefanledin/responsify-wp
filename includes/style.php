@@ -1,5 +1,5 @@
 <?php
-class Style extends Picturefill
+class Style extends Create_Responsive_image
 {
 	public $style;
 

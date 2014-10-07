@@ -64,7 +64,8 @@ class Content_Filter
 			}
 
 			// Create responsive image markup.
-			$picture = Picture::create( 'element', $id, $settings );
+            $type = get_option( 'selected_element', 'img' );
+			$picture = Picture::create( $type, $id, $settings );
 
 			return $picture;
 		}, $content);
