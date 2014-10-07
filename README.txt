@@ -137,12 +137,16 @@ Full documentation and examples can be found at [GitHub](https://github.com/stef
 
 1. Select the image sizes that you want to use in your templates. It's also 
 possible to specify your own media queries.
-2. Use the Picture::create() function to generate Picturefill markup inside your templates.
+2. Use the Picture::create() function to generate responsive images inside your templates.
 3. Congratulations! A responsive header image.
 4. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
 5. A <style> tag will be created and contains the generated media queries for the background.
 
 == Changelog ==
+= 1.6.0 =
+* RWP now supports the sizes/srcset attributes. It's the new default markup pattern.
+* Bugfixes and improvements.
+
 = 1.5.2 =
 * Bugfix. Custom media queries works with the picture element now.
 
@@ -178,6 +182,9 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.6.0 =
+* Support for the sizes/srcset attributes. It's the default markup pattern now.
+
 = 1.5.2 =
 * Bugfix. Custom media queries works with the picture element now.
 
