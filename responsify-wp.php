@@ -23,13 +23,22 @@ class Responsify_WP
 
 	protected static $instance = null;
 
-	public function __construct()
+    /**
+     * Adds actions and filters. Creates instance of Content_Filter.
+     */
+    public function __construct()
 	{
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_filter('plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'settings_link' ) );
 		$content_filter = new Content_Filter;
 	}
 
-	public static function get_instance()
+    /**
+     * Creates the singleton
+     *
+     * @return null|Responsify_WP
+     */
+    public static function get_instance()
 	{
 		if ( self::$instance == null ) {
 			self::$instance = new self;
@@ -37,7 +46,22 @@ class Responsify_WP
 		return self::$instance;
 	}
 
-	public function enqueue_scripts()
+    /**
+     * Add settings link on plugin page.
+     *
+     * @param $links
+     * @return mixed
+     */
+    public function settings_link( $links ) {
+        $settings_link = '<a href="options-general.php?page=responsify-wp.php">Settings</a>';
+        array_unshift($links, $settings_link);
+        return $links;
+    }
+
+    /**
+     * Enqueues right version of Picturefill.
+     */
+    public function enqueue_scripts()
 	{
 		$selected_element = get_option( 'selected_element', 'img' );
 		if ( $selected_element == 'span' ) {
