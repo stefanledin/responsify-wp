@@ -343,7 +343,8 @@ all the selected image sizes.
 <?php
 $settings = array(
 	'attributes' => array(
-		'id' => 'responsive-image'
+		'id' => 'responsive-image',
+		'sizes' => '(min-width: 500px) 1024px, 300px'
 	)
 );
 echo Picture::create( 'img', $attachment_id, $settings );
@@ -351,7 +352,7 @@ echo Picture::create( 'img', $attachment_id, $settings );
 ````
 
 ````html
-<img id="responsive-image" sizes="100vw" 
+<img id="responsive-image" sizes="(min-width: 500px) 1024px, 300px" 
 	    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w,
 	    example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
 	    example.com/wp-content/uploads/2014/03/IMG_4540.jpg <image-width>"
