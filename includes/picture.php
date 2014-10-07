@@ -24,6 +24,7 @@ class Picture
                 return $img->markup;
                 break;
 			case 'element':
+			case 'picture':
                 if ( get_option('selected_element') == 'span' ) {
                     $picture = new Span( $id, $settings );
                 } else {
