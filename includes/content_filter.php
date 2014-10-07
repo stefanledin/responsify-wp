@@ -12,14 +12,25 @@ class Content_Filter
 		}
 	}
 
-	public function get_user_settings( $query )
+    /**
+     * Stores the array with user settings.
+     *
+     * @param $query
+     */
+    public function get_user_settings( $query )
 	{
 		if ( isset($query->query['rwp_settings']) ) {
 			$this->user_settings = $query->query['rwp_settings'];
 		}
 	}
 
-	public function get_attributes( $imageNode )
+    /**
+     * Returns an array with all attributes from the original <img> element
+     *
+     * @param $imageNode
+     * @return array
+     */
+    public function get_attributes( $imageNode )
 	{
 		$dom = new DOMDocument();
 		$dom->loadHTML($imageNode);
@@ -31,7 +42,13 @@ class Content_Filter
 		return $attributes;
 	}
 
-	public function filter_images ( $content ) {
+    /**
+     * Finds <img> tags in the content and replaces it with a responsive image.
+     *
+     * @param $content
+     * @return mixed
+     */
+    public function filter_images ( $content ) {
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
 
@@ -73,7 +90,11 @@ class Content_Filter
 	    return $content;
 	}
 
-	public function url_to_attachment_id ( $image_url ) {
+    /**
+     * @param $image_url
+     * @return array
+     */
+    public function url_to_attachment_id ( $image_url ) {
 		// Thx to https://github.com/kylereicks/picturefill.js.wp/blob/master/inc/class-model-picturefill-wp.php
 		global $wpdb;
 		$original_image_url = $image_url;
