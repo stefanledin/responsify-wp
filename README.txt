@@ -141,6 +141,8 @@ possible to specify your own media queries.
 3. Congratulations! A responsive header image.
 4. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
 5. A <style> tag will be created and contains the generated media queries for the background.
+6.
+7.
 
 == Changelog ==
 = 1.6.0 =
