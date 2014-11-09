@@ -52,10 +52,25 @@ class Content_Filter
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
 
+		$ignored_image_formats = get_option( 'ignored_image_formats' );
+		if ( $ignored_image_formats ) {
+			$ignored_image_formats = array_keys($ignored_image_formats);
+			// Quick and dirty jpg/jpeg hack. I'm sorry.
+			if ( in_array('jpg', $ignored_image_formats) ) {
+				$ignored_image_formats[] = 'jpeg';
+			}
+		}
 		// Find and replace all <img>
-		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self) {
+		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self, $ignored_image_formats) {
 			$image_attributes = $self->get_attributes($match[0]);
 			$src = $image_attributes['src'];
+
+			// Return if the image format is ignored.
+			if ( $ignored_image_formats ) {
+				$image_info = pathinfo($src);
+				if ( in_array($image_info['extension'], $ignored_image_formats) ) return $match[0];
+			}
+			
 			// We don't wanna have an src attribute on the <img>
 			unset($image_attributes['src']);
 
