@@ -30,18 +30,17 @@ class Img extends Create_Responsive_image
         $img_attributes = $this->create_attributes($this->settings['attributes']);
 
         $markup = '<img ';
-            $markup .= 'srcset="';
             if ( count($this->images) == 1 ) : 
-                $markup .= $this->images[0]['src'].' '.$this->images[0]['width'];
+                $markup .= 'src="'.$this->images[0]['src'].'"';
             else:
+            $markup .= 'srcset="';
                 for ($i=0; $i < count($this->images); $i++) {
                     $markup .= $this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
                 }
                 // Removes the last comma
                 $markup = substr($markup, 0, -2);
+                $markup .= '" ';
             endif;
-
-            $markup .= '" ';
             $markup .= $img_attributes;
         $markup .= '>';
         return $markup;
