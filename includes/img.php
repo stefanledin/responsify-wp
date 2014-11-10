@@ -31,11 +31,15 @@ class Img extends Create_Responsive_image
 
         $markup = '<img ';
             $markup .= 'srcset="';
-            for ($i=0; $i < count($this->images); $i++) {
-                $markup .= $this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
-            }
-            // Removes the last comma
-            $markup = substr($markup, 0, -2);
+            if ( count($this->images) == 1 ) : 
+                $markup .= $this->images[0]['src'].' '.$this->images[0]['width'];
+            else:
+                for ($i=0; $i < count($this->images); $i++) {
+                    $markup .= $this->images[$i]['src'].' '.$this->images[$i]['width'].'w, ';
+                }
+                // Removes the last comma
+                $markup = substr($markup, 0, -2);
+            endif;
 
             $markup .= '" ';
             $markup .= $img_attributes;
