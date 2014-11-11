@@ -1,0 +1,181 @@
+---
+---
+
+/**
+ * Imports
+ */
+@import "normalize";
+@import "boilerplate";
+@import "syntax";
+
+/**
+ * Variables
+ */
+
+/* Colors */
+$red: #a40c0b;
+$orange: #d54e21;
+$grey: #464646;
+
+/* Typography */
+$font: 'Exo', sans-serif;
+
+/**
+ * Mixins
+ */
+@mixin button {
+	display: inline-block;
+	padding: 10px;
+	background-color: $orange;
+	background-image: -webkit-linear-gradient(top, $orange, $red);
+	background-image: linear-gradient(to bottom, $orange, $red);
+	border: 1px solid $grey;
+	border-radius: 10px;
+	color: white;
+	text-decoration: none;
+	font-family: $font;
+	&:hover {
+		background-color: $grey;
+		background-image: -webkit-linear-gradient(top, $grey, black);
+		background-image: linear-gradient(to bottom, $grey, black);
+		border: 1px solid black;
+	}
+}
+
+@mixin center-block {
+	margin: 0 auto;
+	display: block;
+}
+
+/**
+ * Globals
+ */
+body {
+	background: $red;
+	color: $grey;
+}
+
+.page-wrapper {
+	z-index: 1;
+	position: relative;
+}
+
+.button {
+	@include button;
+	@include center-block;
+	max-width: 80px;
+	text-align: center;
+}
+
+.logo {
+	margin: 0;
+	font-family: $font;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 6em;
+	color: white;
+	text-align: center;
+}
+
+/* Navigation */
+nav[role="navigation"] {
+	background: $grey;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	ul {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+	li {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+	}
+	a {
+		border-right: 1px solid black;
+		display: block;
+		padding: 10px 20px;
+		font-size: 1.125em;
+		font-family: $font;
+		text-decoration: none;
+		color: white;
+		&:hover {
+			background: black;
+		}
+	}
+	li:last-child a {
+		border-right: none;
+	}
+}
+
+/* Background effect */
+#background-effect {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 0;
+	.background-device {
+		background: rgba(255, 255, 255, .1);
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+}
+.iphone-4 {
+	&.portrait { width: 320px; height: 480px; }
+	&.landscape { width: 480px; height: 320px; }
+}
+.iphone-5 {
+	&.portrait { width: 320px; height: 568px; }
+	&.landscape { width: 568px; height: 320px; }
+}
+.ipad {
+	&.portrait { width: 768px; height: 1024px; }
+	&.landscape { width: 1024px; height: 768px; }
+}
+.tablet {
+	&.portrait { width: 800px; height: 600px; }
+	&.landscape { width: 600px; height: 800px; }
+}
+.desktop {
+	&.portrait { width: 1280px; height: 900px; }
+	&.landscape { width: 900px; height: 1280px; }
+}
+
+/**
+ * Home
+ */
+
+/* Header */
+.logo-header {
+	margin-bottom: 293px;
+	.logo {
+		margin-top: 293px;
+	}
+	.slogan {
+		margin: 0 0 1.688em 0;
+		font-family: $font;
+		font-size: 1.563em;
+		font-weight: 700;
+		color: white;
+		text-align: center;
+	}
+}
+
+section.content {
+	background: rgba(255, 255,255, .9);
+}
+
+/* Feature section */
+.feature-section {
+	margin: 0 auto;
+	width: 95%;
+	max-width: 1170px;
+	h1 {
+		font-family: $font;
+		font-size: 2.250em;
+		text-align: center;
+		color: $grey;
+	}
+}
