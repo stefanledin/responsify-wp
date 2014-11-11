@@ -145,6 +145,10 @@ possible to specify your own media queries.
 7.
 
 == Changelog ==
+= 1.6.2 =
+* Added the ability to ignore image formats.
+* Bugfixes.
+
 = 1.6.1 =
 * Critical bugfix. If the picture element was selected before 1.6.0, it stopped working.
 
@@ -187,6 +191,10 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.6.2 =
+* Added the ability to ignore image formats.
+* Bugfixes.
+
 = 1.6.1 =
 * Critical bugfix. If the picture element was selected before 1.6.0, it stopped working.
 
