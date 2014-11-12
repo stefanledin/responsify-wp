@@ -40,7 +40,7 @@
                         <li><a href="#">Overview</a></li><li><a href="#">Documentation</a></li><li><a href="#">Tutorials</a></li>
                     </ul>
                 </nav>
-                <article class="feature-section">
+                <article id="plug-and-play" class="feature-section">
                     <header class="feature-section-header">
                         <h1>Responsive images.<br>Plug and play</h1>
                     </header>
@@ -48,10 +48,32 @@
 <code>
 {% highlight html %}
 <article>
-    <img src="[full-size-image]">
+    <h1>Hello world</h1>
+    <p>Lorem ipsum dolor sit amet...</p>
+    <img src="[full-size-image]" alt="Image description">
 </article>
 {% endhighlight %}
 </code>
+<code>
+{% highlight html %}
+<article>
+    <h1>Hello world</h1>
+    <p>Lorem ipsum dolor sit amet...</p>
+    <img sizes="100vw" 
+        srcset="[medium-size-image] 300w,
+        [large-size-image] 1024w,
+        [full-size-image] <image-width>"
+        src="[thumbnail]" alt="Image description">
+</article>
+{% endhighlight %}
+</code>
+                </article>
+
+                <article id="image-or-picture" class="feature-section">
+                    <header class="feature-section-header">
+                        <h1>Image. Or picture</h1>
+                    </header>
+                    <p>Use <strong>img</strong> with <strong>srcset/sizes</strong> attributes. Or the <strong>picture</strong> element. Responsify WP supports both.</p>
                 </article>
 
             </section>
