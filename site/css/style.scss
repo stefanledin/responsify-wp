@@ -20,12 +20,15 @@ $grey: #464646;
 /* Typography */
 $font: 'Exo', sans-serif;
 
+/* Media queries */
+$tablet: 600px;
+
 /**
  * Mixins
  */
 @mixin button {
 	display: inline-block;
-	padding: 10px;
+	padding: 5px;
 	background-color: $orange;
 	background-image: -webkit-linear-gradient(top, $orange, $red);
 	background-image: linear-gradient(to bottom, $orange, $red);
@@ -40,11 +43,46 @@ $font: 'Exo', sans-serif;
 		background-image: linear-gradient(to bottom, $grey, black);
 		border: 1px solid black;
 	}
+	@media (min-width: $tablet) {
+		padding: 10px;
+	}
 }
 
 @mixin center-block {
 	margin: 0 auto;
 	display: block;
+}
+
+/**
+ * Grid
+ */
+.page-wrapper {
+	z-index: 1;
+	position: relative;
+}
+
+.row {
+
+	/* Clearfix */
+	&:before,
+	&:after {
+	    content: " "; /* 1 */
+	    display: table; /* 2 */
+	}
+	&:after {
+	    clear: both;
+	}
+}
+
+.col-2 {
+	@media (min-width: $tablet) {
+		margin-right: 2.5%;
+		width: 47.5%;
+		float: left;
+		&.last {
+			margin-right: 0;
+		}
+	}
 }
 
 /**
@@ -55,9 +93,16 @@ body {
 	color: $grey;
 }
 
-.page-wrapper {
-	z-index: 1;
-	position: relative;
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+h2 {
+	font-size: 1.125em;
+	@media (min-width: $tablet) {
+		font-size: 1.5em;
+	}
 }
 
 .button {
@@ -72,9 +117,12 @@ body {
 	font-family: $font;
 	font-weight: bold;
 	font-style: italic;
-	font-size: 6em;
+	font-size: 2.250em;
 	color: white;
 	text-align: center;
+	@media (min-width: $tablet) {
+		font-size: 6em;
+	}
 }
 
 /* Navigation */
@@ -95,13 +143,17 @@ nav[role="navigation"] {
 	a {
 		border-right: 1px solid black;
 		display: block;
-		padding: 10px 20px;
-		font-size: 1.125em;
+		padding: 10px;
+		font-size: 0.875em;
 		font-family: $font;
 		text-decoration: none;
 		color: white;
 		&:hover {
 			background: black;
+		}
+		@media (min-width: $tablet) {
+			padding: 10px 20px;
+			font-size: 1.125em;
 		}
 	}
 	li:last-child a {
@@ -143,23 +195,39 @@ nav[role="navigation"] {
 	&.landscape { width: 900px; height: 1280px; }
 }
 
+code {
+	font-size: 0.875em;
+	.highlight {
+		padding: 0 5px;
+	}
+}
+
 /**
  * Home
  */
 
 /* Header */
 .logo-header {
-	margin-bottom: 293px;
+	margin-bottom: 1.688em;
+	@media (min-width: $tablet) {
+		margin-bottom: 293px;
+	}
 	.logo {
-		margin-top: 293px;
+		margin-top: 20px;
+		@media (min-width: $tablet) {
+			margin-top: 293px;
+		}
 	}
 	.slogan {
 		margin: 0 0 1.688em 0;
 		font-family: $font;
-		font-size: 1.563em;
+		font-size: 0.875em;
 		font-weight: 700;
 		color: white;
 		text-align: center;
+		@media (min-width: $tablet) {
+			font-size: 1.563em;
+		}
 	}
 }
 
@@ -174,8 +242,15 @@ section.content {
 	max-width: 1170px;
 	h1 {
 		font-family: $font;
-		font-size: 2.250em;
+		font-size: 1.5em;
 		text-align: center;
 		color: $grey;
+		@media (min-width: $tablet) {
+			font-size: 2.250em;
+		}
+	}
+	h2 {
+		margin: 0;
+		text-align: center;
 	}
 }
