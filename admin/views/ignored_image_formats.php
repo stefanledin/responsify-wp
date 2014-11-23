@@ -5,7 +5,7 @@ $file_formats = array( 'jpg', 'png', 'gif' );
 $ignored_image_formats = get_option( 'ignored_image_formats' );
 $html = '<ul>';
 	foreach ( $file_formats as $format ) {
-		$checked_attribute = ($ignored_image_formats[$format]) ? 'checked="checked"' : '';
+		$checked_attribute = (isset($ignored_image_formats[$format])) ? 'checked="checked"' : '';
 		$html .= '<li>';
 			$html .= '<label>';
 				$html .= '<input '.$checked_attribute.' name="ignored_image_formats['.$format.']" type="checkbox">'.$format;

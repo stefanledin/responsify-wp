@@ -16,7 +16,7 @@ class Create_Responsive_image
 
 		// 2. Hämta bilderna i antingen de valda storlekarna eller alla förinställda.
         $sizes = (isset($settings['sizes'])) ? $settings['sizes'] : $this->imageSizes;
-		$this->images = $this->get_images($sizes, $settings['notBiggerThan']);
+		$this->images = $this->get_images( $sizes );
 
 		// 3. Sortera bilderna i storleksordning
 		$this->images = $this->order_images($this->images);
@@ -31,13 +31,14 @@ class Create_Responsive_image
      * Finds images in the selected sizes.
      *
      * @param $sizes
-     * @param null $notBiggerThan
      * @return array
      */
-    public function get_images( $sizes, $notBiggerThan = null )
+    public function get_images( $sizes )
 	{
 		$images = array();
 		$image_srcs = array();
+
+        $notBiggerThan = (isset($this->settings['notBiggerThan'])) ? $this->settings['notBiggerThan'] : null;
 
 		foreach ( $sizes as $size ) {
 			$image = $this->get_image($size);
