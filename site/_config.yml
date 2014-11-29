@@ -10,5 +10,6 @@ url: "http://responsify-wp.github.io" # the base hostname & protocol for your si
 twitter_username: stefanledin
 github_username:  stefanledin
 
+
 # Build settings
 markdown: kramdown

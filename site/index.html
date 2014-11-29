@@ -1,25 +1,8 @@
 ---
+title: Welcome | 
+bodyClass: home overview
 ---
-<!doctype html>
-<html class="no-js" lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Responsify WP. Cares about responsive images.</title>
-        <meta name="description" content="Responsify WP. The WordPress plugin that cares about responsive images. So should you.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
-
-        <link href='http://fonts.googleapis.com/css?family=Exo:400,700,700italic' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
+{% include header.html %}
 
         <!-- Add your site or application content here -->
         <div class="page-wrapper">
@@ -34,12 +17,8 @@
             
             <section class="content">
                
-                <nav role="navigation" class="main-menu">
-                    <ul>
-                        <!-- Prevent extra space between links -->
-                        <li><a href="#">Overview</a></li><li><a href="#">Documentation</a></li><li><a href="#">Tutorials</a></li>
-                    </ul>
-                </nav>
+                {% include main_menu.html %}
+                
                 <article id="plug-and-play" class="feature-section">
                     <header class="feature-section-header">
                         <h1>Responsive images.<br>Plug and play</h1>
@@ -114,17 +93,9 @@
                 </article>
 
                 <article id="handpick-sizes" class="feature-section">
-                    <header class="feature-section-header">
-                        <h1>Handpick sizes</h1>
-                    </header>
-                    <p></p>
                     <div class="row">
-                        <div class="col-2">
-                            <h2>In the dashboard</h2>
-                            <img src="img/handpick-image-sizes.png">
-                        </div>
-                        <div class="col-2 last">
-                            <h2>Or in the template</h2>
+                        <div class="col-3">
+                            <h2>Handpick sizes</h2>
 <code>
 {% highlight php %}
 <?php
@@ -143,21 +114,33 @@ foreach ( $posts as $post ) {
 {% endhighlight %}
 </code>
                         </div>
+                        <div class="col-3">
+                            <h2>Custom media queries</h2>
+
+                        </div>
+                        <div class="col-3 last">
+                            <h2>Picture::create()</h2>
+                        </div>
                     </div>
                 </article>
 
             </section>
 
+            <section id="call-to-action">
+                <h1>Start caring</h1>
+                <a href="https://wordpress.org/plugins/responsify-wp/" class="button">Download Responsify WP</a>
+                <br>
+                <a href="https://wordpress.org/plugins/responsify-wp/" class="button">View on GitHub</a>
+            </section>
+
+            <footer role="contentinfo">
+                <div class="row">
+                    <div class="col-1">
+                        Created and maintaned by <a href="http://twitter.com/stefanledin">@stefanledin</a>
+                    </div>
+                </div>
+            </footer>
+
         </div>
         
-        <div id="background-effect">
-            <div class="iphone-4 landscape background-device"></div>
-            <div class="iphone-5 portrait background-device"></div>
-            <div class="ipad landscape background-device"></div>
-            <div class="tablet portrait background-device"></div>
-            <div class="desktop landscape background-device"></div>
-        </div>
-
-        <script type="text/javascript" src="js/modernizr.js"></script>
-    </body>
-</html>
+{% include footer.html %}
