@@ -1,5 +1,0 @@
-
-##Plask
-{% highlight php %}
-
-{% endhighlight %}
