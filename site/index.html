@@ -3,6 +3,7 @@ title: Welcome
 bodyClass: home overview
 ---
 
+{% include header.html %}
 
         <!-- Add your site or application content here -->
         <div class="page-wrapper">
@@ -17,6 +18,7 @@ bodyClass: home overview
             
             <section class="content">
                
+                {% include main_menu.html %}
                 
                 <article id="plug-and-play" class="feature-section">
                     <header class="feature-section-header">
@@ -142,3 +144,4 @@ foreach ( $posts as $post ) {
 
         </div>
         
+{% include footer.html %}
