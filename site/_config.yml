@@ -13,5 +13,6 @@ github_username:  stefanledin
 
 # Build settings
 markdown: kramdown
+highlighter: pygments
 sass:
     sass_dir: _sass
