@@ -39,7 +39,8 @@ class Element extends Create_Responsive_image
 		$markup = '<picture '.$picture_attributes.'>';
 			$markup .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 			for ($i=0; $i < count($this->images)-1; $i++) { 
-				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="('.$this->images[$i]['media_query'].')">';
+				$media_query = $this->images[$i]['media_query']['property'] . ': ' . $this->images[$i]['media_query']['value'];
+				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="('.$media_query.')">';
 			}
 			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
 			$markup .= '<!--[if IE 9]></video><![endif]-->';

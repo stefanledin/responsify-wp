@@ -20,11 +20,13 @@ class Media_Queries
 
 	protected function set_default()
 	{
-		$previous_image_width = null;
 		for ( $i=0; $i < count($this->images ); $i++) { 
 			if ( $i > 0 ) {
-				$this->images[$i]['media_query'] = 'min-width: ' . $this->images[$i-1]['width'] . 'px';
-				$previous_image_width = $this->images[$i]['width'];
+				#$this->images[$i]['media_query'] = 'min-width: ' . $this->images[$i-1]['width'] . 'px';
+				$this->images[$i]['media_query'] = array(
+					'property' => 'min-width',
+					'value' => $this->images[$i-1]['width'] . 'px'
+				);
 			}
 		}
 		return $this->images;
