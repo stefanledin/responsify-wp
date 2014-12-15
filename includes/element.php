@@ -39,14 +39,22 @@ class Element extends Create_Responsive_image
 		$markup = '<picture '.$picture_attributes.'>';
 			$markup .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 			for ($i=0; $i < count($this->images)-1; $i++) { 
-				$media_query = $this->images[$i]['media_query']['property'] . ': ' . $this->images[$i]['media_query']['value'];
-				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="('.$media_query.')">';
+				$media_attribute = $this->media_attribute( $this->images[$i] );
+				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" '.$media_attribute.'>';
 			}
 			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
 			$markup .= '<!--[if IE 9]></video><![endif]-->';
 			$markup .= '<img srcset="'.$this->images[0]['src'].'" '.$img_attributes.'>';
 		$markup .= '</picture>';
 		return $markup;
+	}
+
+	protected function media_attribute( $image )
+	{
+		if ( gettype($image['media_query']) == 'array' ) {
+			return 'media="('.$image['media_query']['property'] . ': ' . $image['media_query']['value'].')"';
+		} 
+		return 'media="('.$image['media_query'].')"';
 	}
 
 }
