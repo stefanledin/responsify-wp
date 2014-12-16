@@ -31,9 +31,43 @@ class Test_Style extends WP_UnitTestCase {
 		$this->assertEquals($expected, $style);
 	}
 
-	/*function test_custom_media_query()
+	function test_selected_sizes()
 	{
-		
-	}*/
+		$style = Picture::create( 'style', $this->attachment, array(
+			'selector' => '#hero',
+			'sizes' => array('medium', 'large')
+		) );
+		$expected = '<style>';
+			$expected .= '#hero {';
+				$expected .= 'background-image: url("http://example.org/wp-content/uploads/IMG_2089-600x800.jpg");';
+			$expected .= '}';
+			$expected .= '@media screen and (min-width: 225px) {';
+				$expected .= '#hero{background-image: url("http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg");}';
+			$expected .= '}';
+		$expected .= '</style>';
+
+		$this->assertEquals($expected, $style);
+	}
+
+	function test_custom_media_queries()
+	{
+		$style = Picture::create( 'style', $this->attachment, array(
+			'selector' => '#hero',
+			'sizes' => array('medium', 'large'),
+			'media_queries' => array(
+				'large' => 'min-width: 800px'
+			)
+		) );
+		$expected = '<style>';
+			$expected .= '#hero {';
+				$expected .= 'background-image: url("http://example.org/wp-content/uploads/IMG_2089-600x800.jpg");';
+			$expected .= '}';
+			$expected .= '@media screen and (min-width: 800px) {';
+				$expected .= '#hero{background-image: url("http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg");}';
+			$expected .= '}';
+		$expected .= '</style>';
+
+		$this->assertEquals($expected, $style);
+	}
 
 }
