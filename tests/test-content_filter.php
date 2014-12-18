@@ -50,4 +50,24 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		
 		$this->assertEquals($expected, $post);
 	}
+
+	function test_ignores_image_formats()
+	{
+		update_option( 'ignored_image_formats', array('png') );
+		$png = create_png();
+		$large_image = wp_get_attachment_metadata( $png );
+		$upload_url = wp_upload_dir()['baseurl'];
+		$image = '<img src="'.$upload_url.'/'.$large_image['file'].'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img src="http://example.org/wp-content/uploads/2014/12/logo.png"></p>';
+		$post = get_post($post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}
 }
