@@ -16,7 +16,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		) );
 	}
 
-	function test_default()
+	/*function test_default()
 	{
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
@@ -47,6 +47,51 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
 
 		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px"></p>';
+		
+		$this->assertEquals($expected, $post);
+	}
+
+	function test_img_gets_old_img_attributes()
+	{
+		$attachment = create_attachment();
+		$image = wp_get_attachment_metadata( $attachment );
+		$upload_url = wp_upload_dir()['baseurl'];
+		$image = '<img id="my-id" class="my-classes" src="'.$upload_url.'/'.$image['file'].'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-classes"></p>';
+		$post = get_post($post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}*/
+
+	function test_img_gets_old_img_attributes_when_overriding_one_attribute()
+	{
+		$attachment = create_attachment();
+		$image = wp_get_attachment_metadata( $attachment );
+		$upload_url = wp_upload_dir()['baseurl'];
+		$image = '<img id="my-id" class="my-classes" src="'.$upload_url.'/'.$image['file'].'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px" id="my-id" class="my-classes"></p>';
+		$post = get_posts( array(
+			'p' => $post,
+			'rwp_settings' => array(
+				'attributes' => array(
+					'sizes' => '(min-width: 225px) 474px'
+				)
+			)
+		) );
+		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
 		
 		$this->assertEquals($expected, $post);
 	}
