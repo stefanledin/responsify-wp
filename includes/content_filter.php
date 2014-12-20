@@ -42,6 +42,23 @@ class Content_Filter
 		return $attributes;
 	}
 
+	/**
+	 * Returns array of ignored image formats
+	 * @return array
+	 */
+	public function get_ignored_image_formats()
+	{
+		$ignored_image_formats = get_option( 'ignored_image_formats' );
+		if ( $ignored_image_formats ) {
+			$ignored_image_formats = array_keys($ignored_image_formats);
+			// Quick and dirty jpg/jpeg hack. I'm sorry.
+			if ( in_array('jpg', $ignored_image_formats) ) {
+				$ignored_image_formats[] = 'jpeg';
+			}
+		}
+		return $ignored_image_formats;
+	}
+
     /**
      * Finds <img> tags in the content and replaces it with a responsive image.
      *
@@ -52,69 +69,66 @@ class Content_Filter
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
 
-		$ignored_image_formats = get_option( 'ignored_image_formats' );
-		if ( $ignored_image_formats ) {
-			$ignored_image_formats = array_keys($ignored_image_formats);
-			// Quick and dirty jpg/jpeg hack. I'm sorry.
-			if ( in_array('jpg', $ignored_image_formats) ) {
-				$ignored_image_formats[] = 'jpeg';
-			}
-		}
+		$ignored_image_formats = $this->get_ignored_image_formats();
 		// Find and replace all <img>
 		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self, $ignored_image_formats) {
-			$image_attributes = $self->get_attributes($match[0]);
-			if ( isset($self->user_settings['attributes']) ) {
-				if ( !is_array(array_values($self->user_settings['attributes'])[0]) ) {
-					$image_attributes = array_merge($image_attributes, $self->user_settings['attributes']);
-					/*var_dump($image_attributes);
-					var_dump($self->user_settings['attributes']);
-					die();*/
-					unset($self->user_settings['attributes']);
-				}
-			}
-			$src = $image_attributes['src'];
-
-			// Return if the image format is ignored.
-			if ( $ignored_image_formats ) {
-				$image_info = pathinfo($src);
-				if ( in_array($image_info['extension'], $ignored_image_formats) ) return $match[0];
-			}
-			
-			// We don't wanna have an src attribute on the <img>
-			unset($image_attributes['src']);
-
-			$id = $self->url_to_attachment_id($src);
-
-			// If no ID is found, the image might be an external, hotlinked one.
-			if ( !$id ) return $match[0];
-
-			// Basic settings for Picture::create()
 			$settings = array(
-				'notBiggerThan' => $src,
 				'attributes' => array(
-					'img' => $image_attributes
+					'img' => $self->get_img_attributes( $match[0] )
 				)
 			);
-			#die(var_dump($settings));
-			// Add user settings to the $settings array. 
-			// (Can't this be done in a better way?)
+			$src = $settings['attributes']['img']['src'];
+			$settings['notBiggerThan'] = $src;
+			// We don't wanna have an src attribute on the <img>
+			unset($settings['attributes']['img']['src']);
+			
+			$id = $self->url_to_attachment_id( $src );
+			// If no ID is found, the image might be an external, hotlinked one.
+			if ( !$id ) return $match[0];
+			// Return if the image format is ignored.
+			if ( $self->is_ignored_format( $src, $ignored_image_formats ) ) return $match[0];
+
 			if ( $self->user_settings ) {
 				$settings = array_merge_recursive($settings, $self->user_settings);
-				/*foreach ( $self->user_settings as $user_setting_key => $user_setting_value ) {
-					$settings[$user_setting_key] = $user_setting_value;
-				}*/
 			}
-			#var_dump($settings);
-			#die();
-
 			// Create responsive image markup.
             $type = get_option( 'selected_element', 'img' );
-			$picture = Picture::create( $type, $id, $settings );
-
-			return $picture;
+			return Picture::create( $type, $id, $settings );
 		}, $content);
 
 	    return $content;
+	}
+
+	/**
+	 * Get array of attributes based on the original <img> node
+	 * @param  $img 
+	 * @return array
+	 */
+	public function get_img_attributes( $img )
+	{
+		$image_attributes = $this->get_attributes($img);
+		if ( isset($this->user_settings['attributes']) ) {
+			if ( !is_array(array_values($this->user_settings['attributes'])[0]) ) {
+				$image_attributes = array_merge($image_attributes, $this->user_settings['attributes']);
+				unset($this->user_settings['attributes']);
+			}
+		}
+		return $image_attributes;
+	}
+
+	/**
+	 * Check if the image format is valid or not
+	 * @param  string  $src
+	 * @param  array  $ignored_image_formats
+	 * @return boolean
+	 */
+	public function is_ignored_format( $src, $ignored_image_formats )
+	{
+		if ( $ignored_image_formats ) {
+			$image_info = pathinfo($src);
+			return in_array($image_info['extension'], $ignored_image_formats);
+		}
+		return false;
 	}
 
     /**
