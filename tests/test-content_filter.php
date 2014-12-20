@@ -176,4 +176,20 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		
 		$this->assertEquals($expected, $post);
 	}
+
+	function test_ignores_hotlinked_images()
+	{
+		$image = '<img src="http://google.com/logo.png">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img src="http://google.com/logo.png"></p>';
+		$post = get_post($post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}
 }
