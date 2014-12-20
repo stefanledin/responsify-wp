@@ -63,6 +63,15 @@ class Content_Filter
 		// Find and replace all <img>
 		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self, $ignored_image_formats) {
 			$image_attributes = $self->get_attributes($match[0]);
+			if ( isset($self->user_settings['attributes']) ) {
+				if ( !is_array(array_values($self->user_settings['attributes'])[0]) ) {
+					$image_attributes = array_merge($image_attributes, $self->user_settings['attributes']);
+					/*var_dump($image_attributes);
+					var_dump($self->user_settings['attributes']);
+					die();*/
+					unset($self->user_settings['attributes']);
+				}
+			}
 			$src = $image_attributes['src'];
 
 			// Return if the image format is ignored.
@@ -86,14 +95,17 @@ class Content_Filter
 					'img' => $image_attributes
 				)
 			);
-
+			#die(var_dump($settings));
 			// Add user settings to the $settings array. 
 			// (Can't this be done in a better way?)
 			if ( $self->user_settings ) {
-				foreach ( $self->user_settings as $user_setting_key => $user_setting_value ) {
+				$settings = array_merge_recursive($settings, $self->user_settings);
+				/*foreach ( $self->user_settings as $user_setting_key => $user_setting_value ) {
 					$settings[$user_setting_key] = $user_setting_value;
-				}
+				}*/
 			}
+			#var_dump($settings);
+			#die();
 
 			// Create responsive image markup.
             $type = get_option( 'selected_element', 'img' );
