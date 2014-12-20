@@ -3,15 +3,16 @@
 class Test_Content_Filter extends WP_UnitTestCase {
 	protected $attachment;
 	protected $image_url;
+	protected $image_data;
 	protected $post;
 
 	protected $upload_url;
 
 	function setUp() {
 		$this->attachment = create_attachment();
-		$image_data = wp_get_attachment_metadata( $this->attachment );
+		$this->image_data = wp_get_attachment_metadata( $this->attachment );
 		$upload_url = wp_upload_dir()['baseurl'];
-		$image = '<img src="'.$upload_url.'/'.$image_data['file'].'">';
+		$image = '<img src="'.$upload_url.'/'.$this->image_data['file'].'">';
 		$this->post = wp_insert_post( array(
 			'post_name' => 'test',
 			'post_content' => $image,
@@ -19,7 +20,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		) );
 
 		$this->upload_url = wp_upload_dir()['baseurl'];
-		$this->image_url = wp_upload_dir()['baseurl'] . '/' . $image_data['file'];
+		$this->image_url = wp_upload_dir()['baseurl'] . '/' . $this->image_data['file'];
 	}
 
 	function test_default()
@@ -156,6 +157,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 
 		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
 		$this->assertEquals($expected, $post);
+		delete_option( 'selected_element' );
 	}
 
 	function test_ignores_image_formats()
@@ -175,6 +177,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 		
 		$this->assertEquals($expected, $post);
+		delete_option( 'ignored_image_formats' );
 	}
 
 	function test_ignores_hotlinked_images()
@@ -189,6 +192,21 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$expected = '<p><img src="http://google.com/logo.png"></p>';
 		$post = get_post($post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}
+
+	function test_ignores_large_image_when_medium_is_inserted()
+	{
+		$image = '<img src="'.$this->upload_url.'/2014/10/'.$this->image_data['sizes']['medium']['file'].'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+		$post = get_post($post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, (min-width: 112px) 225px, 112px"></p>';
 		
 		$this->assertEquals($expected, $post);
 	}
