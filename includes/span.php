@@ -14,7 +14,7 @@ class Span extends Create_Responsive_image
     {
         $default_attributes = array(
             'picture_span' => array(
-                'data-alt' => ($this->settings['attributes']['img']['alt']) ? $this->settings['attributes']['img']['alt'] : $this->get_image_meta('alt')
+                'data-alt' => (isset($this->settings['attributes']['img']['alt'])) ? $this->settings['attributes']['img']['alt'] : $this->get_image_meta('alt')
             ),
             'src_span' => array()
         );
@@ -34,13 +34,22 @@ class Span extends Create_Responsive_image
         $markup = '<span data-picture '.$picture_span_attributes.'>';
             $markup .= '<span data-src="'.$this->images[0]['src'].'" '.$src_span_attributes.'></span>';
             for ($i=1; $i < count($this->images); $i++) {
-                $markup .= '<span data-src="'.$this->images[$i]['src'].'" data-media="('.$this->images[$i]['media_query'].')" '.$src_span_attributes.'></span>';
+                $media_attribute = $this->media_attribute( $this->images[$i] );
+                $markup .= '<span data-src="'.$this->images[$i]['src'].'" '.$media_attribute.' '.$src_span_attributes.'></span>';
             }
             $markup .= '<noscript>';
                 $markup .= '<img src="'.$this->images[0]['src'].'" alt="'.$this->get_image_meta('alt').'">';
             $markup .= '</noscript>';
         $markup .= '</span>';
         return $markup;
+    }
+
+    protected function media_attribute( $image )
+    {
+        if ( gettype($image['media_query']) == 'array' ) {
+            return 'data-media="('.$image['media_query']['property'] . ': ' . $image['media_query']['value'].')"';
+        } 
+        return 'data-media="('.$image['media_query'].')"';
     }
 
 } 
