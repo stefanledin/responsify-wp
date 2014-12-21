@@ -43,6 +43,18 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		delete_option( 'selected_element' );
 	}
 
+	function test_span()
+	{
+		update_option( 'selected_element', 'span' );
+		$post = get_post($this->post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+
+		$expected = '<p><span data-picture data-alt=""><span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 112px)" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089.jpg" data-media="(min-width: 225px)" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 279px)" ></span><noscript><img src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" alt=""></noscript></span></p>';
+
+		$this->assertEquals($expected, $post);
+		delete_option( 'selected_element' );
+	}
+
 	function test_img_with_settings()
 	{
 		$post = get_posts( array(
