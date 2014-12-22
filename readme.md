@@ -36,7 +36,7 @@ This might output something like this:
 <article>
 	<h1>Hello world</h1>
 	<p>Lorem ipsum dolor sit amet...</p>
-	<img src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" alt="Image description">
+	<img src="full-size.jpg" alt="Image description">
 </article>
 ````
 
@@ -47,10 +47,10 @@ But once you have activated the plugin, it will look like this instead:
 	<h1>Hello world</h1>
 	<p>Lorem ipsum dolor sit amet...</p>
 	<img sizes="100vw" 
-	    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w,
-	    example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
-	    example.com/wp-content/uploads/2014/03/IMG_4540.jpg <image-width>"
-	    src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+	    srcset="medium.jpg 300w,
+	    large.jpg 1024w,
+	    full-size.jpg <image-width>"
+	    src="thumbnail.jpg" alt="Image description">
 </article>
 ````
 
@@ -58,10 +58,10 @@ On the RWP settings page, you can select between using an ``<img>`` tag with ``s
 
 ````html
 <picture>
-    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" media="(min-width: 1024px)">
-    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
-    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 150px)">
-    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+    <source srcset="full-size.jpg" media="(min-width: 1024px)">
+    <source srcset="large.jpg" media="(min-width: 300px)">
+    <source srcset="medium.jpg" media="(min-width: 150px)">
+    <img srcset="thumbnail.jpg" alt="Image description">
 </picture>
 ````
 
@@ -75,12 +75,12 @@ limitations and is not the recommended.
 
 ````html
 <span data-picture data-alt="Image description">
-    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
-    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
-    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
-    <span data-src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" data-media="(min-width: 1024px)"></span>
+    <span data-src="thumbnail.jpg"></span>
+    <span data-src="medium.jpg" data-media="(min-width: 150px)"></span>
+    <span data-src="large.jpg" data-media="(min-width: 300px)"></span>
+    <span data-src="full-size.jpg" data-media="(min-width: 1024px)"></span>
     <noscript>
-        <img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+        <img src="thumbnail.jpg" alt="Image description">
     </noscript>
 </span>
 ````
@@ -239,11 +239,11 @@ This will generate a ``style`` tag containing the following:
 
 ````css
 #hero {
-	background-image: url("example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg");
+	background-image: url("thumbnail.jpg");
 }
 @media screen and (min-width: 150px) {
 	#hero {
-		background-image: url("example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg");
+		background-image: url("medium.jpg");
 	}
 } 
 // And so on...
@@ -299,13 +299,13 @@ echo Picture::create( 'element', $attachment_id, $settings );
 
 ````html
 <img sizes="100vw"
-    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
-    example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w"
-    src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
+    srcset="large.jpg 1024w,
+  medium.jpg 300w"
+    src="medium.jpg" alt="Image description">
     
 <picture>
-    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
-    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" alt="Image description">
+    <source srcset="large.jpg" media="(min-width: 300px)">
+    <img srcset="medium.jpg" alt="Image description">
 </picture>
 ````
 
@@ -329,9 +329,9 @@ all the selected image sizes.
 
 ````html
 <picture>
-    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 1024px)">
-    <source srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 500px)">
-    <img srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+    <source srcset="large.jpg" media="(min-width: 1024px)">
+    <source srcset="medium.jpg" media="(min-width: 500px)">
+    <img srcset="thumbnail.jpg" alt="Image description">
 </picture>
 ````
 
@@ -353,10 +353,10 @@ echo Picture::create( 'img', $attachment_id, $settings );
 
 ````html
 <img id="responsive-image" sizes="(min-width: 500px) 1024px, 300px" 
-	    srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg 300w,
-	    example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg 1024w,
-	    example.com/wp-content/uploads/2014/03/IMG_4540.jpg <image-width>"
-	    src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+	    srcset="medium.jpg 300w,
+	    large.jpg 1024w,
+	    full-size.jpg <image-width>"
+	    src="thumbnail.jpg" alt="Image description">
 ````
 
 ######<a name="functions-reference-example-attributes-picture"></a>picture
@@ -382,10 +382,10 @@ echo Picture::create( 'element', $attachment_id, $settings );
 
 ````html
 <picture id="picture-element">
-    <source data-foo="bar" srcset="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" media="(min-width: 1024px)">
-    <source data-foo="bar" srcset="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" media="(min-width: 300px)">
-    <source data-foo="bar" srcset="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" media="(min-width: 150px)">
-    <img id="responsive-image" srcset="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+    <source data-foo="bar" srcset="full-size.jpg" media="(min-width: 1024px)">
+    <source data-foo="bar" srcset="large.jpg" media="(min-width: 300px)">
+    <source data-foo="bar" srcset="medium.jpg" media="(min-width: 150px)">
+    <img id="responsive-image" srcset="thumbnail.jpg" alt="Image description">
 </picture>
 ````
 
@@ -410,12 +410,12 @@ echo Picture::create( 'element', $attachment_id, $settings );
 
 ````html
 <span data-picture id="picture-element" data-alt="Overrides the alternative text of the image">
-	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg"></span>
-	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540-300x199.jpg" data-media="(min-width: 150px)"></span>
-	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540-1024x681.jpg" data-media="(min-width: 300px)"></span>
-	<span class="responsive-image" data-src="example.com/wp-content/uploads/2014/03/IMG_4540.jpg" data-media="(min-width: 1024px)"></span>
+	<span class="responsive-image" data-src="thumbnail.jpg"></span>
+	<span class="responsive-image" data-src="medium.jpg" data-media="(min-width: 150px)"></span>
+	<span class="responsive-image" data-src="large.jpg" data-media="(min-width: 300px)"></span>
+	<span class="responsive-image" data-src="full-size.jpg" data-media="(min-width: 1024px)"></span>
 	<noscript>
-		<img src="example.com/wp-content/uploads/2014/03/IMG_4540-150x150.jpg" alt="Image description">
+		<img src="thumbnail.jpg" alt="Image description">
 	</noscript>
 </span>
 ````
