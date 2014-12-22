@@ -24,4 +24,6 @@ foreach ( $image_sizes as $image_size ) {
 }
 $html .= '</ul>';
 echo $html;
+
+submit_button( 'Save' );
 ?>

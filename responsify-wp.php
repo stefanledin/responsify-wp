@@ -11,9 +11,7 @@ Plugin URI: https://github.com/stefanledin/responsify-wp
 require 'includes/media_queries.php';
 require 'includes/create_responsive_image.php';
 require 'includes/img.php';
-require 'includes/native-img.php';
 require 'includes/element.php';
-require 'includes/native-element.php';
 require 'includes/span.php';
 require 'includes/style.php';
 require 'includes/picture.php';
@@ -30,9 +28,7 @@ class Responsify_WP
      */
     public function __construct()
 	{
-        if ( get_option( 'rwp_picturefill', 'on' ) == 'on' ) {
-		  add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-        }
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_filter('plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'settings_link' ) );
 		$content_filter = new Content_Filter;
 	}

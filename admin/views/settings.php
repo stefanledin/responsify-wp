@@ -12,8 +12,6 @@
 		include 'ignored_image_formats.php';
 
 		include 'selected_sizes.php';
-		
-		include 'picturefill.php';
 		?>
 	</form>
 </div>
