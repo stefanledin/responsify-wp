@@ -48,7 +48,9 @@ class Content_Filter
 	 */
 	public function get_ignored_image_formats()
 	{
-		$ignored_image_formats = get_option( 'ignored_image_formats' );
+		$ignored_image_formats = ( isset($this->user_settings['ignored_image_formats']) ) ?
+			$this->user_settings['ignored_image_formats'] :
+			get_option( 'ignored_image_formats' );
 		if ( $ignored_image_formats ) {
 			$ignored_image_formats = array_keys($ignored_image_formats);
 			// Quick and dirty jpg/jpeg hack. I'm sorry.
