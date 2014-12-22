@@ -40,6 +40,7 @@ class Responsify_WP_Admin
 	{
 		register_setting( 'responsify-wp-settings', 'selected_sizes' );
 		register_setting( 'responsify-wp-settings', 'globally_active' );
+		register_setting( 'responsify-wp-settings', 'rwp_picturefill' );
 		register_setting( 'responsify-wp-settings', 'selected_element' );
 		register_setting( 'responsify-wp-settings', 'ignored_image_formats' );
 	}
