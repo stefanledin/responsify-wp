@@ -55,6 +55,53 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		delete_option( 'selected_element' );
 	}
 
+	function test_multiple_img()
+	{
+		$image = '<img id="my-id" class="my-classes" src="'.$this->image_url.'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image.$image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-classes">';
+		$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-classes"></p>';
+		$post = get_posts( array(
+			'p' => $post,
+			'rwp_settings' => array(
+				'sizes' => array('medium', 'large')
+			)
+		) );
+		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}
+
+	function test_multiple_img_with_custom_setting()
+	{
+		$image = '<img id="my-id" class="my-classes" src="'.$this->image_url.'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image.$image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-custom-class">';
+		$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-custom-class"></p>';
+		$post = get_posts( array(
+			'p' => $post,
+			'rwp_settings' => array(
+				'sizes' => array('medium', 'large'),
+				'attributes' => array(
+					'class' => 'my-custom-class'
+				)
+			)
+		) );
+		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}
+
 	function test_img_with_settings()
 	{
 		$post = get_posts( array(
@@ -99,6 +146,30 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = get_posts( array(
 			'p' => $post,
 			'rwp_settings' => array(
+				'attributes' => array(
+					'sizes' => '(min-width: 225px) 474px'
+				)
+			)
+		) );
+		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
+		
+		$this->assertEquals($expected, $post);
+	}
+
+	function test_img_with_custom_sizes_and_custom_sizes_attributes()
+	{
+		$image = '<img id="my-id" class="my-classes" src="'.$this->image_url.'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px" id="my-id" class="my-classes"></p>';
+		$post = get_posts( array(
+			'p' => $post,
+			'rwp_settings' => array(
+				'sizes' => array('medium', 'large'),
 				'attributes' => array(
 					'sizes' => '(min-width: 225px) 474px'
 				)

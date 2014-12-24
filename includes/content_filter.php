@@ -112,7 +112,6 @@ class Content_Filter
 		if ( isset($this->user_settings['attributes']) ) {
 			if ( !is_array(array_values($this->user_settings['attributes'])[0]) ) {
 				$image_attributes = array_merge($image_attributes, $this->user_settings['attributes']);
-				unset($this->user_settings['attributes']);
 			}
 		}
 		return $image_attributes;
