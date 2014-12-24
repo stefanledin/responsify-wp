@@ -1,6 +1,7 @@
 #Responsify WP
-Responsify WP is the WordPress plugin that cares about responsive images. It's based on the excellent
-[Picturefill polyfill](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com).  
+Responsify WP is the WordPress plugin that cares about responsive images. It uses the excellent
+[Picturefill polyfill](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com) to make 
+it work across most browsers.  
 ###Content
 - [Description](#description)
 - [Settings](#settings)
@@ -20,7 +21,7 @@ Responsify WP is the WordPress plugin that cares about responsive images. It's b
 		    - [span](#functions-reference-example-attributes-span)
 
 ##<a name="description"></a>Description
-In short, it will turn all``<img>`` tags within ``the_content`` into responsive images.
+In short, it will replace all ``<img>`` tags within ``the_content`` with responsive images.
 For example, you might have a template that looks like this:  
 
 ````html
@@ -46,11 +47,12 @@ But once you have activated the plugin, it will look like this instead:
 <article>
 	<h1>Hello world</h1>
 	<p>Lorem ipsum dolor sit amet...</p>
-	<img sizes="100vw" 
-	    srcset="medium.jpg 300w,
+	<img sizes="(min-width 1024px) 1440px, (min-width: 300px) 1024px, (min-width: 150px) 300px, 150px" 
+	    srcset="thumbnail.jpg 150w,
+	    medium.jpg 300w,
 	    large.jpg 1024w,
-	    full-size.jpg <image-width>"
-	    src="thumbnail.jpg" alt="Image description">
+	    full-size.jpg 1440w"
+	    alt="Image description">
 </article>
 ````
 
@@ -161,9 +163,9 @@ In the example above, ``thumbnail`` is the smallest image size and should theref
 
 ````html
 <picture>
-    <source srcset="[url-to-large].jpg" media="(min-width: 1024px)">
-    <source srcset="[url-to-medium].jpg" media="(min-width: 500px)">
-    <img srcset="[url-to-thumbnail].jpg" alt="Image description">
+    <source srcset="large.jpg" media="(min-width: 1024px)">
+    <source srcset="medium.jpg" media="(min-width: 500px)">
+    <img srcset="thumbnail.jpg" alt="Image description">
 </picture>
 ````
 
@@ -282,7 +284,8 @@ These are the settings that is currently avaliable:
 
 * **sizes** (array): The image sizes that you want to use.
 * **media_queries** (array): An associative array of names of the image sizes and a custom media query.
-* **attributes** (array): An associative array of attribute names and values that you want to have on the ``span`` tags.
+* **attributes** (array): An associative array of attribute names and values that you want to add on the element (see example).
+* **ignored_image_formats** (array): An array of image formats that you want RWP to ignore.
 
 #####<a name="functions-reference-example-sizes"></a>Example - sizes
 
@@ -298,10 +301,10 @@ echo Picture::create( 'element', $attachment_id, $settings );
 ````
 
 ````html
-<img sizes="100vw"
+<img sizes="(min-width: 300px) 1024px, 300px"
     srcset="large.jpg 1024w,
   medium.jpg 300w"
-    src="medium.jpg" alt="Image description">
+    alt="Image description">
     
 <picture>
     <source srcset="large.jpg" media="(min-width: 300px)">
@@ -353,10 +356,11 @@ echo Picture::create( 'img', $attachment_id, $settings );
 
 ````html
 <img id="responsive-image" sizes="(min-width: 500px) 1024px, 300px" 
-	    srcset="medium.jpg 300w,
+	    srcset="thumbnail.jpg 150w,
+	    medium.jpg 300w,
 	    large.jpg 1024w,
-	    full-size.jpg <image-width>"
-	    src="thumbnail.jpg" alt="Image description">
+	    full-size.jpg 1440w"
+	    alt="Image description">
 ````
 
 ######<a name="functions-reference-example-attributes-picture"></a>picture
