@@ -145,6 +145,11 @@ possible to specify your own media queries.
 7.
 
 == Changelog ==
+= 1.6.4 =
+* Bugfix. The default value of the sizes attribute didn't work as expected in browsers with native support.
+* Minor bugfixes and improvements.
+* Added the ability to disable Picturefill.
+
 = 1.6.3 =
 * Updated Picturefill to version 2.2.0
 * Minor bugfixes
@@ -196,6 +201,11 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.6.4 = 
+* Bugfixes and improvements.
+* Added the ability to turn off Picturefill.
+
+= 1.6.3 =
 * Updated Picturefill to version 2.2.0
 * Minor bugfixes
 
