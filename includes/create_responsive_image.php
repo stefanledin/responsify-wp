@@ -1,5 +1,5 @@
 <?php
-class Create_Responsive_image
+abstract class Create_Responsive_image
 {
 	protected $imageSizes;
 	protected $id;

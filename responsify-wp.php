@@ -26,15 +26,15 @@ class Responsify_WP
 	protected static $instance = null;
 
     /**
-     * Adds actions and filters. Creates instance of Content_Filter.
+     * Adds actions and filters.
      */
     public function __construct()
 	{
         if ( get_option( 'rwp_picturefill', 'on' ) == 'on' ) {
 		  add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         }
+        $this->apply_content_filters();
         add_filter('plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'settings_link' ) );
-		$content_filter = new Content_Filter;
 	}
 
     /**
@@ -74,6 +74,20 @@ class Responsify_WP
             wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.2.2.0.min.js', __FILE__),  null, null, true);
         }
 	}
+
+    public function apply_content_filters()
+    {
+        $default_filters = array( 'the_content', 'post_thumbnail_html' );
+        $filters = get_option( 'rwp_added_filters', $default_filters );
+        
+        if ( has_filter( 'rwp_add_filters' ) ) {
+            $filters = apply_filters( 'rwp_add_filters', $filters );
+        }
+        
+        foreach ( $filters as $filter ) {
+            new Content_Filter( $filter );
+        }
+    }
 
 }
 

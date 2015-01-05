@@ -4,12 +4,10 @@ class Content_Filter
 {
 	public $user_settings;
 
-	public function __construct()
+	public function __construct( $filter )
 	{
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
-		if ( get_option( 'globally_active', 'on' ) == 'on' ) {
-			add_filter( 'the_content', array( $this, 'filter_images' ), 11 );
-		}
+		add_filter( $filter, array( $this, 'filter_images' ), 11 );
 	}
 
     /**
