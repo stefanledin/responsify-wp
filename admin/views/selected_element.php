@@ -19,7 +19,7 @@ $selected_element = get_option( 'selected_element', 'img' );
                 </th>
                 <td>
                     <code>
-                        &lt;img sizes=&quot;100vw&quot; srcset=&quot;thumbnail.jpg 150w, medium.jpg 300w, large.jpg 1024w&quot; src=&quot;thumbnail.jpg&quot;&gt;
+                        &lt;img sizes=&quot;(min-width: 300px) 1024px, (min-width: 150px) 300px, 150px&quot; srcset=&quot;thumbnail.jpg 150w, medium.jpg 300w, large.jpg 1024w&quot; src=&quot;thumbnail.jpg&quot;&gt;
                     </code>
                 </td>
             </tr>
