@@ -1,26 +1,39 @@
-<h3><?php _e('Apply on filters'); ?></h3>
-<p><?php _e('Lorem ipsum dolor sit amet');?></p>
+<h3><?php _e('Use on:'); ?></h3>
 <?php
-$default_filters_labels = array( 'the_content' => 'Content', 'post_thumbnail_html' => 'Thumbnails' );
+$default_filter_labels = array(
+	'the_content' => 'Content',
+	'post_thumbnail_html' => 'Thumbnails'
+);
 $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
-#delete_option( 'rwp_added_filters' );die();
-$filters = get_option( 'rwp_added_filters', $default_filters );
-#die(var_dump($filters));
-/*if ( has_filter( 'rwp_add_filters' ) ) {
-	$filters = apply_filters( 'rwp_add_filters', $filters );
-}*/
-$filters[] = array('plask' => 'off');
+$selected_filters = get_option( 'rwp_added_filters', $default_filters );
+
 $html = '<ul>';
-	for ($i=0; $i < count($filters); $i++) { 
-		$checked_attribute = ( $filters[$i] == 'on' ) ? 'checked="checked"' : '';
-		var_dump($filters[$i]);
-	}
-	/*foreach ( $filters as $filter => $status ) {
+
+	foreach ( $default_filters as $filter => $status ) {
+		$checked_attribute = ( isset($selected_filters[$filter]) ) ? 'checked="checked"' : '';
 		$html .= '<li>';
 			$html .= '<label>';
-				$html .= '<input '.$checked_attribute.' name="rwp_added_filters[]['.$filter.']" value="on" type="checkbox">'.$filter;
+				$html .= '<input '.$checked_attribute.' name="rwp_added_filters['.$filter.']" type="checkbox">';
+				$html .= $default_filter_labels[$filter];
 			$html .= '</label>';
 		$html .= '</li>';
-	}*/
+	}
+	
+	$custom_filters = array();
+	if ( has_filter( 'rwp_add_filters' ) ) {
+		$custom_filters = apply_filters( 'rwp_add_filters', $filters );
+	}
+	if ( $custom_filters ) {
+		foreach ($custom_filters as $custom_filter) {
+			$html .= '<li>';
+				$html .= '<label>';
+					$html .= '<input checked="checked" disabled="disabled" type="checkbox">'.$custom_filter;
+				$html .= '</label>';
+			$html .= '</li>';
+		}
+	}
+
 $html .= '</ul>';
 echo $html;
+?>
+<p><?php _e('You can add more filters that RWP should be applied to using the <strong>rwp_add_filters</strong> filter.');?></p>

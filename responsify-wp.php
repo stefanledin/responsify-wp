@@ -77,13 +77,12 @@ class Responsify_WP
 
     public function apply_content_filters()
     {
-        $default_filters = array( 'the_content', 'post_thumbnail_html' );
+        $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
         $filters = get_option( 'rwp_added_filters', $default_filters );
-        
         if ( has_filter( 'rwp_add_filters' ) ) {
             $filters = apply_filters( 'rwp_add_filters', $filters );
         }
-        
+        if ( !$filters ) return;
         foreach ( $filters as $filter ) {
             new Content_Filter( $filter );
         }

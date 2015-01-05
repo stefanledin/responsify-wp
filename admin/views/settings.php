@@ -7,7 +7,7 @@
 		
 		include 'content_filter.php';
 		
-		include 'globally_active.php';
+		#include 'globally_active.php';
 		
 		include 'selected_element.php';
 
