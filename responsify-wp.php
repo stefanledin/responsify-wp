@@ -83,7 +83,7 @@ class Responsify_WP
             $filters = apply_filters( 'rwp_add_filters', $filters );
         }
         if ( !$filters ) return;
-        foreach ( $filters as $filter ) {
+        foreach ( $filters as $filter => $status ) {
             new Content_Filter( $filter );
         }
     }
