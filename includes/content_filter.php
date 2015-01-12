@@ -110,7 +110,8 @@ class Content_Filter
 	{
 		$image_attributes = $this->get_attributes($img);
 		if ( isset($this->user_settings['attributes']) ) {
-			if ( !is_array(array_values($this->user_settings['attributes'])[0]) ) {
+			$array_values = array_values($this->user_settings['attributes']);
+			if ( !is_array( $array_values[0] ) ) {
 				$image_attributes = array_merge($image_attributes, $this->user_settings['attributes']);
 			}
 		}
