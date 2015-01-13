@@ -32,6 +32,54 @@ function create_attachment()
 	) );
 	return $img;
 }
+function create_retina_attachment()
+{
+	$attachment = array(
+		'guid' => 'http://example.org/wp-content/uploads/2014/10/retina.jpg',
+		'post_mime_type' => 'image/jpeg',
+		'post_title' => 'Responsify',
+		'post_status' => 'inherit'
+	);
+	$img = wp_insert_attachment( $attachment, 'retina.jpg' );
+	wp_update_attachment_metadata( $img, array(
+		'width' => 2448,
+		'height' => 3264,
+		'file' => '2014/10/retina.jpg',
+		'sizes' => array(
+			'thumbnail' => array(
+                'file' => 'retina-480x640.jpg',
+                'width' => 480,
+                'height' => 640
+            ),
+            'thumbnail@2x' => array(
+                'file' => 'retina-480x640@2x.jpg',
+                'width' => 960,
+                'height' => 1280
+            ),
+            'medium' => array(
+                'file' => 'retina-600x800.jpg',
+                'width' => 600,
+                'height' => 800
+            ),
+            'medium@2x' => array(
+                'file' => 'retina-600x800@2x.jpg',
+                'width' => 1200,
+                'height' => 1600
+            ),
+            'large' => array(
+                'file' => 'retina-1024x1365.jpg',
+                'width' => 1024,
+                'height' => 1365
+            ),
+            'large@2x' => array(
+                'file' => 'retina-1024x1365@2x.jpg',
+                'width' => 2048,
+                'height' => 2730
+            )
+		)
+	) );
+	return $img;
+}
 
 function create_png()
 {

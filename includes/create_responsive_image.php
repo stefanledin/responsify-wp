@@ -53,8 +53,29 @@ abstract class Create_Responsive_image
 			}
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
+
+        if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
+            $images = $this->find_retina_images( $images );
+        }
+        die(var_dump($images));
 		return $images;
 	}
+
+    protected function find_retina_images( $images )
+    {
+        global $wpdb;
+        for ($i=0; $i < count($images); $i++) { 
+            $src = $images[$i]['src'];
+            $file_extension = pathinfo($src, PATHINFO_EXTENSION);
+            $src = str_replace(substr($src, -(strlen($file_extension)+1)), '', $src);
+            $src .= '@2x' . '.'.$file_extension;
+            var_dump($src);
+            $retina_version = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $wpdb->prefix . "posts" . " WHERE guid='%s';", $src ));
+            var_dump($retina_version);
+        }
+        die();
+        return $images;
+    }
 
     /**
      * Finds a single image in the selected size
