@@ -3,7 +3,7 @@ Contributors: stefanledin
 Tags: responsive images, picture, picture element, picture markup, picturefill, images, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,9 @@ possible to specify your own media queries.
 7.
 
 == Changelog ==
+= 1.6.5 =
+* Critical PHP 5.3 bugfix
+
 = 1.6.4 =
 * Bugfix. The default value of the sizes attribute didn't work as expected in browsers with native support.
 * Minor bugfixes and improvements.
@@ -201,6 +204,9 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.6.5 =
+* Critical PHP 5.3 bugfix
+
 = 1.6.4 = 
 * Bugfixes and improvements.
 * Added the ability to turn off Picturefill.
