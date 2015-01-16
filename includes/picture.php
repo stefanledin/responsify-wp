@@ -15,36 +15,44 @@ class Picture
     public static function create ( $type, $id, $settings = null )
 	{
         $native_mode = ( get_option( 'rwp_picturefill', 'on' ) == 'off' ) ? true : false;
-		switch (strtolower($type)) {
+
+		switch ( strtolower($type) ) {
+            case 'attributes':
+                $responsive_image = self::create( $settings['element'], $id, array( 'output' => 'attributes' ) );
+                return $responsive_image;
+                break;
+
             case 'span':
-                $span = new Span( $id, $settings );
-                return $span->markup;
+                $responsive_image = new Span( $id, $settings );
                 break;
             case 'img':
                 if ( $native_mode ) {
-                    $img = new Native_Img( $id, $settings );
+                    $responsive_image = new Native_Img( $id, $settings );
                 } else {
-                    $img = new Img( $id, $settings );
+                    $responsive_image = new Img( $id, $settings );
                 }
-                return $img->markup;
                 break;
 			case 'element':
 			case 'picture':
                 if ( get_option('selected_element') == 'span' ) {
-                    $picture = new Span( $id, $settings );
+                    $responsive_image = new Span( $id, $settings );
                 } else {
                     if ( $native_mode ) {
-                        $picture = new Native_Element( $id, $settings );
+                        $responsive_image = new Native_Element( $id, $settings );
                     } else {
-                        $picture = new Element( $id, $settings );
+                        $responsive_image = new Element( $id, $settings );
                     }
                 }
-				return $picture->markup;
 				break;
 			case 'style':
-				$picture = new Style( $id, $settings );
-				return $picture->style;
+				$responsive_image = new Style( $id, $settings );
+				return $responsive_image->style;
 				break;
 		}
+        
+        if ( isset($settings['output']) && $settings['output'] == 'attributes' ) {
+            return $responsive_image->attributes;
+        }
+        return $responsive_image->markup;
 	}
 }
