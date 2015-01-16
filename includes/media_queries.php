@@ -22,7 +22,6 @@ class Media_Queries
 	{
 		for ( $i=0; $i < count($this->images ); $i++) { 
 			if ( $i > 0 ) {
-				#$this->images[$i]['media_query'] = 'min-width: ' . $this->images[$i-1]['width'] . 'px';
 				$this->images[$i]['media_query'] = array(
 					'property' => 'min-width',
 					'value' => $this->images[$i-1]['width'] . 'px'

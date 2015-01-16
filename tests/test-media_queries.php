@@ -1,6 +1,7 @@
 <?php
 class Test_Media_Queries extends WP_UnitTestCase {
 	protected $images;
+	protected $retina_images;
 
 	function setUp()
 	{
@@ -20,6 +21,22 @@ class Test_Media_Queries extends WP_UnitTestCase {
 				'width' => 1024,
 				'height' => 1024
 			)
+		);
+		$this->retina_images = $this->images;
+		$this->retina_images[] = array(
+			'size' => 'thumbnail@2x',
+			'width' => 300,
+			'height' => 300
+		);
+		$this->retina_images[] = array(
+			'size' => 'medium@2x',
+			'width' => 600,
+			'height' => 600
+		);
+		$this->retina_images[] = array(
+			'size' => 'large@2x',
+			'width' => 2048,
+			'height' => 2048
 		);
 	}
 	
@@ -53,6 +70,23 @@ class Test_Media_Queries extends WP_UnitTestCase {
 		$media_queries = new Media_Queries( $this->images, $settings );
 		$images = $media_queries->set( $this->images );
 
+		$this->assertEquals($expected, $images);
+	}
+
+	function test_default_media_queries_with_retina()
+	{
+		$expected = $this->retina_images;
+		$expected[1]['media_query'] = array(
+			'property' => 'min-width',
+			'value' => '150px'
+		);
+		$expected[2]['media_query'] = array(
+			'property' => 'min-width',
+			'value' => '300px'
+		);
+		$media_queries = new Media_Queries( $this->retina_images );
+		$images = $media_queries->set();
+		die(var_dump($images));
 		$this->assertEquals($expected, $images);
 	}
 }

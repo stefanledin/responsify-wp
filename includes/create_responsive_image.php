@@ -19,7 +19,11 @@ abstract class Create_Responsive_image
 		$this->images = $this->get_images( $sizes );
 
 		// 3. Sortera bilderna i storleksordning
-		$this->images = $this->order_images($this->images);
+		$this->images = $this->order_images( $this->images );
+
+        if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
+            $this->images = $this->group_highres( $this->images );
+        }
 
 		// 4. Räkna ut vilka media queries bilderna ska ha
 		$user_media_queries = (isset($settings['media_queries'])) ? $settings['media_queries'] : null;
@@ -53,28 +57,22 @@ abstract class Create_Responsive_image
 			}
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
-
-        if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
-            $images = $this->find_retina_images( $images );
-        }
-        die(var_dump($images));
 		return $images;
 	}
-
-    protected function find_retina_images( $images )
-    {
-        global $wpdb;
-        for ($i=0; $i < count($images); $i++) { 
-            $src = $images[$i]['src'];
-            $file_extension = pathinfo($src, PATHINFO_EXTENSION);
-            $src = str_replace(substr($src, -(strlen($file_extension)+1)), '', $src);
-            $src .= '@2x' . '.'.$file_extension;
-            var_dump($src);
-            $retina_version = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $wpdb->prefix . "posts" . " WHERE guid='%s';", $src ));
-            var_dump($retina_version);
-        }
-        die();
+    
+    protected function group_highres( $images ) {
+        $images = array_map(function( $image ) {
+            $retina_image_size = $image['size'] . '@';
+            
+            return $image;
+        }, $images);
+        die(var_dump($images));
         return $images;
+    }
+    protected function find_highres_image( $name ) {
+        for ($i=0; $i < count($this->images); $i++) { 
+            #$this->images[$i]['size']
+        }
     }
 
     /**

@@ -27,6 +27,11 @@ function create_attachment()
                 'file' => 'IMG_2089-1024x1365.jpg',
                 'width' => 1024,
                 'height' => 1365
+            ),
+            'large@2x' => array(
+                'file' => 'IMG_2089-2048x2730.jpg',
+                'width' => 2048,
+                'height' => 2730
             )
 		)
 	) );
@@ -52,7 +57,7 @@ function create_retina_attachment()
                 'height' => 640
             ),
             'thumbnail@2x' => array(
-                'file' => 'retina-480x640@2x.jpg',
+                'file' => 'IMG_2089-960x1280.jpg',
                 'width' => 960,
                 'height' => 1280
             ),
@@ -62,7 +67,7 @@ function create_retina_attachment()
                 'height' => 800
             ),
             'medium@2x' => array(
-                'file' => 'retina-600x800@2x.jpg',
+                'file' => 'IMG_2089-1200x1600.jpg',
                 'width' => 1200,
                 'height' => 1600
             ),
@@ -72,7 +77,7 @@ function create_retina_attachment()
                 'height' => 1365
             ),
             'large@2x' => array(
-                'file' => 'retina-1024x1365@2x.jpg',
+                'file' => 'retina-2048x2730.jpg',
                 'width' => 2048,
                 'height' => 2730
             )
