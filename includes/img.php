@@ -45,6 +45,11 @@ class Img extends Create_Responsive_image
         $attribute = array();
         for ($i=0; $i < count($this->images); $i++) {
             $attribute[] = $this->images[$i]['src'].' '.$this->images[$i]['width'].'w';
+            if ( isset($this->images[$i]['highres']) ) {
+                $highres = $this->images[$i]['highres'];
+                $density = array_keys($highres)[0];
+                $attribute[] = $highres[$density]['src'].' '.$this->images[$i]['width'].'w '.$density;
+            }
         }
         return implode(', ', $attribute);
     }

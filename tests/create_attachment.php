@@ -57,7 +57,7 @@ function create_retina_attachment()
                 'height' => 640
             ),
             'thumbnail@2x' => array(
-                'file' => 'IMG_2089-960x1280.jpg',
+                'file' => 'retina-960x1280.jpg',
                 'width' => 960,
                 'height' => 1280
             ),
@@ -67,7 +67,7 @@ function create_retina_attachment()
                 'height' => 800
             ),
             'medium@2x' => array(
-                'file' => 'IMG_2089-1200x1600.jpg',
+                'file' => 'retina-1200x1600.jpg',
                 'width' => 1200,
                 'height' => 1600
             ),

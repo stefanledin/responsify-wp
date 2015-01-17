@@ -22,7 +22,7 @@ abstract class Create_Responsive_image
 		$this->images = $this->order_images( $this->images );
 
         if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
-            $this->images = $this->group_highres( $this->images );
+            $this->group_highres();
         }
 
 		// 4. Räkna ut vilka media queries bilderna ska ha
@@ -60,18 +60,23 @@ abstract class Create_Responsive_image
 		return $images;
 	}
     
-    protected function group_highres( $images ) {
-        $images = array_map(function( $image ) {
-            $retina_image_size = $image['size'] . '@';
-            
-            return $image;
-        }, $images);
-        die(var_dump($images));
-        return $images;
-    }
-    protected function find_highres_image( $name ) {
+    protected function group_highres() {
+        $retina_image_indexes = array();
         for ($i=0; $i < count($this->images); $i++) { 
-            #$this->images[$i]['size']
+            if ( strpos($this->images[$i]['size'], '@') ) {
+                $retina_image_indexes[] = $i;
+            }
+            $possible_retina_image_name = $this->images[$i]['size'] . '@';
+            foreach ($this->images as $image) {
+                if ( substr($image['size'], 0, strlen($possible_retina_image_name)) == $possible_retina_image_name ) {
+                    $this->images[$i]['highres'] = array( 
+                        substr($image['size'], (strpos($image['size'], '@')+1)) => $image
+                    );
+                }
+            }
+        }
+        for ($i=0; $i < count($retina_image_indexes); $i++) { 
+            unset($this->images[$retina_image_indexes[$i]]);
         }
     }
 
