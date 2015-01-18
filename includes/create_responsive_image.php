@@ -16,6 +16,11 @@ abstract class Create_Responsive_image
 
 		// 2. Hämta bilderna i antingen de valda storlekarna eller alla förinställda.
         $sizes = (isset($settings['sizes'])) ? $settings['sizes'] : $this->imageSizes;
+        /*if ( isset($settings['sizes']) && isset($settings['retina']) && $settings['retina'] ) {
+            foreach ($sizes as $size) {
+                array_push($sizes, $size.'@2x');
+            }
+        }*/
 		$this->images = $this->get_images( $sizes );
 
 		// 3. Sortera bilderna i storleksordning
@@ -65,13 +70,13 @@ abstract class Create_Responsive_image
         for ($i=0; $i < count($this->images); $i++) { 
             if ( strpos($this->images[$i]['size'], '@') ) {
                 $retina_image_indexes[] = $i;
+                continue;
             }
             $possible_retina_image_name = $this->images[$i]['size'] . '@';
             foreach ($this->images as $image) {
                 if ( substr($image['size'], 0, strlen($possible_retina_image_name)) == $possible_retina_image_name ) {
-                    $this->images[$i]['highres'] = array( 
-                        substr($image['size'], (strpos($image['size'], '@')+1)) => $image
-                    );
+                    $density = substr($image['size'], (strpos($image['size'], '@')+1));
+                    $this->images[$i]['highres'][$density] = $image;
                 }
             }
         }
