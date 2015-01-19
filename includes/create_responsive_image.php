@@ -1,7 +1,7 @@
 <?php
 abstract class Create_Responsive_image
 {
-	protected $imageSizes;
+	protected $image_sizes;
 	protected $id;
 	protected $images;
 	protected $settings;
@@ -12,16 +12,9 @@ abstract class Create_Responsive_image
 		$this->settings = $settings;
 
 		// 1. Hämta bildstorlekar
-		$this->imageSizes = $this->get_image_sizes();
+		$this->image_sizes = $this->get_image_sizes();
 
-		// 2. Hämta bilderna i antingen de valda storlekarna eller alla förinställda.
-        $sizes = (isset($settings['sizes'])) ? $settings['sizes'] : $this->imageSizes;
-        /*if ( isset($settings['sizes']) && isset($settings['retina']) && $settings['retina'] ) {
-            foreach ($sizes as $size) {
-                array_push($sizes, $size.'@2x');
-            }
-        }*/
-		$this->images = $this->get_images( $sizes );
+		$this->images = $this->get_images( $this->image_sizes );
 
 		// 3. Sortera bilderna i storleksordning
 		$this->images = $this->order_images( $this->images );
@@ -117,13 +110,29 @@ abstract class Create_Responsive_image
      */
     protected function get_image_sizes()
 	{
-		$selected_sizes = get_option( 'selected_sizes' );
-		$imageSizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
-		if ( !in_array('full', $imageSizes) ) {
-			array_push($imageSizes, 'full');
-		}
-        return $imageSizes;
+        if ( isset($this->settings['sizes']) ) {
+            if ( isset($this->settings['retina']) ) {
+                $this->settings['sizes'] = $this->add_retina_sizes( $this->settings['sizes'] );
+            }
+            return $this->settings['sizes'];
+        }
+
+        $selected_sizes = get_option( 'selected_sizes' );
+        $image_sizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
+        if ( !in_array('full', $image_sizes) ) {
+            array_push($image_sizes, 'full');
+        }
+        return $image_sizes;
 	}
+
+    protected function add_retina_sizes( $image_sizes )
+    {
+        $density = $this->settings['retina'];
+        foreach ( $image_sizes as $image_size ) {
+            array_push($image_sizes, $image_size.'@'.$density);
+        }                
+        return $image_sizes;
+    }
 
     /**
      * Gets a meta value.
