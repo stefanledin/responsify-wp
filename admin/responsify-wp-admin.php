@@ -42,6 +42,7 @@ class Responsify_WP_Admin
 		register_setting( 'responsify-wp-settings', 'globally_active' );
 		register_setting( 'responsify-wp-settings', 'rwp_added_filters' );
 		register_setting( 'responsify-wp-settings', 'rwp_picturefill' );
+		register_setting( 'responsify-wp-settings', 'rwp_retina' );
 		register_setting( 'responsify-wp-settings', 'selected_element' );
 		register_setting( 'responsify-wp-settings', 'ignored_image_formats' );
 	}

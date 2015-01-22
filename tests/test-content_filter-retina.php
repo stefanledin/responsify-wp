@@ -1,0 +1,73 @@
+<?php
+class Test_Content_Filter_Retina extends WP_UnitTestCase {
+
+	protected $attachment;
+	protected $image_url;
+	protected $image_data;
+	protected $post;
+
+	protected $upload_url;
+
+	function setUp() {
+		#update_option( 'rwp_added_filters', array( 'the_content', 'post_thumbnail_html' ) );
+		update_option( 'rwp_retina', 'on' );
+
+		add_image_size( 'thumbnail@1.5x' );
+		add_image_size( 'thumbnail@2x' );
+		add_image_size( 'medium@1.5x' );
+		add_image_size( 'medium@2x' );
+		add_image_size( 'large@1.5x' );
+		add_image_size( 'large@2x' );
+		
+		$this->attachment = create_retina_attachment();
+		$this->image_data = wp_get_attachment_metadata( $this->attachment );
+		$this->upload_url = wp_upload_dir()['baseurl'];
+		$this->image_url = wp_upload_dir()['baseurl'] . '/' . $this->image_data['file'];
+		
+		$image = '<img src="'.$this->image_url.'">';
+		$this->post = wp_insert_post( array(
+			'post_name' => 'test',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+	}
+
+	function tearDown() {
+		delete_option( 'rwp_retina' );
+	}
+
+	function test_when_retina_is_disabled()
+	{
+		update_option( 'rwp_retina', 'off' );
+		$post = get_post($this->post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/retina-480x640.jpg 112w, http://example.org/wp-content/uploads/retina-600x800.jpg 225w, http://example.org/wp-content/uploads/retina.jpg 279w, http://example.org/wp-content/uploads/retina-1024x1365.jpg 474w" sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px"></p>';
+		$this->assertEquals($expected, $post);
+		delete_option( 'rwp_retina' );
+	}
+
+	function test_default()
+	{
+		$post = get_post($this->post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		$expected = '<p><img ';
+			$expected .= 'srcset="http://example.org/wp-content/uploads/retina-480x640.jpg 112w, ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-720x960.jpg 112w 1.5x, ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-960x1280.jpg 112w 2x, ';
+			
+			$expected .= 'http://example.org/wp-content/uploads/retina-600x800.jpg 225w, ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-900x1200.jpg 225w 1.5x, ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-1200x1600.jpg 225w 2x, ';
+			
+			$expected .= 'http://example.org/wp-content/uploads/retina.jpg 279w, ';
+			
+			$expected .= 'http://example.org/wp-content/uploads/retina-1024x1365.jpg 474w, ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-1536x2047.jpg 474w 1.5x, ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-2048x2730.jpg 474w 2x" ';
+			
+			$expected .= 'sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px"';
+		$expected .= '></p>';
+
+		$this->assertEquals($expected, $post);
+	}
+}
