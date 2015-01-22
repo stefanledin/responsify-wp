@@ -11,20 +11,30 @@ abstract class Create_Responsive_image
 		$this->id = $id;
 		$this->settings = $settings;
 
-		// 1. Hämta bildstorlekar
+		// 1. Get sizes
 		$this->image_sizes = $this->get_image_sizes();
-
+        if ( isset($this->settings['retina']) ) {
+            if ( !is_bool($this->settings['retina']) ) {
+                if ( isset($this->settings['sizes']) ) {
+                    $this->add_retina_sizes();
+                }
+                $this->set_retina_sizes();
+            }
+            if ( !$this->settings['retina'] ) {
+                $this->remove_retina_sizes();
+            }
+        }
+        // 2. Get images 
 		$this->images = $this->get_images( $this->image_sizes );
-
-		// 3. Sortera bilderna i storleksordning
+		// 3. Order the images by width
 		$this->images = $this->order_images( $this->images );
 
         if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
             $this->group_highres();
         }
 
-		// 4. Räkna ut vilka media queries bilderna ska ha
-		$user_media_queries = (isset($settings['media_queries'])) ? $settings['media_queries'] : null;
+		// 4. Set the media queries
+		$user_media_queries = ( isset($settings['media_queries']) ) ? $settings['media_queries'] : null;
 		$media_queries = new Media_Queries( $this->images, $user_media_queries );
 		$this->images = $media_queries->set();
 	}
@@ -110,12 +120,7 @@ abstract class Create_Responsive_image
      */
     protected function get_image_sizes()
 	{
-        if ( isset($this->settings['sizes']) ) {
-            if ( isset($this->settings['retina']) ) {
-                $this->settings['sizes'] = $this->add_retina_sizes( $this->settings['sizes'] );
-            }
-            return $this->settings['sizes'];
-        }
+        if ( isset($this->settings['sizes'])  ) return $this->settings['sizes'];
 
         $selected_sizes = get_option( 'selected_sizes' );
         $image_sizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
@@ -125,13 +130,46 @@ abstract class Create_Responsive_image
         return $image_sizes;
 	}
 
-    protected function add_retina_sizes( $image_sizes )
+    protected function set_retina_sizes()
     {
-        $density = $this->settings['retina'];
-        foreach ( $image_sizes as $image_size ) {
-            array_push($image_sizes, $image_size.'@'.$density);
-        }                
-        return $image_sizes;
+        $densities = ( is_array($this->settings['retina']) ) 
+            ? $this->settings['retina']
+            : array( $this->settings['retina'] );
+
+        $image_sizes = array();
+        foreach ( $densities as $density ) {
+            foreach ( $this->image_sizes as $image_size ) {
+                if ( (!strpos($image_size, '@')) || (strpos($image_size, $density)) ) {
+                    array_push($image_sizes, $image_size);
+                }
+            }                
+        }
+        $this->image_sizes = $image_sizes;
+    }
+
+    protected function add_retina_sizes()
+    {
+        $densities = ( is_array($this->settings['retina']) )
+            ? $this->settings['retina']
+            : array( $this->settings['retina'] );
+
+        foreach ($densities as $density) {
+            foreach ( $this->image_sizes as $image_size ) {
+                if ( !strpos($image_size, '@') ) {
+                    array_push($this->image_sizes, $image_size.'@'.$density);
+                }
+            }
+        }
+    }
+
+    protected function remove_retina_sizes()
+    {
+        $count = count($this->image_sizes);
+        for ($i=0; $i < $count; $i++) { 
+            if ( strpos($this->image_sizes[$i], '@') ) {
+                unset($this->image_sizes[$i]);
+            }
+        }
     }
 
     /**
