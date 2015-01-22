@@ -35,18 +35,29 @@ class Element extends Create_Responsive_image
 		
 		// The Picture element wants to have the largest image first.
 		$this->images = array_reverse($this->images);
-
 		$markup = '<picture '.$picture_attributes.'>';
 			$markup .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 			for ($i=0; $i < count($this->images)-1; $i++) { 
 				$media_attribute = $this->media_attribute( $this->images[$i] );
-				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" '.$media_attribute.'>';
+				$srcset_attribute = $this->srcset_attribute( $this->images[$i] );
+				$markup .= '<source '.$source_attributes.' srcset="'.$srcset_attribute.'" '.$media_attribute.'>';
 			}
-			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
+			$markup .= '<source '.$source_attributes.' srcset="'.$this->srcset_attribute($this->images[count($this->images)-1]).'">';
 			$markup .= '<!--[if IE 9]></video><![endif]-->';
-			$markup .= '<img srcset="'.$this->images[0]['src'].'" '.$img_attributes.'>';
+			$markup .= '<img srcset="'.$this->srcset_attribute($this->images[0]).'" '.$img_attributes.'>';
 		$markup .= '</picture>';
 		return $markup;
+	}
+
+	protected function srcset_attribute( $image )
+	{
+        $attribute[] = $image['src'];
+        if ( isset($image['highres']) ) {
+            foreach ($image['highres'] as $density => $highres) {
+                $attribute[] = $highres['src'].' '.$density;
+            }
+        }
+        return implode(', ', $attribute);
 	}
 
 	protected function media_attribute( $image )
