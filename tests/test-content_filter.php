@@ -9,6 +9,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 	protected $upload_url;
 
 	function setUp() {
+		update_option( 'rwp_added_filters', array( 'the_content', 'post_thumbnail_html' ) );
 		$this->attachment = create_attachment();
 		$this->image_data = wp_get_attachment_metadata( $this->attachment );
 		$upload_url = wp_upload_dir()['baseurl'];
@@ -29,6 +30,14 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089.jpg 279w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px"></p>';
 		$this->assertEquals($expected, $post);
+	}
+
+	function test_thumbnail_filter()
+	{
+		$image = '<img src="'.$this->image_url.'">';
+		$thumbnail = trim(apply_filters( 'post_thumbnail_html', $image ));
+		$expected = '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089.jpg 279w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px">';
+		$this->assertEquals($expected, $thumbnail);
 	}
 
 	function test_picture()
