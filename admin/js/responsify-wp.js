@@ -9,6 +9,8 @@
 			id = $('input.js-has-message').attr('data-message');
 			displayValue = 'none';
 		}
+		console.log(displayValue);
+		console.log(id);
 		$('.option-message#'+id).css('display', displayValue);
 	});
 

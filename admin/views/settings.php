@@ -11,9 +11,11 @@
 		
 		include 'selected_element.php';
 
-		include 'ignored_image_formats.php';
-
 		include 'selected_sizes.php';
+		
+		include 'retina.php';
+
+		include 'ignored_image_formats.php';
 		
 		include 'picturefill.php';
 		?>
