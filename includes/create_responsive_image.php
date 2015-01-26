@@ -25,18 +25,19 @@ abstract class Create_Responsive_image
             }
         }
         // 2. Get images 
-		$this->images = $this->get_images( $this->image_sizes );
-		// 3. Order the images by width
-		$this->images = $this->order_images( $this->images );
+        $this->images = $this->get_images( $this->image_sizes );
+        // 3. Order the images by width
+        $this->images = $this->order_images( $this->images );
 
         if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
             $this->group_highres();
         }
+        $this->images = array_values($this->images);
 
-		// 4. Set the media queries
-		$user_media_queries = ( isset($settings['media_queries']) ) ? $settings['media_queries'] : null;
-		$media_queries = new Media_Queries( $this->images, $user_media_queries );
-		$this->images = $media_queries->set();
+        // 4. Set the media queries
+        $user_media_queries = ( isset($settings['media_queries']) ) ? $settings['media_queries'] : null;
+        $media_queries = new Media_Queries( $this->images, $user_media_queries );
+        $this->images = $media_queries->set();
 	}
 
     /**
