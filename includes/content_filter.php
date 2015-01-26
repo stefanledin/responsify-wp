@@ -75,7 +75,8 @@ class Content_Filter
 			$settings = array(
 				'attributes' => array(
 					'img' => $self->get_img_attributes( $match[0] )
-				)
+				),
+				'retina' => ( get_option( 'rwp_retina', 'off' ) == 'off' ) ? false : true
 			);
 			$src = $settings['attributes']['img']['src'];
 			$settings['notBiggerThan'] = $src;

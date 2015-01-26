@@ -33,42 +33,51 @@ class Element extends Create_Responsive_image
 		$img_attributes = $this->create_attributes($this->settings['attributes']['img']);
 
 		$this->attributes = array(
-			'source' => array(
-				
-			),
+			'source' => array(),
 			'img' => array()
 		);
 		
 		// The Picture element wants to have the largest image first.
 		$this->images = array_reverse($this->images);
-
 		$markup = '<picture '.$picture_attributes.'>';
 			$markup .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 			for ($i=0; $i < count($this->images)-1; $i++) { 
-				$srcset_attribute = 'srcset="'.$this->images[$i]['src'].'"';
 				$media_attribute = $this->media_attribute( $this->images[$i] );
-				$markup .= '<source '.$source_attributes.' '.$srcset_attribute.' '.$media_attribute.'>';
-				
+				$srcset_attribute = $this->srcset_attribute( $this->images[$i] );
+				$markup .= '<source '.$source_attributes.' srcset="'.$srcset_attribute.'" media="'.$media_attribute.'">';
 				$this->attributes['source'][] = array(
-					'srcset' => substr($srcset_attribute, 8, -1),
-					'media' => substr($media_attribute, 7, -1)
+					'media' => $media_attribute,
+					'srcset' => $srcset_attribute
 				);
 			}
-			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
-			$this->attributes['source'][] = array( 'srcset' => $this->images[count($this->images)-1]['src'] );
+			$srcset_attribute = $this->srcset_attribute($this->images[count($this->images)-1]);
+			$this->attributes['source'][]['srcset'] = $srcset_attribute;
+			$markup .= '<source '.$source_attributes.' srcset="'.$srcset_attribute.'">';
 			$markup .= '<!--[if IE 9]></video><![endif]-->';
-			$markup .= '<img srcset="'.$this->images[0]['src'].'" '.$img_attributes.'>';
-			$this->attributes['img'] = array( 'srcset' => $this->images[0]['src'] );
+			$img_srcset_attribute = $this->srcset_attribute($this->images[0]);
+			$markup .= '<img srcset="'.$img_srcset_attribute.'" '.$img_attributes.'>';
+			$this->attributes['img']['srcset'] = $img_srcset_attribute;
 		$markup .= '</picture>';
 		return $markup;
+	}
+
+	protected function srcset_attribute( $image )
+	{
+        $attribute[] = $image['src'];
+        if ( isset($image['highres']) ) {
+            foreach ($image['highres'] as $density => $highres) {
+                $attribute[] = $highres['src'].' '.$density;
+            }
+        }
+        return implode(', ', $attribute);
 	}
 
 	protected function media_attribute( $image )
 	{
 		if ( gettype($image['media_query']) == 'array' ) {
-			return 'media="('.$image['media_query']['property'] . ': ' . $image['media_query']['value'].')"';
+			return '('.$image['media_query']['property'] . ': ' . $image['media_query']['value'].')';
 		} 
-		return 'media="('.$image['media_query'].')"';
+		return '('.$image['media_query'].')';
 	}
 
 }
