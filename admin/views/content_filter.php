@@ -36,4 +36,4 @@ $html = '<ul>';
 $html .= '</ul>';
 echo $html;
 ?>
-<p><?php _e('You can add more filters that RWP should be applied to using the <strong>rwp_add_filters</strong> filter.');?></p>
+<p><?php _e('You can add more filters that RWP should be applied to using the <code>rwp_add_filters</code> filter.');?></p>

@@ -33,7 +33,7 @@ $selected_element = get_option( 'selected_element', 'img' );
                 <td>
                     <code>
                         &lt;picture&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;source srcset=&quot;large&quot; media=&quot;(min-width: 300px)&quot;&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;source srcset=&quot;large.jpg&quot; media=&quot;(min-width: 300px)&quot;&gt;<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;&lt;source srcset=&quot;medium.jpg&quot; media=&quot;(min-width: 150px)&quot;&gt;<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;&lt;img srcset=&quot;thumbnail.jpg&quot;&gt;<br>
                         &lt;/picture&gt;
