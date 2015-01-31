@@ -1,18 +1,27 @@
 === Responsify WP ===
 Contributors: stefanledin
-Tags: responsive images, picture, picture element, picture markup, picturefill, images, responsive background
+Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, retina, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 1.6.5
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Responsify WP cares about responsive images. So should you.
+Responsive images. Plug and play.  
 
 == Description ==
 
+Responsify WP is the WordPress plugin that cares about responsive images.
+
+* Use ``img`` with srcset/sizes attributes.
+* ...or the ``picture`` element.
+* Works with or without [Picturefill](http://scottjehl.github.io/picturefill/).
+* Supports high resolution images (retina).
+* Custom media queries.
+* Handpick which image sizes to use.
+* Responsive background images.
+
 Responsify WP finds all images inside the_content() and makes them responsive.
-Thanks to the included Picturefill polyfill, you don't have to worry about browser support.  
 For example, you might have a template that looks like this:  
 
 	<article>
@@ -33,11 +42,11 @@ But once you have activated the plugin, it will look like this instead:
 	<article>
 		<h1>Hello world</h1>
 		<p>Lorem ipsum dolor sit amet...</p>
-		<img sizes="100vw"
-            srcset="medium.jpg 300w,
-            large.jpg 1024w,
-            full-size.jpg <image-width>"
-            src="thumbnail.jpg" alt="Image description">
+		<img sizes="(min-width: 300px) 1024px, (min-width: 150x) 300px, 150px"
+            srcset="thumbnail.jpg 150w,
+            medium.jpg 300w,
+            large.jpg 1024w"
+            alt="Image description">
 	</article>
 
 You can also choose to use the ``picture`` element instead:
@@ -53,6 +62,19 @@ You can also choose to use the ``picture`` element instead:
 		</picture>
 	</article>
 
+It also works with high resolution (retina) images:
+
+	<article>
+		<h1>Hello world</h1>
+		<p>Lorem ipsum dolor sit amet...</p>
+		<picture>
+		    <source srcset="full-size.jpg" media="(min-width: 1024px)">
+		    <source srcset="large.jpg, large_retina.jpg 2x" media="(min-width: 300px)">
+		    <source srcset="medium.jpg, medium_retina.jpg 2x" media="(min-width: 150px)">
+		    <img srcset="thumbnail.jpg, thumbnail_retina.jpg 2x" alt="Image description">
+		</picture>
+	</article>
+
 The different versions of the image in the examples above is in the standard ``thumbnail``, ``medium``, ``large`` and ``full`` sizes. 
 The **media queries** are based on the width of the "previous" image.  
 Any **custom sizes** of the image will also be found and used.
@@ -60,7 +82,6 @@ Any **custom sizes** of the image will also be found and used.
 ### Settings
 You can **select which image sizes** that the plugin should use from the RWP settings page.  
 These settings can be overwritten from your templates.  
-
 
 	<?php
 
@@ -84,7 +105,15 @@ These settings can be overwritten from your templates.
 	}
 	?>
 
-### Picture::create()
+**Available settings:**
+
+* Select which image sizes to use.
+* Set/override attributes.
+* Set custom media queries.
+* Turn on/off retina.
+* Ignore image formats.
+
+### Picture::create( $type, $attachment_id, $settings )
 In your templates, you can use the ``Picture::create()`` function to generate Picturefill markup.  
 Let's say that you have the following markup for a very large header image:
 
@@ -145,6 +174,12 @@ possible to specify your own media queries.
 7.
 
 == Changelog ==
+= 1.7.0 =
+* Works on featured images out of the box.
+* Apply RWP on custom content filters using the rwp_add_filters filter.
+* Support for high resolution (retina) images.
+* Picture::create('attributes') returns only the generated attributes.
+
 = 1.6.5 =
 * Critical PHP 5.3 bugfix
 
@@ -204,6 +239,12 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.7.0 =
+* Works on featured images out of the box.
+* Apply RWP on custom content filters using the rwp_add_filters filter.
+* Support for high resolution (retina) images.
+* Picture::create('attributes') returns only the generated attributes.
+
 = 1.6.5 =
 * Critical PHP 5.3 bugfix
 

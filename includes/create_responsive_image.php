@@ -1,7 +1,7 @@
 <?php
-class Create_Responsive_image
+abstract class Create_Responsive_image
 {
-	protected $imageSizes;
+	protected $image_sizes;
 	protected $id;
 	protected $images;
 	protected $settings;
@@ -11,20 +11,33 @@ class Create_Responsive_image
 		$this->id = $id;
 		$this->settings = $settings;
 
-		// 1. Hämta bildstorlekar
-		$this->imageSizes = $this->get_image_sizes();
+		// 1. Get sizes
+		$this->image_sizes = $this->get_image_sizes();
+        if ( isset($this->settings['retina']) ) {
+            if ( !is_bool($this->settings['retina']) ) {
+                if ( isset($this->settings['sizes']) ) {
+                    $this->add_retina_sizes();
+                }
+                $this->set_retina_sizes();
+            }
+            if ( !$this->settings['retina'] ) {
+                $this->remove_retina_sizes();
+            }
+        }
+        // 2. Get images 
+        $this->images = $this->get_images( $this->image_sizes );
+        // 3. Order the images by width
+        $this->images = $this->order_images( $this->images );
 
-		// 2. Hämta bilderna i antingen de valda storlekarna eller alla förinställda.
-        $sizes = (isset($settings['sizes'])) ? $settings['sizes'] : $this->imageSizes;
-		$this->images = $this->get_images( $sizes );
+        if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
+            $this->group_highres();
+        }
+        $this->images = array_values($this->images);
 
-		// 3. Sortera bilderna i storleksordning
-		$this->images = $this->order_images($this->images);
-
-		// 4. Räkna ut vilka media queries bilderna ska ha
-		$user_media_queries = (isset($settings['media_queries'])) ? $settings['media_queries'] : null;
-		$media_queries = new Media_Queries( $this->images, $user_media_queries );
-		$this->images = $media_queries->set();
+        // 4. Set the media queries
+        $user_media_queries = ( isset($settings['media_queries']) ) ? $settings['media_queries'] : null;
+        $media_queries = new Media_Queries( $this->images, $user_media_queries );
+        $this->images = $media_queries->set();
 	}
 
     /**
@@ -55,6 +68,26 @@ class Create_Responsive_image
 		}
 		return $images;
 	}
+    
+    protected function group_highres() {
+        $retina_image_indexes = array();
+        for ($i=0; $i < count($this->images); $i++) { 
+            if ( strpos($this->images[$i]['size'], '@') ) {
+                $retina_image_indexes[] = $i;
+                continue;
+            }
+            $possible_retina_image_name = $this->images[$i]['size'] . '@';
+            foreach ($this->images as $image) {
+                if ( substr($image['size'], 0, strlen($possible_retina_image_name)) == $possible_retina_image_name ) {
+                    $density = substr($image['size'], (strpos($image['size'], '@')+1));
+                    $this->images[$i]['highres'][$density] = $image;
+                }
+            }
+        }
+        for ($i=0; $i < count($retina_image_indexes); $i++) { 
+            unset($this->images[$retina_image_indexes[$i]]);
+        }
+    }
 
     /**
      * Finds a single image in the selected size
@@ -88,13 +121,57 @@ class Create_Responsive_image
      */
     protected function get_image_sizes()
 	{
-		$selected_sizes = get_option( 'selected_sizes' );
-		$imageSizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
-		if ( !in_array('full', $imageSizes) ) {
-			array_push($imageSizes, 'full');
-		}
-        return $imageSizes;
+        if ( isset($this->settings['sizes'])  ) return $this->settings['sizes'];
+
+        $selected_sizes = get_option( 'selected_sizes' );
+        $image_sizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
+        if ( !in_array('full', $image_sizes) ) {
+            array_push($image_sizes, 'full');
+        }
+        return $image_sizes;
 	}
+
+    protected function set_retina_sizes()
+    {
+        $densities = ( is_array($this->settings['retina']) ) 
+            ? $this->settings['retina']
+            : array( $this->settings['retina'] );
+
+        $image_sizes = array();
+        foreach ( $densities as $density ) {
+            foreach ( $this->image_sizes as $image_size ) {
+                if ( (!strpos($image_size, '@')) || (strpos($image_size, $density)) ) {
+                    array_push($image_sizes, $image_size);
+                }
+            }                
+        }
+        $this->image_sizes = $image_sizes;
+    }
+
+    protected function add_retina_sizes()
+    {
+        $densities = ( is_array($this->settings['retina']) )
+            ? $this->settings['retina']
+            : array( $this->settings['retina'] );
+
+        foreach ($densities as $density) {
+            foreach ( $this->image_sizes as $image_size ) {
+                if ( !strpos($image_size, '@') ) {
+                    array_push($this->image_sizes, $image_size.'@'.$density);
+                }
+            }
+        }
+    }
+
+    protected function remove_retina_sizes()
+    {
+        $count = count($this->image_sizes);
+        for ($i=0; $i < $count; $i++) { 
+            if ( strpos($this->image_sizes[$i], '@') ) {
+                unset($this->image_sizes[$i]);
+            }
+        }
+    }
 
     /**
      * Gets a meta value.

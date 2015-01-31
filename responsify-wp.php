@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Responsify WP
-Version: 1.6.5
-Description: The WordPress plugin that cares about responsive images.
+Version: 1.7.0
+Description: Responsify WP is the WordPress plugin that cares about responsive images.
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
 Plugin URI: https://github.com/stefanledin/responsify-wp
@@ -21,20 +21,20 @@ require 'includes/content_filter.php';
 
 class Responsify_WP
 {
-	const VERSION = '1.6.5';
+	const VERSION = '1.7.0';
 
 	protected static $instance = null;
 
     /**
-     * Adds actions and filters. Creates instance of Content_Filter.
+     * Adds actions and filters.
      */
     public function __construct()
 	{
         if ( get_option( 'rwp_picturefill', 'on' ) == 'on' ) {
 		  add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         }
+        add_action( 'after_setup_theme', array( $this, 'apply_content_filters' ) );
         add_filter('plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'settings_link' ) );
-		$content_filter = new Content_Filter;
 	}
 
     /**
@@ -49,6 +49,24 @@ class Responsify_WP
 		}
 		return self::$instance;
 	}
+
+    /**
+     * Creates a new instance of Content_Filter for each filter that
+     * RWP should apply it's magic on.
+     */
+    public function apply_content_filters()
+    {
+        $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
+        $filters = get_option( 'rwp_added_filters', $default_filters );
+        $filters = array_keys($filters);
+        if ( has_filter( 'rwp_add_filters' ) ) {
+            $filters = apply_filters( 'rwp_add_filters', $filters );
+        }
+        if ( !$filters ) return;
+        foreach ( $filters as $filter ) {
+            new Content_Filter( $filter );
+        }
+    }
 
     /**
      * Add settings link on plugin page.
@@ -74,7 +92,6 @@ class Responsify_WP
             wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.2.2.0.min.js', __FILE__),  null, null, true);
         }
 	}
-
 }
 
 add_action( 'plugins_loaded', array( 'Responsify_WP', 'get_instance') );

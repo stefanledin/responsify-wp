@@ -2,6 +2,7 @@
 class Img extends Create_Responsive_image
 {
     public $markup;
+    public $attributes;
 
     function __construct( $id, $settings )
     {
@@ -37,7 +38,8 @@ class Img extends Create_Responsive_image
                 $attribute[] = $images[$i]['width'].'px';
             }
         }
-        return implode(', ', $attribute);
+        $this->attributes['sizes'] = implode(', ', $attribute);
+        return $this->attributes['sizes'];
     }
 
     protected function srcset_attribute()
@@ -45,14 +47,19 @@ class Img extends Create_Responsive_image
         $attribute = array();
         for ($i=0; $i < count($this->images); $i++) {
             $attribute[] = $this->images[$i]['src'].' '.$this->images[$i]['width'].'w';
+            if ( isset($this->images[$i]['highres']) ) {
+                foreach ($this->images[$i]['highres'] as $density => $highres) {
+                    $attribute[] = $highres['src'].' '.$highres['width'].'w';
+                }
+            }
         }
-        return implode(', ', $attribute);
+        $this->attributes['srcset'] = implode(', ', $attribute);
+        return $this->attributes['srcset'];
     }
 
     protected function create_markup()
     {
         $img_attributes = $this->create_attributes($this->settings['attributes']);
-
         $markup = '<img ';
             if ( count($this->images) == 1 ) : 
                 $markup .= 'src="'.$this->images[0]['src'].'"';

@@ -1,16 +1,26 @@
 #Responsify WP
-Responsify WP is the WordPress plugin that cares about responsive images. It uses the excellent
-[Picturefill polyfill](https://github.com/scottjehl/picturefill) created by [Scott Jehl](http://scottjehl.com) to make 
-it work across most browsers.  
+[Responsify WP](https://wordpress.org/plugins/responsify-wp/) is the WordPress plugin that cares about responsive images.
+
+* Use ``img`` with srcset/sizes attributes.
+* ...or the ``picture`` element.
+* Works with or without [Picturefill](http://scottjehl.github.io/picturefill/).
+* Supports high resolution images (retina).
+* Custom media queries.
+* Handpick which image sizes to use.
+* Responsive background images.
+
+
 ###Content
 - [Description](#description)
 - [Settings](#settings)
 	- [Image sizes](#settings-image-sizes)
 	- [Sizes attribute](#settings-sizes-attribute)
 	- [Media queries](#settings-media-queries)
+	- [Retina](#settings-retina)
 - [Functions](#functions)
 	- [Element/Img](#functions-element)
 	- [Style](#functions-style)
+	- [Attributes](#functions-attributes)
 	- [Reference](#functions-reference)
 		- [Settings](#functions-reference-settings)
 		- [Example - sizes](#functions-reference-example-sizes)
@@ -19,9 +29,13 @@ it work across most browsers.
 		    - [img](#functions-reference-example-attributes-img)
 		    - [picture](#functions-reference-example-attributes-picture)
 		    - [span](#functions-reference-example-attributes-span)
+- [Retina](#retina)
+	- [Setup](#retina-setup)
+	- [Examples](#retina-examples)
+- [Filters](#filters)
 
 ##<a name="description"></a>Description
-In short, it will replace all ``<img>`` tags within ``the_content`` with responsive images.
+In short, it will replace all ``<img>`` tags within ``the_content`` (or other filters that you can [add yourself](#filters)) with responsive images.
 For example, you might have a template that looks like this:  
 
 ````html
@@ -169,6 +183,70 @@ In the example above, ``thumbnail`` is the smallest image size and should theref
 </picture>
 ````
 
+###<a name"settings-retina"></a>Retina
+On the RWP settings page, you can choose if high resolution (retina) images should be used or not. This can be overwritten 
+by setting ``retina`` to either ``true`` or ``false`` in the ``rwp_settings`` array.  
+If set to ``true``, RWP will use all images that has the ``@[value]x`` suffix in the name, like ``thumbnail@2x`` or 
+``medium@1.5x``.
+
+````php
+<?php
+$posts = get_posts(array(
+    'rwp_settings' => array(
+        'retina' => true // or false
+    )
+));
+?>
+````
+
+In this example, the three image sizes has a retina version which is twice the size.
+
+````html
+<picture>
+    <source srcset="full.jpg" media="(min-width: 1024px)">
+    <source srcset="large.jpg, large_retina.jpg 2x" media="(min-width: 300px)">
+    <source srcset="medium.jpg, medium_retina.jpg 2x" media="(min-width: 150px)">
+    <source srcset="thumbnail.jpg, thumbnail_retina.jpg 2x">
+    <img srcset="thumbnail.jpg" alt="Image description">
+</picture>
+````
+
+You can also add image sizes for other pixel densities, like ``1.5x`` or ``3x``. This is the same example that also has a 
+retina version that's three times as large.
+
+````html
+<picture>
+    <source srcset="full.jpg" media="(min-width: 1024px)">
+    <source srcset="large.jpg, large_retina.jpg 2x, large_retina_xl.jpg 3x" media="(min-width: 300px)">
+    <source srcset="medium.jpg, medium_retina.jpg 2x, medium_retina_xl.jpg 3x" media="(min-width: 150px)">
+    <source srcset="thumbnail.jpg, thumbnail_retina.jpg 2x, thumbnail_retina_xl.jpg 3x">
+    <img srcset="thumbnail.jpg" alt="Image description">
+</picture>
+````
+
+You can select which versions that you wanna use by default on the RWP settings page. This can also be overwritten by passing 
+an array of pixel densities to ``rwp_settings``.
+
+````php
+<?php
+$posts = get_posts(array(
+    'rwp_settings' => array(
+        'retina' => array( '1.5x', '2x' )
+    )
+));
+?>
+````
+
+For a single density, you can of course pass it as a string.
+
+````php
+<?php
+'rwp_settings' => array(
+	'retina' => '2x'
+)
+?>
+````
+
 ##<a name="functions"></a>Functions  
 If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
 ###<a name="functions-element"></a>Element / Img
@@ -266,6 +344,53 @@ echo Picture::create( 'style', $dynamic_header_image_ID, array(
 ) );
 ?>
 ````
+###<a name="functions-attributes"></a>Attributes
+The ``Picture::create( 'attributes' )`` function returns an array of attributes for the selected element. This might be 
+useful if you for example want to create the elements later with Javascript.
+
+````php
+<?php
+$img_attributes = Picture::create( 'attributes', $attachment_id, array(
+	'element' => 'img'
+) );
+
+// $img_attributes equals this:
+$img_attributes = array(
+	'srcset' => 'thumbnail.jpg 150w, medium.jpg 300w, large.jpg 1024w',
+	'sizes' => '(min-width: 300px) 1024px (min-width: 150px) 300px, 150px'
+);
+?>
+````
+
+It of course works with the picture element to:
+
+```php
+<?php
+$picture_attributes = Picture::create( 'attributes', $attachment_id, array(
+	'element' => 'picture'
+) );
+
+// $picture_attributes equals this:
+$picture_attributes = array(
+	'source' => array(
+		array(
+			'srcset' => 'large.jpg',
+			'media' => '(min-width: 300px)'
+		),
+		array(
+			'srcset' => 'medium.jpg',
+			'media' => '(min-width: 150px)'
+		),
+		array(
+			'srcset' => 'thumbnail.jpg'
+		),
+	),
+	'img' => array(
+		'srcset' => 'thumbnail.jpg'
+	)
+);
+?>
+````
 
 ###<a name="functions-reference"></a>Reference
 
@@ -275,7 +400,7 @@ echo Picture::create( $type, $attachment_id, $settings );
 ?>
 ````
 
-* **$type**: (string) (required). 'img', 'element' or 'style'.
+* **$type**: (string) (required). 'img', 'element', 'attributes' or 'style'.
 * **$attachment_id**: (integer) (required). The ID of the attachment.
 * **$settings**: (array) (optional).
 
@@ -285,6 +410,7 @@ These are the settings that is currently avaliable:
 * **sizes** (array): The image sizes that you want to use.
 * **media_queries** (array): An associative array of names of the image sizes and a custom media query.
 * **attributes** (array): An associative array of attribute names and values that you want to add on the element (see example).
+* **retina** (bool|string|array): True/false. String or array of pixel densities (x descriptor).
 * **ignored_image_formats** (array): An array of image formats that you want RWP to ignore.
 
 #####<a name="functions-reference-example-sizes"></a>Example - sizes
@@ -422,4 +548,120 @@ echo Picture::create( 'element', $attachment_id, $settings );
 		<img src="thumbnail.jpg" alt="Image description">
 	</noscript>
 </span>
+````
+  
+##<a name="retina"></a>Retina
+A new feature in Responsify WP 1.7 is the support for high resolution (retina) images. This means that devices with 
+high pixel density screens will receive larger images which will look crisp and sharp.  
+However, larger images means heavier images, which is something RWP is meant to prevent. With that said, this is how 
+the generated markup looks like:  
+
+````html
+<!-- Picture element -->
+<picture>
+    <source srcset="large.jpg, large_retina.jpg 2x" media="(min-width: 300px)">
+    <source srcset="medium.jpg, medium_retina.jpg 2x" media="(min-width: 150px)">
+    <img srcset="thumbnail.jpg" alt="Image description">
+</picture>
+
+<!-- img with srcset/sizes -->
+<img srcset="
+	thumbnail.jpg 150w,
+	medium.jpg 300w,
+	medium_retina.jpg 600w,
+	large.jpg 1024w,
+	large_retina.jpg 2048w"
+	sizes="(min-width: 300px) 1024px, (min-width: 150px) 300px, 150px">
+````
+
+Notice that this is the first version of the retina feature, so if you comes across any bug or unexpected behavior, 
+please notify me at the [support forum](https://wordpress.org/support/plugin/responsify-wp) or here at Github.
+
+###<a name="retina-setup"></a>Setup  
+If you want to use retina images, they has to be generated first. This requires you to manually add custom image sizes 
+using the [`add_image_size`](http://codex.wordpress.org/Function_Reference/add_image_size) function.  
+Let's use the three default image sizes that ships with WordPress and their default settings as an example:
+
+- `thumbnail` 150x150px
+- `medium` 300x300px
+- `large` 1024x1024px
+
+If you want to create retina versions of these image sizes, you should add something like this to your `functions.php`:
+
+````php
+<?php
+add_image_size( 'medium@2x', 600, 600 );
+add_image_size( 'large@2x', 2048, 2048 );
+?>
+````
+
+As you can see, the `@2x` suffix indicates that `medium@2x` is twice as large as `medium` for example. 
+There's no `thumbnail@2x` since that would be the same as `medium`.  
+Images that are uploaded to WordPress from now on will be generated in these sizes. If you want to create retina versions 
+of existing images, use the [Regenerate thumbnails](https://wordpress.org/plugins/regenerate-thumbnails/) plugin.  
+RWP works with other pixel densities beside of `2x` as well. `1.5x` or `3x` will also work just fine. The important thing 
+is that you name your custom image sizes like this: 
+
+````
+[original]@[value]x`  
+````
+
+###<a name="retina-examples"></a>Examples  
+Add `1.5x` and `2x` versions of the default image sizes: 
+````php
+<?php
+add_image_size( 'thumbnail@1.5x', 225, 225 );
+add_image_size( 'medium@1.5x', 450, 450 );
+add_image_size( 'medium@2x', 600, 600 );
+add_image_size( 'large@2x', 2048, 2048 );
+?>
+````
+
+It of course works with other custom sizes as well!
+
+````php
+<?php
+add_image_size( 'tablet-landscape', 800, 600 );
+add_image_size( 'tablet-landscape@2x', 1600, 1200 );
+add_image_size( 'tablet-landscape@3x', 2400, 1800 );
+?>
+````
+
+`thumbnail`, `medium` and `large` will work as usual:
+
+````html
+<!-- Picture element -->
+<picture>
+    <source srcset="large.jpg" media="(min-width: 800px)">
+    <source srcset="tablet_landscape.jpg, tablet_landscape@2x.jpg 2x, tablet_landscape@3x.jpg 3x" media="(min-width: 150px)">
+    <source srcset="medium.jpg" media="(min-width: 150px)">
+    <img srcset="thumbnail.jpg" alt="Image description">
+</picture>
+
+<!-- img with srcset/sizes -->
+<img srcset="
+	thumbnail.jpg 150w,
+	medium.jpg 300w,
+	tablet_landscape.jpg 800w,
+	tablet_landscape@2x.jpg 1600w,
+	tablet_landscape@3x.jpg 2400w,
+	large.jpg 1024w,
+	sizes="(min-width: 800px) 1024px, (min-width: 300px) 800px, (min-width: 150px) 300px, 150px">
+````
+
+##<a name="filters"></a>Filters  
+RWP currently offers one filter that you can use. It allows you to add additional filters (confusing, I know) that RWP 
+should be applied on.  
+RWP is by default applied to the ``post_thumbnail_html`` and ``the_content`` filters. Any images found inside 
+these filters will be made responsive.  
+You can add additional filters by using the ``rwp_add_filters`` filter.
+
+````php
+<?php
+function add_filters( $filters ) {
+	$filters[] = 'my_custom_filter';
+	return $filters; // Equals array( 'the_content', 'post_thumbnail_html', 'my_custom_filter' )
+}
+add_filter( 'rwp_add_filters', 'add_filters' );	
+?>
 ````
