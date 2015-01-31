@@ -25,13 +25,14 @@ class Content_Filter
     /**
      * Returns an array with all attributes from the original <img> element
      *
-     * @param $imageNode
+     * @param $image_node
      * @return array
      */
-    public function get_attributes( $imageNode )
+    public function get_attributes( $image_node )
 	{
+		$image_node = mb_convert_encoding($image_node, 'HTML-ENTITIES', 'UTF-8');
 		$dom = new DOMDocument();
-		$dom->loadHTML($imageNode);
+		$dom->loadHTML($image_node);
 		$image = $dom->getElementsByTagName('img')->item(0);
 		$attributes = array();
 		foreach ( $image->attributes as $attr ) {
