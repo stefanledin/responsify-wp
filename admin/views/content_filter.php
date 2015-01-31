@@ -21,7 +21,7 @@ $html = '<ul>';
 	
 	$custom_filters = array();
 	if ( has_filter( 'rwp_add_filters' ) ) {
-		$custom_filters = apply_filters( 'rwp_add_filters', $filters );
+		$custom_filters = apply_filters( 'rwp_add_filters', $custom_filters );
 	}
 	if ( $custom_filters ) {
 		foreach ($custom_filters as $custom_filter) {
