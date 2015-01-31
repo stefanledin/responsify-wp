@@ -1,5 +1,5 @@
 #Responsify WP
-Responsify WP is the WordPress plugin that cares about responsive images.
+[Responsify WP](https://wordpress.org/plugins/responsify-wp/) is the WordPress plugin that cares about responsive images.
 
 * Use ``img`` with srcset/sizes attributes.
 * ...or the ``picture`` element.
@@ -35,7 +35,7 @@ Responsify WP is the WordPress plugin that cares about responsive images.
 - [Filters](#filters)
 
 ##<a name="description"></a>Description
-In short, it will replace all ``<img>`` tags within ``the_content`` with responsive images.
+In short, it will replace all ``<img>`` tags within ``the_content`` (or other filters that you can [add yourself](#filters)) with responsive images.
 For example, you might have a template that looks like this:  
 
 ````html
