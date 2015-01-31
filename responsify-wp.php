@@ -33,7 +33,7 @@ class Responsify_WP
         if ( get_option( 'rwp_picturefill', 'on' ) == 'on' ) {
 		  add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         }
-        $this->apply_content_filters();
+        add_action( 'after_setup_theme', array( $this, 'apply_content_filters' ) );
         add_filter('plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'settings_link' ) );
 	}
 
@@ -79,11 +79,12 @@ class Responsify_WP
     {
         $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
         $filters = get_option( 'rwp_added_filters', $default_filters );
+        $filters = array_keys($filters);
         if ( has_filter( 'rwp_add_filters' ) ) {
             $filters = apply_filters( 'rwp_add_filters', $filters );
         }
         if ( !$filters ) return;
-        foreach ( $filters as $filter => $status ) {
+        foreach ( $filters as $filter ) {
             new Content_Filter( $filter );
         }
     }
