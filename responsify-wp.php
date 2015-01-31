@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsify WP
 Version: 1.7.0
-Description: The WordPress plugin that cares about responsive images.
+Description: Responsify WP is the WordPress plugin that cares about responsive images.
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
 Plugin URI: https://github.com/stefanledin/responsify-wp
@@ -51,6 +51,24 @@ class Responsify_WP
 	}
 
     /**
+     * Creates a new instance of Content_Filter for each filter that
+     * RWP should apply it's magic on.
+     */
+    public function apply_content_filters()
+    {
+        $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
+        $filters = get_option( 'rwp_added_filters', $default_filters );
+        $filters = array_keys($filters);
+        if ( has_filter( 'rwp_add_filters' ) ) {
+            $filters = apply_filters( 'rwp_add_filters', $filters );
+        }
+        if ( !$filters ) return;
+        foreach ( $filters as $filter ) {
+            new Content_Filter( $filter );
+        }
+    }
+
+    /**
      * Add settings link on plugin page.
      *
      * @param $links
@@ -74,21 +92,6 @@ class Responsify_WP
             wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.2.2.0.min.js', __FILE__),  null, null, true);
         }
 	}
-
-    public function apply_content_filters()
-    {
-        $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
-        $filters = get_option( 'rwp_added_filters', $default_filters );
-        $filters = array_keys($filters);
-        if ( has_filter( 'rwp_add_filters' ) ) {
-            $filters = apply_filters( 'rwp_add_filters', $filters );
-        }
-        if ( !$filters ) return;
-        foreach ( $filters as $filter ) {
-            new Content_Filter( $filter );
-        }
-    }
-
 }
 
 add_action( 'plugins_loaded', array( 'Responsify_WP', 'get_instance') );
