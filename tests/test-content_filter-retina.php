@@ -41,7 +41,7 @@ class Test_Content_Filter_Retina extends WP_UnitTestCase {
 		update_option( 'rwp_retina', 'off' );
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/retina-480x640.jpg 112w, http://example.org/wp-content/uploads/retina-600x800.jpg 225w, http://example.org/wp-content/uploads/retina.jpg 279w, http://example.org/wp-content/uploads/retina-1024x1365.jpg 474w" sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/retina-480x640.jpg 480w, http://example.org/wp-content/uploads/retina-600x800.jpg 600w, http://example.org/wp-content/uploads/retina-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/retina.jpg 2448w" sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"></p>';
 		$this->assertEquals($expected, $post);
 		delete_option( 'rwp_retina' );
 	}
@@ -51,21 +51,21 @@ class Test_Content_Filter_Retina extends WP_UnitTestCase {
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 		$expected = '<p><img ';
-			$expected .= 'srcset="http://example.org/wp-content/uploads/retina-480x640.jpg 112w, ';
+			$expected .= 'srcset="http://example.org/wp-content/uploads/retina-480x640.jpg 480w, ';
 				$expected .= 'http://example.org/wp-content/uploads/retina-720x960.jpg 720w, ';
 				$expected .= 'http://example.org/wp-content/uploads/retina-960x1280.jpg 960w, ';
 			
-			$expected .= 'http://example.org/wp-content/uploads/retina-600x800.jpg 225w, ';
+			$expected .= 'http://example.org/wp-content/uploads/retina-600x800.jpg 600w, ';
 				$expected .= 'http://example.org/wp-content/uploads/retina-900x1200.jpg 900w, ';
 				$expected .= 'http://example.org/wp-content/uploads/retina-1200x1600.jpg 1200w, ';
 			
-			$expected .= 'http://example.org/wp-content/uploads/retina.jpg 279w, ';
-			
-			$expected .= 'http://example.org/wp-content/uploads/retina-1024x1365.jpg 474w, ';
+			$expected .= 'http://example.org/wp-content/uploads/retina-1024x1365.jpg 1024w, ';
 				$expected .= 'http://example.org/wp-content/uploads/retina-1536x2047.jpg 1536w, ';
-				$expected .= 'http://example.org/wp-content/uploads/retina-2048x2730.jpg 2048w" ';
+				$expected .= 'http://example.org/wp-content/uploads/retina-2048x2730.jpg 2048w, ';
 			
-			$expected .= 'sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px"';
+			$expected .= 'http://example.org/wp-content/uploads/retina.jpg 2448w" ';
+			
+			$expected .= 'sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"';
 		$expected .= '></p>';
 
 		$this->assertEquals($expected, $post);
