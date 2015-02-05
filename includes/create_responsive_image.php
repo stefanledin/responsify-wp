@@ -53,17 +53,22 @@ abstract class Create_Responsive_image
 
         $notBiggerThan = (isset($this->settings['notBiggerThan'])) ? $this->settings['notBiggerThan'] : null;
 
-		foreach ( $sizes as $size ) {
-			$image = $this->get_image($size);
-			if ( !in_array($image[0], $image_srcs) ) {
-				array_push($images, array(
-					'src' => $image[0],
-					'size' => $size,
-					'width' => $image[1],
-					'height' => $image[2]
-				));
-				array_push($image_srcs, $image[0]);
-			}
+        $image_meta_data = wp_get_attachment_metadata( $this->id );
+        foreach ( $sizes as $size ) {
+            $image = $this->get_image($size);
+            if ( !in_array($image[0], $image_srcs) ) {
+                if ( isset($image_meta_data['sizes'][$size]) || $size == 'full' ) {
+                    $width = ( $size == 'full' ) ? $image_meta_data['width'] : $image_meta_data['sizes'][$size]['width'];
+                    $height = ( $size == 'full' ) ? $image_meta_data['height'] : $image_meta_data['sizes'][$size]['height'];
+    				array_push($images, array(
+    					'src' => $image[0],
+    					'size' => $size,
+    					'width' => $width,
+    					'height' => $height
+    				));
+    				array_push($image_srcs, $image[0]);
+                } 
+            }
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
 		return $images;
