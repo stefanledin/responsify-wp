@@ -15,9 +15,9 @@ class Test_Span extends WP_UnitTestCase {
 		
 		$expected = '<span data-picture data-alt="">';
 			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 112px)" ></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089.jpg" data-media="(min-width: 225px)" ></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 279px)" ></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 480px)" ></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 600px)" ></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089.jpg" data-media="(min-width: 1024px)" ></span>';
 			$expected .= '<noscript>';
 				$expected .= '<img src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" alt="">';
 			$expected .= '</noscript>';
@@ -34,8 +34,8 @@ class Test_Span extends WP_UnitTestCase {
 		
 		$expected = '<span data-picture data-alt="">';
 			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 112px)" ></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 225px)" ></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 480px)" ></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 600px)" ></span>';
 			$expected .= '<noscript>';
 				$expected .= '<img src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" alt="">';
 			$expected .= '</noscript>';
@@ -61,8 +61,8 @@ class Test_Span extends WP_UnitTestCase {
 		
 		$expected = '<span data-picture data-alt="" id="custom-id" class="picture-element">';
 			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" data-foo="bar"></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 112px)" data-foo="bar"></span>';
-			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 225px)" data-foo="bar"></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 480px)" data-foo="bar"></span>';
+			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 600px)" data-foo="bar"></span>';
 			$expected .= '<noscript>';
 				$expected .= '<img src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" alt="">';
 			$expected .= '</noscript>';

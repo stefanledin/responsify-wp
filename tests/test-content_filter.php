@@ -28,7 +28,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 	{
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089.jpg 279w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"></p>';
 		$this->assertEquals($expected, $post);
 	}
 
@@ -36,7 +36,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 	{
 		$image = '<img src="'.$this->image_url.'">';
 		$thumbnail = trim(apply_filters( 'post_thumbnail_html', $image ));
-		$expected = '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089.jpg 279w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 279px) 474px, (min-width: 225px) 279px, (min-width: 112px) 225px, 112px">';
+		$expected = '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px">';
 		$this->assertEquals($expected, $thumbnail);
 	}
 
@@ -46,7 +46,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 		
-		$expected = '<p><picture ><!--[if IE 9]><video style="display: none;"><![endif]--><source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 279px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" media="(min-width: 225px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 112px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg"><!--[if IE 9]></video><![endif]--><img srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" ></picture></p>';
+		$expected = '<p><picture ><!--[if IE 9]><video style="display: none;"><![endif]--><source  srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" media="(min-width: 1024px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg"><!--[if IE 9]></video><![endif]--><img srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" ></picture></p>';
 		
 		$this->assertEquals($expected, $post);
 		delete_option( 'selected_element' );
@@ -58,7 +58,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 
-		$expected = '<p><span data-picture data-alt=""><span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 112px)" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089.jpg" data-media="(min-width: 225px)" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 279px)" ></span><noscript><img src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" alt=""></noscript></span></p>';
+		$expected = '<p><span data-picture data-alt=""><span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" data-media="(min-width: 480px)" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" data-media="(min-width: 600px)" ></span><span data-src="http://example.org/wp-content/uploads/IMG_2089.jpg" data-media="(min-width: 1024px)" ></span><noscript><img src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" alt=""></noscript></span></p>';
 
 		$this->assertEquals($expected, $post);
 		delete_option( 'selected_element' );
@@ -73,8 +73,8 @@ class Test_Content_Filter extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-classes">';
-		$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-classes"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, 600px" id="my-id" class="my-classes">';
+		$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, 600px" id="my-id" class="my-classes"></p>';
 		$post = get_posts( array(
 			'p' => $post,
 			'rwp_settings' => array(
@@ -95,8 +95,8 @@ class Test_Content_Filter extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-custom-class">';
-		$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-custom-class"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, 600px" id="my-id" class="my-custom-class">';
+		$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, 600px" id="my-id" class="my-custom-class"></p>';
 		$post = get_posts( array(
 			'p' => $post,
 			'rwp_settings' => array(
@@ -121,7 +121,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		) );
 		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, 600px"></p>';
 		
 		$this->assertEquals($expected, $post);
 	}
@@ -135,7 +135,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, 225px" id="my-id" class="my-classes"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, 600px" id="my-id" class="my-classes"></p>';
 		$post = get_post($post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 		
@@ -151,12 +151,12 @@ class Test_Content_Filter extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089.jpg 279w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px" id="my-id" class="my-classes"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 600px) 1024px" id="my-id" class="my-classes"></p>';
 		$post = get_posts( array(
 			'p' => $post,
 			'rwp_settings' => array(
 				'attributes' => array(
-					'sizes' => '(min-width: 225px) 474px'
+					'sizes' => '(min-width: 600px) 1024px'
 				)
 			)
 		) );
@@ -174,13 +174,13 @@ class Test_Content_Filter extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px" id="my-id" class="my-classes"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px" id="my-id" class="my-classes"></p>';
 		$post = get_posts( array(
 			'p' => $post,
 			'rwp_settings' => array(
 				'sizes' => array('medium', 'large'),
 				'attributes' => array(
-					'sizes' => '(min-width: 225px) 474px'
+					'sizes' => '(min-width: 600px) 1024px'
 				)
 			)
 		) );
@@ -198,13 +198,13 @@ class Test_Content_Filter extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089.jpg 279w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px" id="my-custom-id" class="my-classes"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 600px) 1024px" id="my-custom-id" class="my-classes"></p>';
 		$post = get_posts( array(
 			'p' => $post,
 			'rwp_settings' => array(
 				'attributes' => array(
 					'id' => 'my-custom-id',
-					'sizes' => '(min-width: 225px) 474px'
+					'sizes' => '(min-width: 600px) 1024px'
 				)
 			)
 		) );
@@ -240,8 +240,8 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		) );
 		$expected = '<p><picture id="custom-id" class="picture-element">';
 			$expected .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
-				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 225px)">';
-				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 112px)">';
+				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)">';
+				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)">';
 			$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg">';
 			$expected .= '<!--[if IE 9]></video><![endif]-->';
 			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" id="my-id" class="my-classes">';
@@ -298,7 +298,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		) );
 		$post = get_post($post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 112w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 225w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 474w" sizes="(min-width: 225px) 474px, (min-width: 112px) 225px, 112px"></p>';
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w" sizes="(min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"></p>';
 		
 		$this->assertEquals($expected, $post);
 	}
