@@ -54,21 +54,22 @@ abstract class Create_Responsive_image
         $notBiggerThan = (isset($this->settings['notBiggerThan'])) ? $this->settings['notBiggerThan'] : null;
 
         $image_meta_data = wp_get_attachment_metadata( $this->id );
+        $image_meta_data['sizes']['full'] = array(
+            'width' => $image_meta_data['width'],
+            'height' => $image_meta_data['height']
+        );
         foreach ( $sizes as $size ) {
             $image = $this->get_image($size);
-            if ( !in_array($image[0], $image_srcs) ) {
-                if ( isset($image_meta_data['sizes'][$size]) || $size == 'full' ) {
-                    $width = ( $size == 'full' ) ? $image_meta_data['width'] : $image_meta_data['sizes'][$size]['width'];
-                    $height = ( $size == 'full' ) ? $image_meta_data['height'] : $image_meta_data['sizes'][$size]['height'];
-    				array_push($images, array(
-    					'src' => $image[0],
-    					'size' => $size,
-    					'width' => $width,
-    					'height' => $height
-    				));
-    				array_push($image_srcs, $image[0]);
-                } 
-            }
+            if ( in_array($image[0], $image_srcs) ) continue;
+            if ( isset($image_meta_data['sizes'][$size]) ) {
+				array_push($images, array(
+					'src' => $image[0],
+					'size' => $size,
+					'width' => $image_meta_data['sizes'][$size]['width'],
+					'height' => $image_meta_data['sizes'][$size]['height']
+				));
+				array_push($image_srcs, $image[0]);
+            } 
 			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
 		}
 		return $images;
