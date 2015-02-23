@@ -142,6 +142,21 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$this->assertEquals($expected, $post);
 	}
 
+	function test_data_responsive_false_attribute()
+	{
+		$image = '<img class="rwp-not-responsive" src="'.$this->image_url.'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'png',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+
+		$expected = '<p><img class="rwp-not-responsive" src="http://example.org/wp-content/uploads/2014/10/IMG_2089.jpg"></p>';
+		$post = get_post($post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		$this->assertEquals($expected, $post);
+	}
+
 	function test_img_still_gets_old_img_attributes_when_overriding_one_attribute()
 	{
 		$image = '<img id="my-id" class="my-classes" src="'.$this->image_url.'">';

@@ -73,6 +73,9 @@ class Content_Filter
 		$ignored_image_formats = $this->get_ignored_image_formats();
 		// Find and replace all <img>
 		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self, $ignored_image_formats) {
+			// Do nothing with images that has the 'rwp-not-responsive' class.
+			if ( strpos($match[0], 'rwp-not-responsive') ) return $match[0];
+
 			$settings = array(
 				'attributes' => array(
 					'img' => $self->get_img_attributes( $match[0] )
