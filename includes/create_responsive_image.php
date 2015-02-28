@@ -9,10 +9,10 @@ abstract class Create_Responsive_image
 	public function __construct( $id, $settings )
 	{
 		$this->id = $id;
-		$this->settings = $settings;
+        $this->settings = $settings;
 
-		// 1. Get sizes
-		$this->image_sizes = $this->get_image_sizes();
+        // 1. Get sizes
+        $this->image_sizes = $this->get_image_sizes();
         if ( isset($this->settings['retina']) ) {
             if ( !is_bool($this->settings['retina']) ) {
                 if ( isset($this->settings['sizes']) ) {
@@ -24,8 +24,10 @@ abstract class Create_Responsive_image
                 $this->remove_retina_sizes();
             }
         }
+
         // 2. Get images 
         $this->images = $this->get_images( $this->image_sizes );
+
         // 3. Order the images by width
         $this->images = $this->order_images( $this->images );
 
@@ -58,20 +60,21 @@ abstract class Create_Responsive_image
             'width' => $image_meta_data['width'],
             'height' => $image_meta_data['height']
         );
+
         foreach ( $sizes as $size ) {
             $image = $this->get_image($size);
-            if ( in_array($image[0], $image_srcs) ) continue;
+            #if ( in_array($image[0], $image_srcs) ) continue;
             if ( isset($image_meta_data['sizes'][$size]) ) {
-				array_push($images, array(
-					'src' => $image[0],
-					'size' => $size,
-					'width' => $image_meta_data['sizes'][$size]['width'],
-					'height' => $image_meta_data['sizes'][$size]['height']
-				));
-				array_push($image_srcs, $image[0]);
+                array_push($images, array(
+                    'src' => $image[0],
+                    'size' => $size,
+                    'width' => $image_meta_data['sizes'][$size]['width'],
+                    'height' => $image_meta_data['sizes'][$size]['height']
+                ));
+                array_push($image_srcs, $image[0]);
+                if ( isset($notBiggerThan) && ($image[0] == $notBiggerThan) ) break;
             } 
-			if (isset($notBiggerThan) && ($image[0] == $notBiggerThan)) break;
-		}
+        }
 		return $images;
 	}
     
@@ -142,12 +145,13 @@ abstract class Create_Responsive_image
         $densities = ( is_array($this->settings['retina']) ) 
             ? $this->settings['retina']
             : array( $this->settings['retina'] );
-
         $image_sizes = array();
         foreach ( $densities as $density ) {
             foreach ( $this->image_sizes as $image_size ) {
                 if ( (!strpos($image_size, '@')) || (strpos($image_size, $density)) ) {
-                    array_push($image_sizes, $image_size);
+                    if ( !in_array($image_size, $image_sizes) ) {
+                        array_push($image_sizes, $image_size);
+                    }
                 }
             }                
         }

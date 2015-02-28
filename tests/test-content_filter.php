@@ -32,6 +32,37 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$this->assertEquals($expected, $post);
 	}
 
+	function test_include_full_size_when_smaller_than_large()
+	{
+		$img = wp_insert_attachment( array(
+			'guid' => 'http://example.org/wp-content/uploads/image.jpg',
+			'post_mime_type' => 'image/jpeg',
+			'post_title' => 'Image',
+			'post_status' => 'inherit'
+		), 'image.jpg' );
+		wp_update_attachment_metadata( $img, array(
+			'width' => 500,
+			'height' => 500,
+			'file' => '2015/02/image.jpg',
+			'sizes' => array(
+				'thumbnail' => array(
+					'width' => 320,
+					'height' => 320,
+					'file' => '2015/02/image-320x320.jpg'
+				)
+			)
+		) );
+		$test_post = wp_insert_post( array(
+			'post_name' => 'Test',
+			'post_content' => '<img src="'.$this->upload_url.'/image.jpg">',
+			'post_status' => 'publish'
+		) );
+		$test_post = get_post( $test_post );
+		$test_post = trim(apply_filters( 'the_content', $test_post->post_content ));
+		$expected = '<p><img srcset="http://example.org/wp-content/uploads/2015/02/image-320x320.jpg 320w, http://example.org/wp-content/uploads/image.jpg 500w" sizes="(min-width: 320px) 500px, 320px"></p>';
+		$this->assertEquals($expected, $test_post);
+	}
+
 	function test_thumbnail_filter()
 	{
 		$image = '<img src="'.$this->image_url.'">';
@@ -340,4 +371,5 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		
 		$this->assertEquals($expected, $post);
 	}
+
 }
