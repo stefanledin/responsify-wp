@@ -3,7 +3,7 @@ Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, retina, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -174,6 +174,10 @@ possible to specify your own media queries.
 7.
 
 == Changelog ==
+= 1.7.2 =
+* New: RWP will ignore images with the 'rwp-not-responsive' class.
+* Bugfixes.
+
 = 1.7.1 =
 * Bugfix. The $content_width variable in functions.php could make the generated markup to be slightly incorret.
 
@@ -242,6 +246,10 @@ possible to specify your own media queries.
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.7.2 =
+* New: RWP will ignore images with the 'rwp-not-responsive' class.
+* Bugfixes.
+
 = 1.7.1 =
 * Bugfix. The $content_width variable in functions.php could make the generated markup to be slightly incorret.
 
