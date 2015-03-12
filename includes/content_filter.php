@@ -67,6 +67,8 @@ class Content_Filter
      * @return mixed
      */
     public function filter_images ( $content ) {
+    	// Don't do anything with the RSS feed.
+    	if ( is_feed() ) return $content;
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
 
