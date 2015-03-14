@@ -15,8 +15,7 @@ class Native_Element extends element
 				$media_attribute = $this->media_attribute( $this->images[$i] );
 				$markup .= '<source '.$source_attributes.' srcset="'.$this->images[$i]['src'].'" media="'.$media_attribute.'">';
 			}
-			$markup .= '<source '.$source_attributes.' srcset="'.$this->images[count($this->images)-1]['src'].'">';
-			$markup .= '<img src="'.$this->images[0]['src'].'" '.$img_attributes.'>';
+			$markup .= '<img src="'.$this->images[count($this->images)-1]['src'].'" '.$img_attributes.'>';
 		$markup .= '</picture>';
 		return $markup;
 	}
