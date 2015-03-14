@@ -77,7 +77,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$post = get_post($this->post);
 		$post = trim(apply_filters( 'the_content', $post->post_content ));
 		
-		$expected = '<p><picture ><!--[if IE 9]><video style="display: none;"><![endif]--><source  srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" media="(min-width: 1024px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg"><!--[if IE 9]></video><![endif]--><img srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" ></picture></p>';
+		$expected = '<p><picture ><!--[if IE 9]><video style="display: none;"><![endif]--><source  srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" media="(min-width: 1024px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)"><source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)"><!--[if IE 9]></video><![endif]--><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></picture></p>';
 		
 		$this->assertEquals($expected, $post);
 		delete_option( 'selected_element' );
@@ -287,10 +287,8 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$expected = '<p><picture id="custom-id" class="picture-element">';
 			$expected .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)">';
-				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)">';
-			$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg">';
-			$expected .= '<!--[if IE 9]></video><![endif]-->';
-			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" id="my-id" class="my-classes">';
+				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)">';			$expected .= '<!--[if IE 9]></video><![endif]-->';
+			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" id="my-id" class="my-classes">';
 		$expected .= '</picture></p>';
 
 		$post = trim(apply_filters( 'the_content', $post[0]->post_content ));

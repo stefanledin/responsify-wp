@@ -18,9 +18,8 @@ class SampleTest extends WP_UnitTestCase {
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" media="(min-width: 1024px)">';
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)">';
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)">';
-			$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg">';
 			$expected .= '<!--[if IE 9]></video><![endif]-->';
-			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089.jpg" >';
+			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" >';
 		$expected .= '</picture>';
 		
 		$this->assertEquals($expected, $element);
@@ -36,9 +35,8 @@ class SampleTest extends WP_UnitTestCase {
 			$expected .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)">';
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)">';
-			$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg">';
 			$expected .= '<!--[if IE 9]></video><![endif]-->';
-			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" >';
+			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" >';
 		$expected .= '</picture>';
 		
 		$this->assertEquals($expected, $element);
@@ -66,9 +64,8 @@ class SampleTest extends WP_UnitTestCase {
 			$expected .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 600px)">';
 				$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 480px)">';
-			$expected .= '<source data-foo="bar" srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg">';
 			$expected .= '<!--[if IE 9]></video><![endif]-->';
-			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" id="responsive-image">';
+			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" id="responsive-image">';
 		$expected .= '</picture>';
 		
 		$this->assertEquals($expected, $element);		
@@ -88,9 +85,8 @@ class SampleTest extends WP_UnitTestCase {
 			$expected .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" media="(min-width: 1024px)">';
 				$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-600x800.jpg" media="(min-width: 500px)">';
-			$expected .= '<source  srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg">';
 			$expected .= '<!--[if IE 9]></video><![endif]-->';
-			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg" >';
+			$expected .= '<img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" >';
 		$expected .= '</picture>';
 		
 		$this->assertEquals($expected, $element);
