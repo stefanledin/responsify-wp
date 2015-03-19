@@ -50,11 +50,8 @@ class Element extends Create_Responsive_image
 					'srcset' => $srcset_attribute
 				);
 			}
-			$srcset_attribute = $this->srcset_attribute($this->images[count($this->images)-1]);
-			$this->attributes['source'][]['srcset'] = $srcset_attribute;
-			$markup .= '<source '.$source_attributes.' srcset="'.$srcset_attribute.'">';
 			$markup .= '<!--[if IE 9]></video><![endif]-->';
-			$img_srcset_attribute = $this->srcset_attribute($this->images[0]);
+			$img_srcset_attribute = $this->srcset_attribute($this->images[count($this->images)-1]);
 			$markup .= '<img srcset="'.$img_srcset_attribute.'" '.$img_attributes.'>';
 			$this->attributes['img']['srcset'] = $img_srcset_attribute;
 		$markup .= '</picture>';
