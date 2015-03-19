@@ -65,4 +65,27 @@ class Test_Create_Attributes extends WP_UnitTestCase {
 		$this->assertEquals($expected, $attributes);
 	}
 
+	function test_returns_custom_picture_media_query()
+	{
+		$attributes = Picture::create( 'attributes', $this->attachment, array(
+			'element' => 'picture',
+			'sizes' => array('thumbnail','medium'),
+			'media_queries' => array(
+				'medium' => 'min-width: 1024px'
+			)
+		) );
+		$expected = array(
+			'source' => array(
+				array(
+					'srcset' => 'http://example.org/wp-content/uploads/IMG_2089-600x800.jpg',
+					'media' => '(min-width: 1024px)'
+				)
+			),
+			'img' => array(
+				'srcset' => 'http://example.org/wp-content/uploads/IMG_2089-480x640.jpg'
+			)
+		);
+		$this->assertEquals($expected, $attributes);
+	}
+
 }
