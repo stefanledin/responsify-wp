@@ -18,7 +18,9 @@ class Picture
 
 		switch ( strtolower($type) ) {
             case 'attributes':
-                $responsive_image = self::create( $settings['element'], $id, array( 'output' => 'attributes' ) );
+                $default_settings = array( 'output' => 'attributes' );
+                $settings = ( $settings ) ? array_merge($settings, $default_settings) : $default_settings;
+                $responsive_image = self::create( $settings['element'], $id, $settings );
                 return $responsive_image;
                 break;
 
