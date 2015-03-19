@@ -1,6 +1,6 @@
 === Responsify WP ===
 Contributors: stefanledin
-Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, retina, responsive background
+Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.1
 Stable tag: 1.7.3
@@ -13,6 +13,8 @@ Responsive images. Plug and play.
 
 Responsify WP is the WordPress plugin that cares about responsive images.
 
+### Features
+
 * Use ``img`` with srcset/sizes attributes.
 * ...or the ``picture`` element.
 * Works with or without [Picturefill](http://scottjehl.github.io/picturefill/).
@@ -21,7 +23,7 @@ Responsify WP is the WordPress plugin that cares about responsive images.
 * Handpick which image sizes to use.
 * Responsive background images.
 
-Responsify WP finds all images inside the_content() and makes them responsive.
+Responsify WP finds featured images and all images inside the content and makes them responsive.
 For example, you might have a template that looks like this:  
 
 	<article>
@@ -136,7 +138,17 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 		?>
 	</header>
 
-Full documentation and examples can be found at [GitHub](https://github.com/stefanledin/responsify-wp).
+### Website
+[http://responsifywp.com](http://responsifywp.com).
+
+### Demo
+[http://responsifywp.com/demo](http://responsifywp.com/demo).
+
+### Documentation and examples
+[https://github.com/stefanledin/responsify-wp](https://github.com/stefanledin/responsify-wp).
+
+### Requirements
+* PHP 5.3
 
 == Installation ==
 
@@ -164,14 +176,10 @@ Full documentation and examples can be found at [GitHub](https://github.com/stef
 
 == Screenshots ==
 
-1. Select the image sizes that you want to use in your templates. It's also 
-possible to specify your own media queries.
-2. Use the Picture::create() function to generate responsive images inside your templates.
-3. Congratulations! A responsive header image.
-4. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
-5. A <style> tag will be created and contains the generated media queries for the background.
-6.
-7.
+1. Select which filters that RWP should be applied on. Thumbnails (post_thumbnail_html) and content (the_content) is used by default.You can also select which markup pattern RWP should generate.
+2. You can also select which image sizes RWP should use, select if RWP should use retina images, ignore image formats and if Picturefill should be used or not.
+3. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
+4. A <style> tag will be created and contains the generated media queries for the background.
 
 == Changelog ==
 = 1.7.3 =

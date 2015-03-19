@@ -481,9 +481,33 @@ $picture_attributes = array(
 			'srcset' => 'medium.jpg',
 			'media' => '(min-width: 150px)'
 		),
+	),
+	'img' => array(
+		'srcset' => 'thumbnail.jpg'
+	)
+);
+?>
+````
+
+It is also possible to pass custom settings to the function.
+
+```php
+<?php
+$picture_attributes = Picture::create( 'attributes', $attachment_id, array(
+	'element' => 'picture',
+	'sizes' => array('thumbnail', 'medium'),
+	'media_queries' => array(
+		'medium' => 'min-width: 1024px'
+	)
+) );
+
+// $picture_attributes equals this:
+$picture_attributes = array(
+	'source' => array(
 		array(
-			'srcset' => 'thumbnail.jpg'
-		),
+			'srcset' => 'medium.jpg',
+			'media' => '(min-width: 1024px)'
+		)
 	),
 	'img' => array(
 		'srcset' => 'thumbnail.jpg'
