@@ -32,7 +32,7 @@ class Content_Filter
 	{
 		$image_node = mb_convert_encoding($image_node, 'HTML-ENTITIES', 'UTF-8');
 		$dom = new DOMDocument();
-		$dom->loadHTML($image_node);
+		@$dom->loadHTML($image_node);
 		$image = $dom->getElementsByTagName('img')->item(0);
 		$attributes = array();
 		foreach ( $image->attributes as $attr ) {
