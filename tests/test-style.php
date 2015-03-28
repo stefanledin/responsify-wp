@@ -10,7 +10,7 @@ class Test_Style extends WP_UnitTestCase {
 
 	function test_default()
 	{
-		$style = Picture::create( 'style', $this->attachment, array(
+		$style = rwp_style( $this->attachment, array(
 			'selector' => '#hero'
 		) );
 		$expected = '<style>';
@@ -33,7 +33,7 @@ class Test_Style extends WP_UnitTestCase {
 
 	function test_selected_sizes()
 	{
-		$style = Picture::create( 'style', $this->attachment, array(
+		$style = rwp_style( $this->attachment, array(
 			'selector' => '#hero',
 			'sizes' => array('medium', 'large')
 		) );
@@ -51,7 +51,7 @@ class Test_Style extends WP_UnitTestCase {
 
 	function test_custom_media_queries()
 	{
-		$style = Picture::create( 'style', $this->attachment, array(
+		$style = rwp_style( $this->attachment, array(
 			'selector' => '#hero',
 			'sizes' => array('medium', 'large'),
 			'media_queries' => array(

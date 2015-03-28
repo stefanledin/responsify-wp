@@ -22,7 +22,7 @@ class Test_Native_Image_Retina extends WP_UnitTestCase {
 
 	function test_default()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => true
 		) );
 

@@ -16,7 +16,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_default()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => true
 		) );
 		$expected = '<img ';
@@ -42,7 +42,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_retina_false()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => false
 		) );
 		$expected = '<img ';
@@ -58,7 +58,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_selected_2x_sizes()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => '2x',
 			'sizes' => array( 'thumbnail', 'medium', 'large' )
 		) );
@@ -77,7 +77,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_selected_1_5x_sizes()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => '1.5x',
 			'sizes' => array( 'thumbnail', 'medium', 'large' )
 		) );
@@ -99,7 +99,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_array_with_density()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => array( '1.5x' )
 		) );
 		$expected = '<img ';
@@ -122,7 +122,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_array_of_multiple_densities()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => array( '1.5x', '2x' )
 		) );
 		$expected = '<img ';
@@ -148,7 +148,7 @@ class Test_Image_Retina extends WP_UnitTestCase {
 
 	function test_array_of_multiple_densities_and_selected_sizes()
 	{
-		$img = Picture::create( 'img', $this->attachment, array(
+		$img = rwp_img( $this->attachment, array(
 			'retina' => array( '1.5x', '2x' ),
 			'sizes' => array( 'thumbnail', 'medium', 'large' )
 		) );

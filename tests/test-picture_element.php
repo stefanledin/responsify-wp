@@ -11,7 +11,7 @@ class SampleTest extends WP_UnitTestCase {
 
 	function test_default()
 	{
-		$element = Picture::create( 'element', $this->attachment );
+		$element = rwp_picture( $this->attachment );
 		
 		$expected = '<picture >';
 			$expected .= '<!--[if IE 9]><video style="display: none;"><![endif]-->';
@@ -27,7 +27,7 @@ class SampleTest extends WP_UnitTestCase {
 
 	function test_selected_sizes()
 	{
-		$element = Picture::create( 'element', $this->attachment, array(
+		$element = rwp_picture( $this->attachment, array(
 			'sizes' => array('thumbnail', 'medium', 'large')
 		) );
 		
@@ -44,7 +44,7 @@ class SampleTest extends WP_UnitTestCase {
 
 	function test_custom_attributes()
 	{
-		$element = Picture::create( 'element', $this->attachment, array(
+		$element = rwp_picture( $this->attachment, array(
 			'sizes' => array('thumbnail', 'medium', 'large'),
 			'attributes' => array(
 				'picture' => array(
@@ -73,7 +73,7 @@ class SampleTest extends WP_UnitTestCase {
 
 	function test_custom_media_queries()
 	{
-		$element = Picture::create( 'element', $this->attachment, array(
+		$element = rwp_picture( $this->attachment, array(
 			'sizes' => array('thumbnail', 'medium', 'large'),
 			'media_queries' => array(
 				'medium' => 'min-width: 500px',
