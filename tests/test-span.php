@@ -11,7 +11,7 @@ class Test_Span extends WP_UnitTestCase {
 
 	function test_default()
 	{
-		$element = rwp_span( $this->attachment );
+		$element = Picture::create( 'span', $this->attachment );
 		
 		$expected = '<span data-picture data-alt="">';
 			$expected .= '<span data-src="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg" ></span>';
@@ -28,7 +28,7 @@ class Test_Span extends WP_UnitTestCase {
 
 	function test_selected_sizes()
 	{
-		$element = rwp_span( $this->attachment, array(
+		$element = Picture::create( 'span', $this->attachment, array(
 			'sizes' => array('thumbnail', 'medium', 'large')
 		) );
 		
@@ -46,7 +46,7 @@ class Test_Span extends WP_UnitTestCase {
 
 	function test_custom_attributes()
 	{
-		$element = rwp_span( $this->attachment, array(
+		$element = Picture::create( 'span', $this->attachment, array(
 			'sizes' => array('thumbnail', 'medium', 'large'),
 			'attributes' => array(
 				'picture_span' => array(
@@ -73,7 +73,7 @@ class Test_Span extends WP_UnitTestCase {
 
 	function test_custom_media_queries()
 	{
-		$element = rwp_span( $this->attachment, array(
+		$element = Picture::create( 'span', $this->attachment, array(
 			'sizes' => array('thumbnail', 'medium', 'large'),
 			'media_queries' => array(
 				'medium' => 'min-width: 500px',

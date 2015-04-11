@@ -16,7 +16,7 @@ class Test_Picture_Retina extends WP_UnitTestCase {
 
 	function test_default()
 	{
-		$element = rwp_picture( $this->attachment, array(
+		$element = Picture::create( 'element', $this->attachment, array(
 			'retina' => true
 		) );
 		$expected = '<picture >';
@@ -33,7 +33,7 @@ class Test_Picture_Retina extends WP_UnitTestCase {
 
 	function test_retina_false()
 	{
-		$element = rwp_picture( $this->attachment, array(
+		$element = Picture::create( 'element', $this->attachment, array(
 			'retina' => false
 		) );
 		
@@ -51,7 +51,7 @@ class Test_Picture_Retina extends WP_UnitTestCase {
 
 	function test_selected_2x_sizes()
 	{
-		$element = rwp_picture( $this->attachment, array(
+		$element = Picture::create( 'element', $this->attachment, array(
 			'retina' => '2x',
 			'sizes' => array( 'thumbnail', 'medium', 'large' )
 		) );
@@ -68,7 +68,7 @@ class Test_Picture_Retina extends WP_UnitTestCase {
 
 	function test_array_with_density()
 	{
-		$element = rwp_picture( $this->attachment, array(
+		$element = Picture::create( 'element', $this->attachment, array(
 			'retina' => array( '1.5x' )
 		) );
 		$expected = '<picture >';

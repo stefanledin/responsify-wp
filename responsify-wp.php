@@ -16,7 +16,7 @@ require 'includes/element.php';
 require 'includes/native-element.php';
 require 'includes/span.php';
 require 'includes/style.php';
-//require 'includes/picture.php';
+require 'includes/picture.php';
 
 require 'includes/rwp_img.php';
 require 'includes/rwp_picture.php';
