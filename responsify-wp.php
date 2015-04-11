@@ -18,10 +18,7 @@ require 'includes/span.php';
 require 'includes/style.php';
 require 'includes/picture.php';
 
-require 'includes/rwp_img.php';
-require 'includes/rwp_picture.php';
-require 'includes/rwp_span.php';
-require 'includes/rwp_style.php';
+require 'includes/rwp_functions.php';
 
 require 'includes/content_filter.php';
 
