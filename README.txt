@@ -2,7 +2,7 @@
 Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
