@@ -8,6 +8,9 @@ class Element extends Create_Responsive_image
 	{
 		parent::__construct($id, $settings);
 		$this->set_attributes();
+		if ( has_filter( 'rwp_edit_attributes' ) ) {
+            $this->settings['attributes'] = apply_filters( 'rwp_edit_attributes', $this->settings['attributes'] );
+        }
 		$this->markup = $this->create_markup();
 	}
 
