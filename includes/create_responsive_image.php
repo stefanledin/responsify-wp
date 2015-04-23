@@ -5,7 +5,6 @@ abstract class Create_Responsive_image
     protected $id;
     protected $images;
     protected $settings;
-
     public function __construct( $id, $settings )
     {
         $this->id = $id;
@@ -23,29 +22,25 @@ abstract class Create_Responsive_image
                 $this->remove_retina_sizes();
             }
         }
-
         // 2. Get images 
         $this->images = $this->get_images( $this->image_sizes );
-
         // 3. Order the images by width
         $this->images = $this->order_images( $this->images );
-
-        // 4. Remove images that is larger than the one inserted into the editor.
+        // 4. Adds retina versions to the same array as the 'original' image.
+        if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
+            $this->group_highres();
+        }
+        // 5. Remove images that is larger than the one inserted into the editor.
         if ( isset($this->settings['notBiggerThan']) ) {
             $this->images = $this->remove_images_larger_than_inserted( $this->images, $this->settings['notBiggerThan'] );
         }
         
-        if ( isset($this->settings['retina']) && $this->settings['retina'] ) {
-            $this->group_highres();
-        }
         $this->images = array_values($this->images);
-
         // 5. Set the media queries
         $user_media_queries = ( isset($settings['media_queries']) ) ? $settings['media_queries'] : null;
         $media_queries = new Media_Queries( $this->images, $user_media_queries );
         $this->images = $media_queries->set();
     }
-
     /**
      * Finds images in the selected sizes.
      *
@@ -56,7 +51,6 @@ abstract class Create_Responsive_image
     {
         $images = array();
         $image_srcs = array();
-
         $image_meta_data = wp_get_attachment_metadata( $this->id );
         $image_meta_data['sizes']['full'] = array(
             'width' => $image_meta_data['width'],
@@ -96,7 +90,6 @@ abstract class Create_Responsive_image
             unset($this->images[$retina_image_indexes[$i]]);
         }
     }
-
     /**
      * Finds a single image in the selected size
      *
@@ -107,7 +100,6 @@ abstract class Create_Responsive_image
     {
         return wp_get_attachment_image_src( $this->id, $size );
     }
-
     /**
      * Orders the array of images based on width.
      *
@@ -121,7 +113,6 @@ abstract class Create_Responsive_image
         });
         return $images;
     }
-
     /**
      * Removes images that is larger than the one inserted into the editor.
      * For example, if medium is inserted, ignore large and full.
@@ -138,7 +129,6 @@ abstract class Create_Responsive_image
         }
         return $valid_images;
     }
-
     /**
      * Finds and returns all available image sizes.
      *
@@ -147,7 +137,6 @@ abstract class Create_Responsive_image
     protected function get_image_sizes()
     {
         if ( isset($this->settings['sizes'])  ) return $this->settings['sizes'];
-
         $selected_sizes = get_option( 'selected_sizes' );
         $image_sizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
         if ( !in_array('full', $image_sizes) ) {
@@ -155,7 +144,6 @@ abstract class Create_Responsive_image
         }
         return $image_sizes;
     }
-
     protected function set_retina_sizes()
     {
         $densities = ( is_array($this->settings['retina']) ) 
@@ -173,13 +161,11 @@ abstract class Create_Responsive_image
         }
         $this->image_sizes = $image_sizes;
     }
-
     protected function add_retina_sizes()
     {
         $densities = ( is_array($this->settings['retina']) )
             ? $this->settings['retina']
             : array( $this->settings['retina'] );
-
         foreach ($densities as $density) {
             foreach ( $this->image_sizes as $image_size ) {
                 if ( !strpos($image_size, '@') ) {
@@ -188,7 +174,6 @@ abstract class Create_Responsive_image
             }
         }
     }
-
     protected function remove_retina_sizes()
     {
         $count = count($this->image_sizes);
@@ -198,7 +183,6 @@ abstract class Create_Responsive_image
             }
         }
     }
-
     /**
      * Gets a meta value.
      *
@@ -209,7 +193,6 @@ abstract class Create_Responsive_image
     {
         return get_post_meta($this->id, '_wp_attachment_image_' . $meta, true);
     }
-
     /**
      * Makes a string with all attributes.
      *
@@ -225,6 +208,4 @@ abstract class Create_Responsive_image
         // Removes the extra space after the last attribute
         return substr($attributes, 0, -1);
     }
-
-
 }
