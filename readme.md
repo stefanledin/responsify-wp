@@ -117,6 +117,9 @@ $posts = get_posts( array(
 		'sizes' => array('large', 'full')
 	)
 ) );
+foreach( $posts as $post ) {
+	// ...
+}
 
 // Using WP_Query()
 $query = new WP_Query( array(
@@ -347,18 +350,18 @@ add_image_size( 'tablet-landscape@3x', 2400, 1800 );
 	sizes="(min-width: 800px) 1024px, (min-width: 300px) 800px, (min-width: 150px) 300px, 150px">
 ````
 
-##<a name="functions"></a>Functions  
-If you want to generate Picturefill markup in other places of the template, the ``Picture::create()`` function allows you to do that.  
+##<a name="functions"></a>Functions 
+RWP provides a number of functions that can generate responsive images in your templates. 
 ###<a name="functions-element"></a>Element / Img
-Based on an attachment ID, you can generate either a ``picture`` **element** or a **img** tag with ``srcset``/``sizes`` attributes.
+Based on an attachment ID, you can generate either a **picture** element or a **img** tag with ``srcset``/``sizes`` attributes.
 
 ````php
-<?php echo Picture::create( 'img', $attachment_id ); ?>
+<?php echo rwp_img( $attachment_id ); ?>
 ````
  
- ````php
- <?php echo Picture::create( 'element', $attachment_id ); ?>
- ````
+````php
+<?php echo rwp_picture( $attachment_id ); ?>
+````
 
 Let's say that you have the following markup for a very large header image:
 
@@ -375,7 +378,7 @@ But you does of course not want to send a big 1440px image to a mobile device. T
 <header>
 	<?php
 	$thumbnail_id = get_post_thumbnail_id( $post->ID );
-	echo Picture::create( 'element', $thumbnail_id );
+	echo rwp_picture( $thumbnail_id );
 	?>
 </header>
 ````
@@ -385,7 +388,7 @@ You can also specify which sizes of the image that should be used:
 ````php
 <?php 
 $thumbnail_id = get_post_thumbnail_id( $post->ID );
-echo Picture::create( 'element', $thumbnail_id, array(
+echo rwp_picture( $thumbnail_id, array(
 	'sizes' => array( 'medium', 'large', 'full' )
 ) ); 
 ?>
@@ -406,7 +409,7 @@ Instead, you could do this:
 
 ````php
 <?php
-echo Picture::create( 'style', $dynamic_header_image_ID, array(
+echo rwp_style( $dynamic_header_image_ID, array(
 	'selector' => '#hero'
 ) );
 ?>
@@ -434,7 +437,7 @@ You can of course specify sizes and media queries here to.
 
 ````php
 <?php
-echo Picture::create( 'style', $dynamic_header_image_ID, array(
+echo rwp_style( $dynamic_header_image_ID, array(
 	'selector' => '#hero',
 	'sizes' => array('medium', 'large', 'full'),
 	'media_queries' => array(
@@ -545,8 +548,8 @@ $settings = array(
 	'sizes' => array('medium', 'large')
 );
 
-echo Picture::create( 'img', $attachment_id, $settings );
-echo Picture::create( 'element', $attachment_id, $settings );
+echo rwp_img( $attachment_id, $settings );
+echo rwp_picture( $attachment_id, $settings );
 ?>
 ````
 
@@ -573,7 +576,7 @@ $settings = array(
 		'large' => 'min-width: 1024px'
 	)
 );
-echo Picture::create( 'element', $attachment_id, $settings );
+echo rwp_picture( $attachment_id, $settings );
 ?>
 ````
 
@@ -600,7 +603,7 @@ $settings = array(
 		'sizes' => '(min-width: 500px) 1024px, 300px'
 	)
 );
-echo Picture::create( 'img', $attachment_id, $settings );
+echo rwp_img( $attachment_id, $settings );
 ?>
 ````
 
@@ -630,7 +633,7 @@ $settings = array(
 		)
 	)
 );
-echo Picture::create( 'element', $attachment_id, $settings );
+echo rwp_picture( $attachment_id, $settings );
 ?>
 ````
 
@@ -658,7 +661,7 @@ $settings = array(
 		)
 	)
 );
-echo Picture::create( 'element', $attachment_id, $settings );
+echo rwp_picture( $attachment_id, $settings );
 ?>
 ````
 

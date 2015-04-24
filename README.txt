@@ -94,6 +94,9 @@ These settings can be overwritten from your templates.
 			'sizes' => array('large', 'full')
 		)
 	) );
+	foreach( $posts as $post ) {
+		// ...
+	}
 
 	// Using WP_Query()
 	$query = new WP_Query( array(
@@ -115,15 +118,15 @@ These settings can be overwritten from your templates.
 * Turn on/off retina.
 * Ignore image formats.
 
-### Picture::create( $type, $attachment_id, $settings )
-In your templates, you can use the ``Picture::create()`` function to generate Picturefill markup.  
+### Functions
+RWP provides a number of functions that can generate responsive images in your templates.
 Let's say that you have the following markup for a very large header image:
 
 	<header>
 		<?php the_post_thumbnail( 'full' ); ?>
 	</header>
 
-As you probably know, ``the_post_thumbnail()`` will just create a regular ``<img>`` tag for the full-size image in this case. 
+As you probably know, ``the_post_thumbnail()`` will create a regular ``<img>`` tag with the full-size image in this case. 
 But you don't want to send a big 1440px image to a mobile device. This can easily be solved like this:
 
 	<header>
@@ -131,10 +134,10 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
 
 		// Generate an <img> tag with srcset/sizes attributes.
-		echo Picture::create( 'img', $thumbnail_id );
+		echo rwp_img( $thumbnail_id );
 
 		// Generate a <picture> element
-		echo Picture::create( 'element', $thumbnail_id );
+		echo rwp_picture( $thumbnail_id );
 		?>
 	</header>
 
