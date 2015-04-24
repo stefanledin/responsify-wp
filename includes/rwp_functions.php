@@ -10,3 +10,7 @@ function rwp_picture( $id, $settings = null ) {
 function rwp_style( $id, $settings = null ) {
 	return Picture::create( 'style', $id, $settings );
 }
+
+function rwp_attributes( $id, $settings = null ) {
+	return Picture::create( 'attributes', $id, $settings );
+}
