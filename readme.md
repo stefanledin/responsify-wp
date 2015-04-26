@@ -33,6 +33,8 @@
 		    - [picture](#functions-reference-example-attributes-picture)
 		    - [span](#functions-reference-example-attributes-span)
 - [Filters](#filters)
+	- [Edit attributes](#filters-edit-attributes)
+	- [Add filters](#filters-add-filters)
 - [Ignore images](#ignore-images)
 
 ##<a name="description"></a>Description
@@ -448,12 +450,12 @@ echo rwp_style( $dynamic_header_image_ID, array(
 ?>
 ````
 ###<a name="functions-attributes"></a>Attributes
-The ``Picture::create( 'attributes' )`` function returns an array of attributes for the selected element. This might be 
+The ``rwp_attributes()`` function returns an array of attributes for the selected element. This might be 
 useful if you for example want to create the elements later with Javascript.
 
 ````php
 <?php
-$img_attributes = Picture::create( 'attributes', $attachment_id, array(
+$img_attributes = rwp_attributes( $attachment_id, array(
 	'element' => 'img'
 ) );
 
@@ -469,7 +471,7 @@ It of course works with the picture element to:
 
 ```php
 <?php
-$picture_attributes = Picture::create( 'attributes', $attachment_id, array(
+$picture_attributes = rwp_attributes( $attachment_id, array(
 	'element' => 'picture'
 ) );
 
@@ -496,7 +498,7 @@ It is also possible to pass custom settings to the function.
 
 ```php
 <?php
-$picture_attributes = Picture::create( 'attributes', $attachment_id, array(
+$picture_attributes = rwp_attributes( $attachment_id, array(
 	'element' => 'picture',
 	'sizes' => array('thumbnail', 'medium'),
 	'media_queries' => array(
@@ -520,14 +522,14 @@ $picture_attributes = array(
 ````
 
 ###<a name="functions-reference"></a>Reference
+RWP is providing the following functions:
 
-````php
-<?php
-echo Picture::create( $type, $attachment_id, $settings );
-?>
-````
+- ``rwp_img( $attachment_id, $settings )``
+- ``rwp_picture( $attachment_id, $settings )``
+- ``rwp_span( $attachment_id, $settings )``
+- ``rwp_attributes( $attachment_id, $settings )``
+- ``rwp_style( $attachment_id, $settings )``
 
-* **$type**: (string) (required). 'img', 'element', 'attributes' or 'style'.
 * **$attachment_id**: (integer) (required). The ID of the attachment.
 * **$settings**: (array) (optional).
 
@@ -677,12 +679,56 @@ echo rwp_picture( $attachment_id, $settings );
 </span>
 ````
 
-##<a name="filters"></a>Filters  
-RWP currently offers one filter that you can use. It allows you to add additional filters (confusing, I know) that RWP 
+##<a name="filters"></a>Filters   
+###<a name="filters-edit-attributes"></a>Edit attributes  
+The ``rwp_edit_attributes`` filter allows you to edit the attributes of the generated element.  
+````php
+<?php
+function edit_attributes( $attributes ) {
+	// Do something with $attributes...
+	return $attributes;
+}
+add_filter( 'rwp_edit_attributes', 'edit_attributes' );
+?>
+````
+**Example**
+````html
+<!-- Original image -->
+<img src="large.jpg" class="size-large" alt="My image">
+````
+````php
+<?php
+function edit_attributes( $attributes ) {
+	// $attributes equals this:
+	// $attributes = array(
+	//   'sizes' => '(min-width: 300px) 1024px, (min-width: 150px) 300px, 150px',
+	//   'class' => 'size-large',
+	//   'alt' => 'My image'
+	// );
+	return $attributes;
+}
+add_filter( 'rwp_edit_attributes', 'edit_attributes' );
+?>
+````
+This can be useful if you for example want to edit the ``sizes`` attribute in specific situations.  
+The following example overrides the generated ``sizes`` attribute when the original image has the ``size-large`` class.
+````php
+<?php
+function edit_attributes( $attributes ) {
+	if ( is_integer( strpos( $attributes['class'], 'size-large') ) ) {
+		$attributes['sizes'] = '(min-width: 500px) 1024px, (min-width: 300px) 300px, 150px';
+	}
+	return $attributes;
+}
+add_filter( 'rwp_edit_attributes', 'edit_attributes' );
+?>
+````
+
+###<a name="filters-add-filters"></a>Add filters  
+The ``rwp_add_filters`` filter allows you to add additional filters (confusing, I know) that RWP 
 should be applied on.  
 RWP is by default applied to the ``post_thumbnail_html`` and ``the_content`` filters. Any images found inside 
 these filters will be made responsive.  
-You can add additional filters by using the ``rwp_add_filters`` filter.
 
 ````php
 <?php
@@ -694,7 +740,7 @@ add_filter( 'rwp_add_filters', 'add_filters' );
 ?>
 ````
 
-##<a name="ignores-images"></a>Ignored images  
+##<a name="ignore-images"></a>Ignored images  
 There might be times when you simply don't want RWP to do anything with an image. This can be achived by adding the 
 `rwp-not-responsive` class to the image.
 
