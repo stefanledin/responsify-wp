@@ -23,6 +23,9 @@ Responsify WP is the WordPress plugin that cares about responsive images.
 * Handpick which image sizes to use.
 * Responsive background images.
 
+### Demo
+[https://www.youtube.com/watch?v=3ThYWO6vHKI](https://www.youtube.com/watch?v=3ThYWO6vHKI&spfreload=10)  
+
 Responsify WP finds featured images and all images inside the content and makes them responsive.
 For example, you might have a template that looks like this:  
 
@@ -190,6 +193,7 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * New filter: rwp_edit_attributes. It allows you to edit the attributes before they are applied to the generated element.
 * Picturefill has been upgraded to version 2.3.1.
 * Bugfixes and improvements.
+* Tested with WordPress 4.2
 * Thanks to @mawosch for the help with this release.
 
 = 1.7.3 =

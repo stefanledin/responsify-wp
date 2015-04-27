@@ -9,6 +9,10 @@
 * Handpick which image sizes to use.
 * Responsive background images.
 
+**Basic demonstration**  
+[https://www.youtube.com/watch?v=3ThYWO6vHKI](https://www.youtube.com/watch?v=3ThYWO6vHKI&spfreload=10)  
+**Demo site**  
+[http://responsifywp.com/demo/](http://responsifywp.com/demo/)
 
 ###Content
 - [Description](#description)
@@ -529,10 +533,7 @@ RWP is providing the following functions:
 - ``rwp_span( $attachment_id, $settings )``
 - ``rwp_attributes( $attachment_id, $settings )``
 - ``rwp_style( $attachment_id, $settings )``
-
-* **$attachment_id**: (integer) (required). The ID of the attachment.
-* **$settings**: (array) (optional).
-
+  
 ####<a name="functions-reference-settings"></a>Settings
 These are the settings that is currently avaliable:
 
