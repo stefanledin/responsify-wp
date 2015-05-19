@@ -28,6 +28,7 @@ class Responsify_WP_Admin
 	public function enqueue_scripts()
 	{
 		wp_enqueue_style( 'rwp_stylesheet', plugins_url( '/css/responsify-wp.css', __FILE__ ), null, null );
+		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'backbone' );
 		wp_enqueue_script( 'rwp_scripts', plugins_url( '/js/responsify-wp.js', __FILE__ ), array( 'jquery', 'backbone' ), null, true );
 	}
@@ -46,6 +47,7 @@ class Responsify_WP_Admin
 		register_setting( 'responsify-wp-settings', 'rwp_retina' );
 		register_setting( 'responsify-wp-settings', 'selected_element' );
 		register_setting( 'responsify-wp-settings', 'ignored_image_formats' );
+		register_setting( 'responsify-wo-settings', 'rwp_custom_media_queries' );
 	}
 
 }

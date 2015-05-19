@@ -1,3 +1,21 @@
+<?php 
+/*update_option( 'rwp_custom_media_queries', array(
+	'default' => array(
+		'smallest_image_size' => 'thumbnail',
+		array(
+			'image_size' => 'medium',
+			'media_property' => 'min-width',
+			'media_value' => '500px'
+		),
+		array(
+			'image_size' => 'large',
+			'media_property' => 'min-width',
+			'media_value' => '1024px'
+		)
+	),
+	'scenario'
+) );*/
+?>
 <h3>Custom media queries</h3>
 <table class="wp-list-table widefat">
 	<thead>

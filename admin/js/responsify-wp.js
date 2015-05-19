@@ -22,6 +22,7 @@
 	});
 	rwp.MediaQueryView = Backbone.View.extend({
 		tagName: 'tr',
+		className: 'sortable',
 		initialize: function () {
 			this.render();
 		},
@@ -65,19 +66,27 @@
 		}
 	});
 	// New up stuff
-	rwp.mediaQueries = new rwp.MediaQueryCollection();
+	//rwp.mediaQueries = new rwp.MediaQueryCollection();
+	rwp.mediaQueries = new rwp.MediaQueryCollection([
+		new rwp.MediaQueryModel({image_size: 'medium', property: 'min-width', value: '150px'}),
+		new rwp.MediaQueryModel({image_size: 'large', property: 'min-width', value: '300px'})
+	]);
 	
 	rwp.imageSizes = new rwp.ImageSizesCollection();
 	for (var i = rwp.image_sizes.length - 1; i >= 0; i--) {
 		rwp.imageSizes.add(new rwp.ImageSizeModel({name: rwp.image_sizes[i]}));
 	};
 	
-	/*rwp.mediaQueries = new rwp.MediaQueryCollection([
-		new rwp.MediaQueryModel({image_size: 'medium', property: 'min-width', value: '150px'}),
-		new rwp.MediaQueryModel({image_size: 'large', property: 'min-width', value: '300px'})
-	]);*/
 	new rwp.AddMediaQueryView;
 	new rwp.MediaQueryTableView({collection: rwp.mediaQueries});
+
+	$('.js-media-queries-table').sortable({
+		axis: 'y',
+		items: '> tr.sortable',
+		update: function () {
+			
+		}
+	});
 
 	$('div.input-group').find('input').on('click', function () {
 		var id, displayValue, $root;
