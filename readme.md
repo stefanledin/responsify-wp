@@ -109,7 +109,7 @@ limitations and is not the recommended.
 ````
 
 ##<a name="settings"></a>Settings
-###<a name"settings-image-sizes"></a>Image sizes
+###<a name="settings-image-sizes"></a>Image sizes
 You can **select which image sizes** that the plugin should use from the settings page.  
 These settings can be overwritten from your templates. 
 
@@ -140,7 +140,7 @@ if ( $query->have_posts() ) {
 ?>
 ````
 
-###<a name"settings-sizes-attribute"></a>Sizes attribute
+###<a name="settings-sizes-attribute"></a>Sizes attribute
 By default, ``<img>`` tags with ``sizes``/``srcset`` is the selected markup pattern. ``100vw`` is the default value of 
 the ``sizes`` attribute, but it's possible to specify your own. 
 ````php
@@ -164,7 +164,7 @@ This will produce the following:
 
 ``large.jpg`` will be selected when the window width is at least 500px. On smaller screens, ``medium.jpg`` will be selected.  
 
-###<a name"settings-media-queries"></a>Media queries
+###<a name="settings-media-queries"></a>Media queries
 If you've selected the ``picture`` element in the settings, you can specify your own media queries for the different image sizes.
 
 ````php
@@ -193,7 +193,7 @@ In the example above, ``thumbnail`` is the smallest image size and should theref
 </picture>
 ````
 
-###<a name"settings-retina"></a>Retina
+###<a name="settings-retina"></a>Retina
 On the RWP settings page, you can choose if high resolution (retina) images should be used or not. This can be overwritten 
 by setting ``retina`` to either ``true`` or ``false`` in the ``rwp_settings`` array.  
 If set to ``true``, RWP will use all images that has the ``@[value]x`` suffix in the name, like ``thumbnail@2x`` or 
