@@ -7,6 +7,7 @@ class Content_Filter
 	public function __construct( $filter )
 	{
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
+
 		add_filter( $filter, array( $this, 'filter_images' ), 11 );
 	}
 
@@ -67,6 +68,8 @@ class Content_Filter
      * @return mixed
      */
     public function filter_images ( $content ) {
+        global $post;
+        die(var_dump(get_page_template_slug($post->ID)));
     	// Don't do anything with the RSS feed.
     	if ( is_feed() ) return $content;
 		// Cache $this. Javascript style for PHP 5.3

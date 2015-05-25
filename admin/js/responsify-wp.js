@@ -1,6 +1,24 @@
 ;(function ($) {
 
 	window.rwp = window.rwp || {};
+
+	// Custom Media Queries
+	rwp.cmq = {
+		collections: {
+			SettingsCollection: Backbone.Collection.extend(),
+			MediaQueryCollection: Backbone.Collection.extend()
+		},
+		models: {
+			SettingsModel: Backbone.Model.extend(),
+			MediaQueryModel: Backbone.Model.extend()
+		},
+		views: {},
+		initialize: function () {
+			// New up stuff
+			var mediaQueries = new rwp.collections.MediaQueryCollection();
+		}
+	};
+
 	
 	// Models
 	rwp.MediaQueryModel = Backbone.Model.extend();
@@ -65,6 +83,7 @@
 			rwp.mediaQueries.add(mediaQuery);
 		}
 	});
+
 	// New up stuff
 	//rwp.mediaQueries = new rwp.MediaQueryCollection();
 	rwp.mediaQueries = new rwp.MediaQueryCollection([
@@ -77,6 +96,7 @@
 		rwp.imageSizes.add(new rwp.ImageSizeModel({name: rwp.image_sizes[i]}));
 	};
 	
+
 	new rwp.AddMediaQueryView;
 	new rwp.MediaQueryTableView({collection: rwp.mediaQueries});
 
@@ -84,7 +104,7 @@
 		axis: 'y',
 		items: '> tr.sortable',
 		update: function () {
-			
+		    console.log('update');
 		}
 	});
 
