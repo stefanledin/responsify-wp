@@ -1,43 +1,23 @@
 <?php
-$custom_media_queries = array(
-    'default' => array(
-        array(
-            'image_size' => 'thumbnail'
-        ),
-        array(
-            'image_size' => 'medium',
-            'media_property' => 'min-width',
-            'media_value' => '500px'
-        ),
-        array(
-            'image_size' => 'large',
-            'media_property' => 'min-width',
-            'media_value' => '1024px'
-        )
-    ),
-    'scenarios' => array(
-        array(
-            'type' => 'page',
-            'operator' => '==',
-            'value' => 'sample-page',
-            'media_queries' => array(
-                array(
-                    'image_size' => 'medium'
-                ),
-                array(
-                    'image_size' => 'large',
-                    'media_property' => 'min-width',
-                    'media_value' => '768px'
-                )
+$rwp_custom_media_queries = array(
+    array(
+        'name' => 'default',
+        'mediaQueries' => array(
+            'smallestImage' => 'thumbnail',
+            'breakpoints' => array(
+                'image_size' => 'medium',
+                'property' => 'min-width',
+                'value' => '500px'
             )
-        ),
-        array(
-            'type' => 'template',
-            'operator'
         )
     )
 );
-// update_option( 'rwp_custom_media_queries', $custom_media_queries);
+/*echo '<pre>';
+    print_r(get_option('rwp_custom_media_queries'));
+echo '</pre>';
+die();*/
+#update_option( 'rwp_custom_media_queries', $custom_media_queries);
+#delete_option('rwp_custom_media_queries');
 ?>
 <h3>Custom media queries</h3>
 <table class="wp-list-table widefat striped">
@@ -48,7 +28,7 @@ $custom_media_queries = array(
         </tr>
     </thead>
     <tbody class="rwp-custom-media-queries">
-        <tr>
+        <!--<tr>
             <td>
                 <div class="rwp-custom-media-queries-settings-setting">
                     <p class="row-title">Default</p>
@@ -97,8 +77,8 @@ $custom_media_queries = array(
             <td>
                 <button class="button">Close</button>
             </td>
-        </tr>
-        <tr>
+        </tr>-->
+        <!--<tr>
             <td>
                 <p><strong>When template is equal to wide</strong></p>
             </td>
@@ -115,11 +95,11 @@ $custom_media_queries = array(
                 <button class="button">Edit</button>
                 <button class="button">Delete</button> 
             </td>
-        </tr>
+        </tr>-->
     </tbody>
 </table>
 
-<div class="js-add-setting">
+<div class="rwp-add-setting">
     <!-- <label>When
         <select>
             <option>Page</option>
