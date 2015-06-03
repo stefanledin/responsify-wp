@@ -3,7 +3,7 @@ $selected_element = get_option( 'selected_element', 'img' );
 ?>
 <h3><?php _e('Markup pattern', 'rwp'); ?></h3>
 <p>
-    <?php _e('By default, RWP will create <b>img</b> tags with the <b>srcset</b> and <b>sizes</b> attributes using <a href="http://scottjehl.github.io/picturefill/">Picturefill 2.1.0</a>.', 'rwp'); ?>
+    <?php _e('By default, RWP will create <b>img</b> tags with the <b>srcset</b> and <b>sizes</b> attributes using <a href="http://scottjehl.github.io/picturefill/">Picturefill 2.3.1</a>.', 'rwp'); ?>
 	<br>
 	<?php _e('You can also use <a href="https://github.com/scottjehl/picturefill/blob/1.2.1/README.md">Picturefill 1.2.1</a> and the old markup pattern that uses <b>span</b> element. That has some limitations though.', 'rwp') ?>
 </p>
