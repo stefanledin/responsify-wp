@@ -4,10 +4,10 @@
 .hide-on-edit {
 	display: inline-block;
 }
-.edit .show-on-edit {
+tr.edit .show-on-edit {
 	display: inline-block;
 }
-.edit .hide-on-edit {
+tr.edit .hide-on-edit {
 	display: none;
 }
 

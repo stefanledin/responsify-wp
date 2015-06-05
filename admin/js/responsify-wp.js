@@ -4,12 +4,14 @@
 
 	// Custom Media Queries
 	rwp.cmq = {
+		events: {},
 		collections: {
 			SettingsCollection: Backbone.Collection.extend()
 		},
 		models: {
 			SettingsModel: Backbone.Model.extend({
 				defaults: {
+					name: 'New custom media query',
 					mediaQueries: {
 						smallestImage: 'thumbnail',
 						breakpoints: []
@@ -20,13 +22,23 @@
 		views: {
 			SettingsTable: Backbone.View.extend({
 				el: 'tbody.rwp-custom-media-queries',
+				events: function () {
+					var _this = this;
+
+					$('.rwp-add-setting').find('button').on('click', function (e) {
+						e.preventDefault();
+						$(this).blur();
+						_this.addSetting( new rwp.cmq.models.SettingsModel() );
+					});
+				},
 				initialize: function () {
-					this.collection.each(function (model) {
-						var row = new rwp.cmq.views.SettingsTableRow({
-							model: model
-						});
-						this.$el.append(row.el);
-					}, this);
+					this.collection.each(this.addSetting, this);
+				},
+				addSetting: function (setting) {
+					var row = new rwp.cmq.views.SettingsTableRow({
+						model: setting
+					});
+					this.$el.append(row.el);
 				}
 			}),
 			SettingsTableRow: Backbone.View.extend({
@@ -53,8 +65,22 @@
 				render: function () {
 					this.$el.empty();
 					var html = '<td>';
-							html += '<p class="row-title">'+this.model.get('name')+'</p>';
-							html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
+							//html += '<p class="row-title">'+this.model.get('name')+'</p>';
+							//html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
+							html += '<p><select>';
+								html += '<option>When...</option>';
+								html += '<option>Default</option>';
+							html += '</select>';
+							html += '<select>';
+								html += '<option>Post/page ID</option>';
+								html += '<option>Page template</option>';
+								html += '<option>Image...</option>';
+							html += '</select>';
+							html += ' is <select>';
+								html += '<option>equal to</option>';
+								html += '<option>not equal to</option>';
+							html += '</select>';
+							html += '</p>';
 							html += '<div class="rwp-media-query-table"></div>';
 						html += '</td>';
 						html += '<td>';
@@ -265,7 +291,7 @@
 		},
 		init: function () {
 			// New up stuff
-			var settings = new rwp.cmq.collections.SettingsCollection([
+			var placeholder = [
 				new rwp.cmq.models.SettingsModel({
 					name: 'Default',
 					mediaQueries: {
@@ -302,7 +328,12 @@
 						]
 					}
 				})
-			]);
+			];
+			var models = [];
+			for (var customMediaQuery in rwp.customMediaQueries) {
+				models.push(new rwp.cmq.models.SettingsModel(rwp.customMediaQueries[customMediaQuery]));
+			}
+			var settings = new rwp.cmq.collections.SettingsCollection(models);
 			var settingsTable = new rwp.cmq.views.SettingsTable({
 				collection: settings
 			});
