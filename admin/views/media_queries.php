@@ -1,24 +1,13 @@
 <?php
-$rwp_custom_media_queries = array(
-    array(
-        'name' => 'default',
-        'mediaQueries' => array(
-            'smallestImage' => 'thumbnail',
-            'breakpoints' => array(
-                'image_size' => 'medium',
-                'property' => 'min-width',
-                'value' => '500px'
-            )
-        )
-    )
-);
-/*echo '<pre>';
+echo '<pre>';
     print_r(get_option('rwp_custom_media_queries'));
 echo '</pre>';
-die();*/
-#update_option( 'rwp_custom_media_queries', $custom_media_queries);
-#delete_option('rwp_custom_media_queries');
 ?>
+<script type="text/javascript">
+window.rwp = window.rwp || {};
+rwp.customMediaQueries = <?php echo json_encode(get_option('rwp_custom_media_queries'));?>;
+console.log(rwp.customMediaQueries);
+</script>
 <h3>Custom media queries</h3>
 <table class="wp-list-table widefat striped">
     <thead>

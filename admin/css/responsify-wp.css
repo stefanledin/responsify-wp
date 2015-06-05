@@ -1,3 +1,16 @@
+.show-on-edit {
+	display: none;
+}
+.hide-on-edit {
+	display: inline-block;
+}
+.edit .show-on-edit {
+	display: inline-block;
+}
+.edit .hide-on-edit {
+	display: none;
+}
+
 .option-message {
 	display: inline-block;
 	line-height: 19px;
