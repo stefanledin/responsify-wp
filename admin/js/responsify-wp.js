@@ -65,22 +65,9 @@
 				render: function () {
 					this.$el.empty();
 					var html = '<td>';
-							//html += '<p class="row-title">'+this.model.get('name')+'</p>';
-							//html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
-							html += '<p><select>';
-								html += '<option>When...</option>';
-								html += '<option>Default</option>';
-							html += '</select>';
-							html += '<select>';
-								html += '<option>Post/page ID</option>';
-								html += '<option>Page template</option>';
-								html += '<option>Image...</option>';
-							html += '</select>';
-							html += ' is <select>';
-								html += '<option>equal to</option>';
-								html += '<option>not equal to</option>';
-							html += '</select>';
-							html += '</p>';
+							html += '<p class="row-title">'+this.model.get('name')+'</p>';
+							html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
+							html += '<div class="rwp-setting-rules"></div>';
 							html += '<div class="rwp-media-query-table"></div>';
 						html += '</td>';
 						html += '<td>';
@@ -88,6 +75,10 @@
 						html += '</td>';
 					this.$el.append(html);
 					
+					var settingRules = new rwp.cmq.views.SettingRules({
+						model: this.model
+					});
+					this.$el.find('.rwp-setting-rules').append(settingRules.el);
 					var mediaQueryTable = new rwp.cmq.views.MediaQueryTable({
 						//model: this.model.get('mediaQueries')
 						model: this.model
@@ -233,6 +224,46 @@
 					return this;
 				}
 			}),
+			SettingRules: Backbone.View.extend({
+				events: {
+					'change select.rwp-setting-rule-default': 'checkIfRuleDefault'
+				},
+				checkIfRuleDefault: function (e) {
+					var $whenSelect = this.$el.find('select.rwp-setting-rule-when');
+					if (e.currentTarget.value === 'true') {
+						$whenSelect.hide();
+					} else {
+						$whenSelect.show();
+					}
+				},
+				initialize: function () {
+					this.render();
+				},
+				render: function () {
+					var name = 'rwp_custom_media_queries['+this.model.cid+'][rule]';
+					var html = '';
+					html += '<p>';
+						html += '<select class="rwp-setting-rule-default" name="'+name+'[default]">';
+							html += '<option value="true">Default setting</option>';
+							html += '<option value="false">When...</option>';
+						html += '</select>';
+						html += '<select class="rwp-setting-rule-when" name="'+name+'[when][key]">';
+							html += '<option value="page-id">Page ID</option>';
+							html += '<option value="page-slug">Page slug</option>';
+							html += '<option value="page-template">Page template</option>';
+							html += '<option value="image">Image</option>';
+						html += '</select>';
+						html += ' is <select class="rwp-setting-rule-compare" name="'+name+'[when][compare]">';
+							html += '<option>equal to</option>';
+							html += '<option>not equal to</option>';
+						html += '</select>';
+						html += '<input type="text" class="rwp-setting-rule-value" name="'+name+'[when][value]">'
+					html += '</p>';
+					
+					this.$el.html(html);
+					return this;
+				}
+			}),
 			AddBreakpoint: Backbone.View.extend({
 				className: 'rwp-add-breakpoint',
 				initialize: function () {
@@ -241,7 +272,7 @@
 				render: function () {
 					var select = new rwp.cmq.views.ImageSizeSelect();
 					var html = [
-						'<br><label>Add breakpoint '+
+						'<br><label>Add breakpoint: '+
 							'<div class="rwp-image-size-select" style="display: inline;"></div>'+
 							'<select name="property">'+
 								'<option>min-width</option>'+
