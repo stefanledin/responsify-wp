@@ -1,11 +1,15 @@
 <?php
+#delete_option('rwp_custom_media_queries');
+$default_option = array(
+    array( 'name' => 'Default' )
+);
 echo '<pre>';
     print_r(get_option('rwp_custom_media_queries'));
 echo '</pre>';
 ?>
 <script type="text/javascript">
     window.rwp = window.rwp || {};
-    rwp.customMediaQueries = <?php echo json_encode(get_option('rwp_custom_media_queries', array( array('name' => 'Default') )));?>;
+    rwp.customMediaQueries = <?php echo json_encode(get_option('rwp_custom_media_queries'));?>;
 </script>
 <h3>Custom media queries</h3>
 <table class="wp-list-table widefat striped">

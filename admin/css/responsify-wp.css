@@ -1,3 +1,6 @@
+.rwp-setting-rules {
+	margin-bottom: 10px;
+}
 .show-on-edit {
 	display: none;
 }
@@ -8,6 +11,13 @@ tr.edit .show-on-edit {
 	display: inline-block;
 }
 tr.edit .hide-on-edit {
+	display: none;
+}
+.rwp-setting-rule-scenario-builder,
+.rwp-setting-rule-scenario-builder.rwp-is-scenario {
+	display: inline;
+}
+.rwp-setting-rule-scenario-builder.rwp-is-default {
 	display: none;
 }
 

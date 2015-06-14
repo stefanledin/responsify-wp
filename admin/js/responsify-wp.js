@@ -12,9 +12,12 @@
 			SettingsModel: Backbone.Model.extend({
 				defaults: {
 					name: 'New custom media query',
+					rule: {
+						default: true,
+						when: {}
+					},
 					mediaQueries: {
-						smallestImage: 'thumbnail',
-						breakpoints: []
+						smallestImage: 'thumbnail'
 					}
 				}
 			}),
@@ -47,6 +50,7 @@
 					'click .rwp-add-breakpoint button': 'addMediaQuery'
 				},
 				addMediaQuery: function (e) {
+					console.log('click');
 					e.preventDefault();
 					var $breakpointForm = this.$el.find('.rwp-add-breakpoint');
 					var mediaQueries = this.model.get('mediaQueries');
@@ -56,13 +60,14 @@
 						property: $breakpointForm.find('select[name="property"]').val(),
 						value: $breakpointForm.find('input[name="breakpoint"]').val()
 					});
-					this.model.set('mediaQueries', mediaQueries);
+					//this.model.set('mediaQueries', mediaQueries);
 					this.render();
 				},
 				initialize: function () {
 					this.render();
 				},
 				render: function () {
+					console.log(this.model);
 					this.$el.empty();
 					var html = '<td>';
 							html += '<p class="row-title">'+this.model.get('name')+'</p>';
@@ -93,6 +98,7 @@
 				className: 'wp-list-table widefat',
 				initialize: function (options) {
 					this.options = options;
+					debugger;
 					this.render();
 					this.$el.find('tbody.rwp-media-queries-table').sortable({
 						axis: 'y',
@@ -225,28 +231,46 @@
 				}
 			}),
 			SettingRules: Backbone.View.extend({
+				elements: {},
 				events: {
-					'change select.rwp-setting-rule-default': 'checkIfRuleDefault'
+					'change select.rwp-setting-rule-default': 'updateRules'
 				},
-				checkIfRuleDefault: function (e) {
-					var $whenSelect = this.$el.find('select.rwp-setting-rule-when');
-					if (e.currentTarget.value === 'true') {
-						$whenSelect.hide();
-					} else {
-						$whenSelect.show();
-					}
+				updateRules: function (e) {
+					var rule = this.model.get('rule');
+					rule.default = (e.currentTarget.value === 'true');
+					this.model.set(rule);
+					this.model.trigger('change:rule');
 				},
 				initialize: function () {
+					this.model.on('change:rule', this.scenarioBuilderVisibility, this);
+
 					this.render();
+					
+					this.elements.$scenarioBuilder = this.$el.find('.rwp-setting-rule-scenario-builder');
+					
+					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
+					//console.log(this.model.get('rule').default);
+					this.scenarioBuilderVisibility();
+				},
+				scenarioBuilderVisibility: function () {
+					var displayValue;
+					if (this.model.get('rule').default) {
+						displayValue = 'none';
+					} else {
+						displayValue = 'inline';
+					}
+					this.elements.$scenarioBuilder.css('display', displayValue);
 				},
 				render: function () {
 					var name = 'rwp_custom_media_queries['+this.model.cid+'][rule]';
 					var html = '';
-					html += '<p>';
-						html += '<select class="rwp-setting-rule-default" name="'+name+'[default]">';
-							html += '<option value="true">Default setting</option>';
-							html += '<option value="false">When...</option>';
-						html += '</select>';
+					
+					html += '<select class="rwp-setting-rule-default" name="'+name+'[default]">';
+						html += '<option value="true">Default setting</option>';
+						html += '<option value="false">When...</option>';
+					html += '</select>';
+					
+					html += '<div class="rwp-setting-rule-scenario-builder">';
 						html += '<select class="rwp-setting-rule-when" name="'+name+'[when][key]">';
 							html += '<option value="page-id">Page ID</option>';
 							html += '<option value="page-slug">Page slug</option>';
@@ -258,7 +282,7 @@
 							html += '<option>not equal to</option>';
 						html += '</select>';
 						html += '<input type="text" class="rwp-setting-rule-value" name="'+name+'[when][value]">'
-					html += '</p>';
+					html += '</div>';
 					
 					this.$el.html(html);
 					return this;
@@ -349,12 +373,12 @@
 							{
 								imageSize: 'medium',
 								property: 'min-width',
-								value: '300px'
+								value: '500px'
 							},
 							{
 								imageSize: 'large',
 								property: 'min-width',
-								value: '1024px'
+								value: '1440px'
 							}
 						]
 					}
@@ -364,7 +388,9 @@
 			for (var customMediaQuery in rwp.customMediaQueries) {
 				models.push(new rwp.cmq.models.SettingsModel(rwp.customMediaQueries[customMediaQuery]));
 			}
+			//console.log(new rwp.cmq.collections.SettingsCollection(models));
 			var settings = new rwp.cmq.collections.SettingsCollection(models);
+			//console.log(settings);
 			var settingsTable = new rwp.cmq.views.SettingsTable({
 				collection: settings
 			});
