@@ -50,24 +50,22 @@
 					'click .rwp-add-breakpoint button': 'addMediaQuery'
 				},
 				addMediaQuery: function (e) {
-					console.log('click');
 					e.preventDefault();
 					var $breakpointForm = this.$el.find('.rwp-add-breakpoint');
-					var mediaQueries = this.model.get('mediaQueries');
-					mediaQueries.breakpoints = mediaQueries.breakpoints || [];
-					mediaQueries.breakpoints.push({
+					if (!this.model.get('breakpoints')) {
+						this.model.set('breakpoints', []);
+					}
+					this.model.get('breakpoints').push({
 						imageSize: $breakpointForm.find('.rwp-image-size-select select').val(),
 						property: $breakpointForm.find('select[name="property"]').val(),
 						value: $breakpointForm.find('input[name="breakpoint"]').val()
 					});
-					//this.model.set('mediaQueries', mediaQueries);
 					this.render();
 				},
 				initialize: function () {
 					this.render();
 				},
 				render: function () {
-					console.log(this.model);
 					this.$el.empty();
 					var html = '<td>';
 							html += '<p class="row-title">'+this.model.get('name')+'</p>';
@@ -85,7 +83,6 @@
 					});
 					this.$el.find('.rwp-setting-rules').append(settingRules.el);
 					var mediaQueryTable = new rwp.cmq.views.MediaQueryTable({
-						//model: this.model.get('mediaQueries')
 						model: this.model
 					});
 					var addBreakpoint = new rwp.cmq.views.AddBreakpoint();
@@ -98,7 +95,6 @@
 				className: 'wp-list-table widefat',
 				initialize: function (options) {
 					this.options = options;
-					debugger;
 					this.render();
 					this.$el.find('tbody.rwp-media-queries-table').sortable({
 						axis: 'y',
@@ -141,9 +137,7 @@
 					this.appendHeader();
 					this.appendBody();
 					var $tbody = this.$el.find('tbody');
-					_.each(this.model.get('mediaQueries').breakpoints, function (breakPoint, index) {
-						//breakPoint.mediaQueryIndex = index;
-						//var row = new rwp.cmq.views.MediaQueryRow(breakPoint);
+					_.each(this.model.get('breakpoints'), function (breakPoint, index) {
 						var row = new rwp.cmq.views.MediaQueryRow({
 							model: this.model,
 							breakPoint: breakPoint,
@@ -155,7 +149,7 @@
 					return this;
 				},
 				removeRow: function (arguments) {
-					this.model.get('mediaQueries').breakpoints.splice(arguments.mediaQueryIndex, 1);
+					this.model.get('breakpoints').splice(arguments.mediaQueryIndex, 1);
 				}
 			}),
 			MediaQueryRow: Backbone.View.extend({
@@ -249,7 +243,6 @@
 					this.elements.$scenarioBuilder = this.$el.find('.rwp-setting-rule-scenario-builder');
 					
 					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
-					//console.log(this.model.get('rule').default);
 					this.scenarioBuilderVisibility();
 				},
 				scenarioBuilderVisibility: function () {
