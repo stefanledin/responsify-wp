@@ -15,9 +15,6 @@
 					rule: {
 						default: true,
 						when: {}
-					},
-					mediaQueries: {
-						smallestImage: 'thumbnail'
 					}
 				}
 			}),
@@ -93,6 +90,12 @@
 			MediaQueryTable: Backbone.View.extend({
 				tagName: 'table',
 				className: 'wp-list-table widefat',
+				events: {
+					'change select': 'saveSmallestImageSize'
+				},
+				saveSmallestImageSize: function (e) {
+					this.model.set('smallestImage', e.currentTarget.value);	
+				},
 				initialize: function (options) {
 					this.options = options;
 					this.render();
@@ -128,7 +131,7 @@
 					].join('');	
 					this.$el.append(html);
 					var select = new rwp.cmq.views.ImageSizeSelect({
-						selected: this.model.get('mediaQueries').smallestImage
+						selected: this.model.get('smallestImage')
 					});
 					select.$el.attr('name', 'rwp_custom_media_queries['+this.model.cid+'][smallestImage]');
 					this.$el.find('td.rwp-image-size-select').append(select.el);
@@ -381,9 +384,7 @@
 			for (var customMediaQuery in rwp.customMediaQueries) {
 				models.push(new rwp.cmq.models.SettingsModel(rwp.customMediaQueries[customMediaQuery]));
 			}
-			//console.log(new rwp.cmq.collections.SettingsCollection(models));
 			var settings = new rwp.cmq.collections.SettingsCollection(models);
-			//console.log(settings);
 			var settingsTable = new rwp.cmq.views.SettingsTable({
 				collection: settings
 			});
