@@ -62,7 +62,9 @@
 				},
 				deleteMediaQuery: function (e) {
 					e.preventDefault();
-					this.remove();
+					if (window.confirm('Are you sure?')) {
+						this.remove();
+					}
 				},
 				initialize: function () {
 					this.render();
@@ -186,10 +188,12 @@
 				},
 				deleteMediaQuery: function (e) {
 					e.preventDefault();
-					this.remove();
-					this.trigger('remove', {
-						mediaQueryIndex: this.options.mediaQueryIndex
-					});
+					if (window.confirm('Are you sure?')) {
+						this.remove();
+						this.trigger('remove', {
+							mediaQueryIndex: this.options.mediaQueryIndex
+						});
+					}
 				},
 				initialize: function (options) {
 					this.options = options;
