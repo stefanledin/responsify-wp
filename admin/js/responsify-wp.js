@@ -44,7 +44,8 @@
 			SettingsTableRow: Backbone.View.extend({
 				tagName: 'tr',
 				events: {
-					'click .rwp-add-breakpoint button': 'addMediaQuery'
+					'click .rwp-add-breakpoint button': 'addMediaQuery',
+					'click button[data-action="delete"]': 'deleteMediaQuery'
 				},
 				addMediaQuery: function (e) {
 					e.preventDefault();
@@ -53,11 +54,15 @@
 						this.model.set('breakpoints', []);
 					}
 					this.model.get('breakpoints').push({
-						imageSize: $breakpointForm.find('.rwp-image-size-select select').val(),
+						image_size: $breakpointForm.find('.rwp-image-size-select select').val(),
 						property: $breakpointForm.find('select[name="property"]').val(),
 						value: $breakpointForm.find('input[name="breakpoint"]').val()
 					});
 					this.render();
+				},
+				deleteMediaQuery: function (e) {
+					e.preventDefault();
+					this.remove();
 				},
 				initialize: function () {
 					this.render();
@@ -71,6 +76,7 @@
 							html += '<div class="rwp-media-query-table"></div>';
 						html += '</td>';
 						html += '<td>';
+							html += '<button data-action="delete" class="button">Delete</button>';
 							html += '<button class="button">Close</button>';
 						html += '</td>';
 					this.$el.append(html);
@@ -191,16 +197,16 @@
 				},
 				render: function () {
 					var ImageSizeSelect = new rwp.cmq.views.ImageSizeSelect({
-						selected: this.options.breakPoint.imageSize
+						selected: this.options.breakPoint.image_size
 					});
-					ImageSizeSelect.$el.attr('name', 'rwp_custom_media_queries['+this.model.cid+'][mediaQueries]['+this.options.mediaQueryIndex+'][image_size]');
+					ImageSizeSelect.$el.attr('name', 'rwp_custom_media_queries['+this.model.cid+'][breakpoints]['+this.options.mediaQueryIndex+'][image_size]');
 					var PropertySelect = new rwp.cmq.views.MediaQueryPropertySelect({
 						selected: this.options.breakPoint.property
 					});
-					PropertySelect.$el.attr('name', 'rwp_custom_media_queries['+this.model.cid+'][mediaQueries]['+this.options.mediaQueryIndex+'][property]');
+					PropertySelect.$el.attr('name', 'rwp_custom_media_queries['+this.model.cid+'][breakpoints]['+this.options.mediaQueryIndex+'][property]');
 					var html = [
 						'<td class="js-selected-size">'+
-							'<span class="hide-on-edit">'+this.options.breakPoint.imageSize+'</span>'+
+							'<span class="hide-on-edit">'+this.options.breakPoint.image_size+'</span>'+
 							'<div class="show-on-edit"></div>'+
 						'</td>'+
 						'<td class="js-property">'+
@@ -210,7 +216,7 @@
 						'<td class="js-value">'+
 							'<span class="hide-on-edit">'+this.options.breakPoint.value+'</span>'+
 							'<div class="show-on-edit">'+
-								'<input type="text" name="rwp_custom_media_queries['+this.model.cid+'][mediaQueries]['+this.options.mediaQueryIndex+'][value]" value="'+this.options.breakPoint.value+'">'+
+								'<input type="text" name="rwp_custom_media_queries['+this.model.cid+'][breakpoints]['+this.options.mediaQueryIndex+'][value]" value="'+this.options.breakPoint.value+'">'+
 							'</div>'+
 						'</td>'+
 						'<td>'+
@@ -244,18 +250,17 @@
 					this.render();
 					
 					this.elements.$scenarioBuilder = this.$el.find('.rwp-setting-rule-scenario-builder');
-					
 					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
 					this.scenarioBuilderVisibility();
 				},
 				scenarioBuilderVisibility: function () {
 					var displayValue;
-					if (this.model.get('rule').default) {
+					if (this.model.get('rule').default === 'true') {
 						displayValue = 'none';
 					} else {
 						displayValue = 'inline';
 					}
-					this.elements.$scenarioBuilder.css('display', displayValue);
+					this.$el.find('.rwp-setting-rule-scenario-builder').css('display', displayValue);
 				},
 				render: function () {
 					var name = 'rwp_custom_media_queries['+this.model.cid+'][rule]';
