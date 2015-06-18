@@ -68,7 +68,7 @@ But once you have activated the plugin, it will look like this instead:
 <article>
 	<h1>Hello world</h1>
 	<p>Lorem ipsum dolor sit amet...</p>
-	<img sizes="(min-width 1024px) 1440px, (min-width: 300px) 1024px, (min-width: 150px) 300px, 150px" 
+	<img sizes="(min-width: 1024px) 1440px, (min-width: 300px) 1024px, (min-width: 150px) 300px, 150px" 
 	    srcset="thumbnail.jpg 150w,
 	    medium.jpg 300w,
 	    large.jpg 1024w,
@@ -448,7 +448,7 @@ echo rwp_style( $dynamic_header_image_ID, array(
 	'sizes' => array('medium', 'large', 'full'),
 	'media_queries' => array(
 		'large' => 'min-width: 500px',
-		'full' => 'min-width 1024px'
+		'full' => 'min-width: 1024px'
 	)
 ) );
 ?>
