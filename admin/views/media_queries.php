@@ -16,7 +16,6 @@ echo '</pre>';
     <thead>
         <tr>
             <th>Settings</th>
-            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody class="rwp-custom-media-queries"></tbody>

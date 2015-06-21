@@ -13,7 +13,7 @@
 				defaults: {
 					name: 'New custom media query',
 					rule: {
-						default: true,
+						default: 'true',
 						when: {}
 					}
 				}
@@ -45,7 +45,13 @@
 				tagName: 'tr',
 				events: {
 					'click .rwp-add-breakpoint button': 'addMediaQuery',
-					'click button[data-action="delete"]': 'deleteMediaQuery'
+					'click .row-title a': 'showSettings',
+					'click .edit a': 'showSettings',
+					'click a.submitdelete': 'deleteMediaQuery'
+				},
+				showSettings: function (e) {
+					e.preventDefault();
+					this.$el.find('.rwp-setting-wrapper').css('display', 'block');
 				},
 				addMediaQuery: function (e) {
 					e.preventDefault();
@@ -67,19 +73,26 @@
 					}
 				},
 				initialize: function () {
+					this.model.on('change:name', this.render, this);
 					this.render();
 				},
 				render: function () {
 					this.$el.empty();
 					var html = '<td>';
-							html += '<p class="row-title">'+this.model.get('name')+'</p>';
-							html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
-							html += '<div class="rwp-setting-rules"></div>';
-							html += '<div class="rwp-media-query-table"></div>';
-						html += '</td>';
-						html += '<td>';
-							html += '<button data-action="delete" class="button">Delete</button>';
-							html += '<button class="button">Close</button>';
+							html += '<div class="row-title">';
+								html += '<a href="#">'+this.model.get('name')+'</a>';
+							html += '</div>';
+							html += '<div class="row-actions">';
+								html += '<span class="edit"><a href="#">Edit</a></span> | ';
+								html += '<span class="trash"><a class="submitdelete" href="#">Delete</a></span>';
+							html += '</div>';
+							html += '<div class="rwp-setting-wrapper" style="display: none;">';
+								html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
+								html += '<div class="rwp-setting-rules"></div>';
+								html += '<div class="rwp-media-query-table"></div>';
+								html += '<a href="#inline-edit" class="button-secondary cancel alignleft">Cancel</a>';
+								html += '<a href="#inline-edit" class="button-primary save alignright">Update</a>';
+							html += '</div>';
 						html += '</td>';
 					this.$el.append(html);
 					
@@ -119,7 +132,6 @@
 	                            '<th>Image size</th>'+
 	                            '<th>Property</th>'+
 	                            '<th>Value</th>'+
-	                            '<th></th>'+
 	                        '</tr>'+
 	                    '</thead>'
 					].join('');
@@ -131,7 +143,6 @@
 							'<tr>'+
 								'<td class="rwp-image-size-select"><p>Smallest image size:</p>'+
 								'</td>'+
-								'<td></td>'+
 								'<td></td>'+
 								'<td></td>'+
 							'</tr>'+
@@ -240,11 +251,13 @@
 			SettingRules: Backbone.View.extend({
 				elements: {},
 				events: {
-					'change select.rwp-setting-rule-default': 'updateRules'
+					'change select.rwp-setting-rule-default': 'updateRules',
+					'change select.rwp-setting-rule-when': 'updateRules',
 				},
 				updateRules: function (e) {
 					var rule = this.model.get('rule');
 					rule.default = (e.currentTarget.value === 'true');
+					rule.when.key = this.$el.find('select.rwp-setting-rule-when').val();
 					this.model.set(rule);
 					this.model.trigger('change:rule');
 				},
@@ -255,24 +268,22 @@
 					
 					this.elements.$scenarioBuilder = this.$el.find('.rwp-setting-rule-scenario-builder');
 					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
+					this.$el.find('select.rwp-setting-rule-when')[0].value = this.model.get('rule').when.key;
 					this.scenarioBuilderVisibility();
 				},
 				scenarioBuilderVisibility: function () {
-					var displayValue;
-					if (this.model.get('rule').default === 'true') {
-						displayValue = 'none';
-					} else {
-						displayValue = 'inline';
-					}
-					this.$el.find('.rwp-setting-rule-scenario-builder').css('display', displayValue);
+					var scenarioBuilderdisplayValue = (this.model.get('rule').default === 'true') ? 'none' : 'inline';
+					var whenImageDisplayValue = (this.model.get('rule').when.key === 'image') ? 'inline' : 'none';
+					this.$el.find('.rwp-setting-rule-scenario-builder').css('display', scenarioBuilderdisplayValue);
+					this.$el.find('.rwp-setting-rule-when-image').css('display', whenImageDisplayValue);
 				},
 				render: function () {
 					var name = 'rwp_custom_media_queries['+this.model.cid+'][rule]';
 					var html = '';
 					
 					html += '<select class="rwp-setting-rule-default" name="'+name+'[default]">';
-						html += '<option value="true">Default setting</option>';
-						html += '<option value="false">When...</option>';
+						html += '<option value="true">Use as default setting</option>';
+						html += '<option value="false">Use when...</option>';
 					html += '</select>';
 					
 					html += '<div class="rwp-setting-rule-scenario-builder">';
@@ -282,9 +293,14 @@
 							html += '<option value="page-template">Page template</option>';
 							html += '<option value="image">Image</option>';
 						html += '</select>';
-						html += ' is <select class="rwp-setting-rule-compare" name="'+name+'[when][compare]">';
-							html += '<option>equal to</option>';
-							html += '<option>not equal to</option>';
+						html += '<select class="rwp-setting-rule-when-image" name="'+name+'[when][image]">';
+							html += '<option>class</option>';
+							html += '<option>id</option>';
+							html += '<option>size is</option>';
+						html += '</select>';
+						html += ' <select class="rwp-setting-rule-compare" name="'+name+'[when][compare]">';
+							html += '<option value="==">is equal to</option>';
+							html += '<option value="!=">is not equal to</option>';
 						html += '</select>';
 						html += '<input type="text" class="rwp-setting-rule-value" name="'+name+'[when][value]">'
 					html += '</div>';
