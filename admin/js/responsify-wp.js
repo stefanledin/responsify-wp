@@ -11,6 +11,7 @@
 		models: {
 			SettingsModel: Backbone.Model.extend({
 				defaults: {
+					edit_mode: 1,
 					name: 'New custom media query',
 					rule: {
 						default: 'true',
@@ -45,13 +46,27 @@
 				tagName: 'tr',
 				events: {
 					'click .rwp-add-breakpoint button': 'addMediaQuery',
-					'click .row-title a': 'showSettings',
-					'click .edit a': 'showSettings',
+					'click .row-title a': 'toggleSettings',
+					'click .edit a': 'toggleSettings',
 					'click a.submitdelete': 'deleteMediaQuery'
 				},
-				showSettings: function (e) {
+				toggleSettings: function (e) {
 					e.preventDefault();
-					this.$el.find('.rwp-setting-wrapper').css('display', 'block');
+					if (this.model.get('edit_mode')) {
+						this.hideSettings();
+					} else {
+						this.showSettings();
+					}
+				},
+				showSettings: function () {
+					this.model.set('edit_mode', 1);
+					this.$el.addClass('rwp-setting-row-open');
+					this.$el.find('.rwp-setting-wrapper').slideDown();
+				},
+				hideSettings: function () {
+					this.model.set('edit_mode', 0);
+					this.$el.removeClass('rwp-setting-row-open');
+					this.$el.find('.rwp-setting-wrapper').slideUp();
 				},
 				addMediaQuery: function (e) {
 					e.preventDefault();
@@ -78,6 +93,9 @@
 				},
 				render: function () {
 					this.$el.empty();
+					if (this.model.get('edit_mode')) {
+						this.$el.addClass('rwp-setting-row-open');
+					}
 					var html = '<td>';
 							html += '<div class="row-title">';
 								html += '<a href="#">'+this.model.get('name')+'</a>';
@@ -86,12 +104,10 @@
 								html += '<span class="edit"><a href="#">Edit</a></span> | ';
 								html += '<span class="trash"><a class="submitdelete" href="#">Delete</a></span>';
 							html += '</div>';
-							html += '<div class="rwp-setting-wrapper" style="display: none;">';
+							html += '<div class="rwp-setting-wrapper">';
 								html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
 								html += '<div class="rwp-setting-rules"></div>';
 								html += '<div class="rwp-media-query-table"></div>';
-								html += '<a href="#inline-edit" class="button-secondary cancel alignleft">Cancel</a>';
-								html += '<a href="#inline-edit" class="button-primary save alignright">Update</a>';
 							html += '</div>';
 						html += '</td>';
 					this.$el.append(html);
@@ -132,6 +148,7 @@
 	                            '<th>Image size</th>'+
 	                            '<th>Property</th>'+
 	                            '<th>Value</th>'+
+	                            '<th>&nbsp;</th>'+
 	                        '</tr>'+
 	                    '</thead>'
 					].join('');
