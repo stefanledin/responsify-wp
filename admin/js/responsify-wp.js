@@ -11,8 +11,8 @@
 		models: {
 			SettingsModel: Backbone.Model.extend({
 				defaults: {
-					edit_mode: 1,
-					name: 'New custom media query',
+					edit_mode: 0,
+					name: '',
 					rule: {
 						default: 'true',
 						when: {}
@@ -29,7 +29,9 @@
 					$('.rwp-add-setting').find('button').on('click', function (e) {
 						e.preventDefault();
 						$(this).blur();
-						_this.addSetting( new rwp.cmq.models.SettingsModel() );
+						_this.addSetting( new rwp.cmq.models.SettingsModel({
+							edit_mode: 1
+						}) );
 					});
 				},
 				initialize: function () {
@@ -52,6 +54,7 @@
 				},
 				toggleSettings: function (e) {
 					e.preventDefault();
+					$(e.currentTarget).blur();
 					if (this.model.get('edit_mode')) {
 						this.hideSettings();
 					} else {
@@ -61,12 +64,12 @@
 				showSettings: function () {
 					this.model.set('edit_mode', 1);
 					this.$el.addClass('rwp-setting-row-open');
-					this.$el.find('.rwp-setting-wrapper').slideDown();
+					//this.$el.find('.rwp-setting-wrapper').css('display', 'block');
 				},
 				hideSettings: function () {
 					this.model.set('edit_mode', 0);
 					this.$el.removeClass('rwp-setting-row-open');
-					this.$el.find('.rwp-setting-wrapper').slideUp();
+					//this.$el.find('.rwp-setting-wrapper').css('display', 'none');
 				},
 				addMediaQuery: function (e) {
 					e.preventDefault();
@@ -93,19 +96,23 @@
 				},
 				render: function () {
 					this.$el.empty();
+					console.log(this.model.get('edit_mode'));
 					if (this.model.get('edit_mode')) {
 						this.$el.addClass('rwp-setting-row-open');
 					}
 					var html = '<td>';
 							html += '<div class="row-title">';
-								html += '<a href="#">'+this.model.get('name')+'</a>';
+								var name = (this.model.get('name') === '') ? 'New custom media query' : this.model.get('name');
+								html += '<a class="rwp-hide-when-editing-setting" href="#">'+name+'</a>';
+								html += '<div class="rwp-show-when-editing-setting">';
+									html += '<input type="text" name="rwp_custom_media_queries['+this.model.cid+'][name]" size="30" placeholder="New custom media query" value="'+this.model.get('name')+'">';
+								html += '</div>';
 							html += '</div>';
 							html += '<div class="row-actions">';
-								html += '<span class="edit"><a href="#">Edit</a></span> | ';
+								html += '<span class="edit"><a href="#"><span class="rwp-hide-when-editing-setting">Edit</span><span class="rwp-show-when-editing-setting">Close</span></a></span> | ';
 								html += '<span class="trash"><a class="submitdelete" href="#">Delete</a></span>';
 							html += '</div>';
 							html += '<div class="rwp-setting-wrapper">';
-								html += '<input type="hidden" name="rwp_custom_media_queries['+this.model.cid+'][name]" value="'+this.model.get('name')+'">';
 								html += '<div class="rwp-setting-rules"></div>';
 								html += '<div class="rwp-media-query-table"></div>';
 							html += '</div>';
@@ -201,11 +208,11 @@
 				},
 				editMediaQuery: function (e) {
 					e.preventDefault();
-					this.$el.addClass('edit');
+					this.$el.addClass('rwp-editing-breakpoint');
 				},
 				saveMediaQuery: function (e) {
 					e.preventDefault();
-					this.$el.removeClass('edit');
+					this.$el.removeClass('rwp-editing-breakpoint');
 					var $selectedSize = this.$el.find('.js-selected-size');
 					var $property = this.$el.find('.js-property');
 					var $value = this.$el.find('.js-value');
@@ -238,29 +245,29 @@
 					PropertySelect.$el.attr('name', 'rwp_custom_media_queries['+this.model.cid+'][breakpoints]['+this.options.mediaQueryIndex+'][property]');
 					var html = [
 						'<td class="js-selected-size">'+
-							'<span class="hide-on-edit">'+this.options.breakPoint.image_size+'</span>'+
-							'<div class="show-on-edit"></div>'+
+							'<span class="rwp-hide-when-editing-breakpoints">'+this.options.breakPoint.image_size+'</span>'+
+							'<div class="rwp-show-when-editing-breakpoints"></div>'+
 						'</td>'+
 						'<td class="js-property">'+
-							'<span class="hide-on-edit">'+this.options.breakPoint.property+'</span>'+
-							'<div class="show-on-edit"></div>'+
+							'<span class="rwp-hide-when-editing-breakpoints">'+this.options.breakPoint.property+'</span>'+
+							'<div class="rwp-show-when-editing-breakpoints"></div>'+
 						'</td>'+
 						'<td class="js-value">'+
-							'<span class="hide-on-edit">'+this.options.breakPoint.value+'</span>'+
-							'<div class="show-on-edit">'+
+							'<span class="rwp-hide-when-editing-breakpoints">'+this.options.breakPoint.value+'</span>'+
+							'<div class="rwp-show-when-editing-breakpoints">'+
 								'<input type="text" name="rwp_custom_media_queries['+this.model.cid+'][breakpoints]['+this.options.mediaQueryIndex+'][value]" value="'+this.options.breakPoint.value+'">'+
 							'</div>'+
 						'</td>'+
 						'<td>'+
-							'<div class="hide-on-edit"><button class="button rwp-edit-media-query">Edit</button></div>'+
-							'<div class="show-on-edit"><button class="button rwp-save-media-query">Save</button></div>'+
-							'<div class="show-on-edit"><button class="button rwp-delete-media-query">Delete</button></div>'+
+							'<div class="rwp-hide-when-editing-breakpoints"><button class="button rwp-edit-media-query">Edit</button></div>'+
+							'<div class="rwp-show-when-editing-breakpoints"><button class="button rwp-save-media-query">Save</button></div>'+
+							'<div class="rwp-show-when-editing-breakpoints"><button class="button rwp-delete-media-query">Delete</button></div>'+
 						'</td>'
 					].join('');
 					
 					this.$el.append(html);
-					this.$el.find('td.js-selected-size > .show-on-edit').append(ImageSizeSelect.el);
-					this.$el.find('td.js-property > .show-on-edit').append(PropertySelect.el);
+					this.$el.find('td.js-selected-size > .rwp-show-when-editing-breakpoints').append(ImageSizeSelect.el);
+					this.$el.find('td.js-property > .rwp-show-when-editing-breakpoints').append(PropertySelect.el);
 					
 					return this;
 				}

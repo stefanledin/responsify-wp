@@ -1,16 +1,29 @@
 .rwp-setting-rules {
 	margin-bottom: 10px;
 }
-.show-on-edit {
+.rwp-show-when-editing-setting,
+.rwp-show-when-editing-breakpoints {
 	display: none;
 }
-.hide-on-edit {
+.rwp-hide-when-editing-setting,
+.rwp-hide-when-editing-breakpoints {
 	display: inline-block;
 }
-tr.edit .show-on-edit {
+.rwp-setting-wrapper {
+	display: none;
+}
+tr.rwp-setting-row-open .rwp-setting-wrapper {
+	display: block;
+}
+tr.rwp-setting-row-open .row-actions {
+	visibility: visible;
+}
+tr.rwp-setting-row-open .rwp-show-when-editing-setting,
+tr.rwp-editing-breakpoint .rwp-show-when-editing-breakpoints {
 	display: inline-block;
 }
-tr.edit .hide-on-edit {
+tr.rwp-setting-row-open .rwp-hide-when-editing-setting,
+tr.rwp-editing-breakpoint .rwp-hide-when-editing-breakpoints {
 	display: none;
 }
 .rwp-setting-rule-scenario-builder,
@@ -19,6 +32,9 @@ tr.edit .hide-on-edit {
 }
 .rwp-setting-rule-scenario-builder.rwp-is-default {
 	display: none;
+}
+tr.ui-sortable-handle {
+	cursor: move;
 }
 
 .option-message {
