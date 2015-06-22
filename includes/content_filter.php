@@ -69,7 +69,6 @@ class Content_Filter
      */
     public function filter_images ( $content ) {
         global $post;
-        die(var_dump(get_page_template_slug($post->ID)));
     	// Don't do anything with the RSS feed.
     	if ( is_feed() ) return $content;
 		// Cache $this. Javascript style for PHP 5.3
