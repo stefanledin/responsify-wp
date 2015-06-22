@@ -1,8 +1,5 @@
 <?php
 #delete_option('rwp_custom_media_queries');
-$default_option = array(
-    array( 'name' => 'Default' )
-);
 echo '<pre>';
     print_r(get_option('rwp_custom_media_queries'));
 echo '</pre>';

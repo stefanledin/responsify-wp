@@ -14,7 +14,7 @@
 					edit_mode: 0,
 					name: '',
 					rule: {
-						default: 'true',
+						default: true,
 						when: {}
 					}
 				}
@@ -42,6 +42,7 @@
 						model: setting
 					});
 					this.$el.append(row.el);
+					row.$el.find('input.rwp-setting-name').focus();
 				}
 			}),
 			SettingsTableRow: Backbone.View.extend({
@@ -50,7 +51,11 @@
 					'click .rwp-add-breakpoint button': 'addMediaQuery',
 					'click .row-title a': 'toggleSettings',
 					'click .edit a': 'toggleSettings',
-					'click a.submitdelete': 'deleteMediaQuery'
+					'click a.submitdelete': 'deleteMediaQuery',
+					'blur input.rwp-setting-name': 'updateSettingName'
+				},
+				updateSettingName: function (e) {
+					this.model.set('name', e.currentTarget.value);
 				},
 				toggleSettings: function (e) {
 					e.preventDefault();
@@ -64,12 +69,10 @@
 				showSettings: function () {
 					this.model.set('edit_mode', 1);
 					this.$el.addClass('rwp-setting-row-open');
-					//this.$el.find('.rwp-setting-wrapper').css('display', 'block');
 				},
 				hideSettings: function () {
 					this.model.set('edit_mode', 0);
 					this.$el.removeClass('rwp-setting-row-open');
-					//this.$el.find('.rwp-setting-wrapper').css('display', 'none');
 				},
 				addMediaQuery: function (e) {
 					e.preventDefault();
@@ -96,7 +99,6 @@
 				},
 				render: function () {
 					this.$el.empty();
-					console.log(this.model.get('edit_mode'));
 					if (this.model.get('edit_mode')) {
 						this.$el.addClass('rwp-setting-row-open');
 					}
@@ -105,7 +107,7 @@
 								var name = (this.model.get('name') === '') ? 'New custom media query' : this.model.get('name');
 								html += '<a class="rwp-hide-when-editing-setting" href="#">'+name+'</a>';
 								html += '<div class="rwp-show-when-editing-setting">';
-									html += '<input type="text" name="rwp_custom_media_queries['+this.model.cid+'][name]" size="30" placeholder="New custom media query" value="'+this.model.get('name')+'">';
+									html += '<input class="rwp-setting-name" type="text" name="rwp_custom_media_queries['+this.model.cid+'][name]" size="30" placeholder="New custom media query" value="'+this.model.get('name')+'">';
 								html += '</div>';
 							html += '</div>';
 							html += '<div class="row-actions">';
@@ -277,11 +279,13 @@
 				events: {
 					'change select.rwp-setting-rule-default': 'updateRules',
 					'change select.rwp-setting-rule-when': 'updateRules',
+					'blur input.rwp-setting-rule-value': 'updateRules'
 				},
 				updateRules: function (e) {
 					var rule = this.model.get('rule');
 					rule.default = (e.currentTarget.value === 'true');
 					rule.when.key = this.$el.find('select.rwp-setting-rule-when').val();
+					rule.when.value = this.$el.find('input.rwp-setting-rule-value').val();
 					this.model.set(rule);
 					this.model.trigger('change:rule');
 				},
@@ -293,10 +297,13 @@
 					this.elements.$scenarioBuilder = this.$el.find('.rwp-setting-rule-scenario-builder');
 					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
 					this.$el.find('select.rwp-setting-rule-when')[0].value = this.model.get('rule').when.key;
+					if (this.model.get('rule').when.value) {
+						this.$el.find('input.rwp-setting-rule-value')[0].value = this.model.get('rule').when.value;
+					}
 					this.scenarioBuilderVisibility();
 				},
 				scenarioBuilderVisibility: function () {
-					var scenarioBuilderdisplayValue = (this.model.get('rule').default === 'true') ? 'none' : 'inline';
+					var scenarioBuilderdisplayValue = (this.model.get('rule').default === true) ? 'none' : 'inline';
 					var whenImageDisplayValue = (this.model.get('rule').when.key === 'image') ? 'inline' : 'none';
 					this.$el.find('.rwp-setting-rule-scenario-builder').css('display', scenarioBuilderdisplayValue);
 					this.$el.find('.rwp-setting-rule-when-image').css('display', whenImageDisplayValue);
@@ -326,7 +333,7 @@
 							html += '<option value="==">is equal to</option>';
 							html += '<option value="!=">is not equal to</option>';
 						html += '</select>';
-						html += '<input type="text" class="rwp-setting-rule-value" name="'+name+'[when][value]">'
+						html += '<input type="text" class="rwp-setting-rule-value" name="'+name+'[when][value]">';
 					html += '</div>';
 					
 					this.$el.html(html);
