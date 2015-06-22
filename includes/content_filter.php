@@ -74,6 +74,23 @@ class Content_Filter
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
 
+        $custom_media_queries = get_option( 'rwp_custom_media_queries' );
+		if ( $custom_media_queries ) {
+			foreach ($custom_media_queries as $custom_media_query) {
+				if ( $custom_media_query['rule']['default'] ) {
+				} else {
+					$rwp_settings = array();
+					$rwp_settings['attributes']['sizes'][] = $custom_media_query['breakpoints'][0]['value'];
+					for ($i=1; $i < count($custom_media_query['breakpoints']); $i++) { 
+						$rwp_settings['sizes'][] = $custom_media_query['breakpoints'][$i]['image_size'];
+						$rwp_settings['attributes']['sizes'][] = '('.$custom_media_query['breakpoints'][$i]['property'].': '.$custom_media_query['breakpoints'][$i]['value'].') '.$custom_media_query['breakpoints'][$i-1]['value'];
+					}
+					$sizes = join(array_reverse($rwp_settings['attributes']['sizes']), ', ');
+					die(var_dump( $sizes ));
+				}
+			}
+		}
+
 		$ignored_image_formats = $this->get_ignored_image_formats();
 		// Find and replace all <img>
 		$content = preg_replace_callback('/<img[^>]*>/', function ($match) use ($self, $ignored_image_formats) {

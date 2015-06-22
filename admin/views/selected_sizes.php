@@ -13,6 +13,7 @@ foreach ( $image_sizes as $image_size ) {
 		$checked_attribute = ((isset($selected_sizes[$image_size])) ? 'checked="checked"' : '');
 	}
     $image_dimention['width'] = get_option( $image_size . '_size_w' );
+    var_dump($image_dimention['width']);
     $image_dimention['height'] = get_option( $image_size . '_size_h' );
     $image_dimention['print'] = ($image_dimention['width']) ? '('.$image_dimention['width'].' x '.$image_dimention['height'].' px)' : '';
 
