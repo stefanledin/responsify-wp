@@ -23,6 +23,18 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 
 		$this->upload_url = wp_upload_dir()['baseurl'];
 		$this->image_url = wp_upload_dir()['baseurl'] . '/' . $this->image_data['file'];
+
+		$this->mock_image_dimentions();
+	}
+
+	function mock_image_dimentions()
+	{
+		update_option('thumbnail_size_w', 480);
+		update_option('medium_size_w', 600);
+		update_option('large_size_w', 1024);
+		global $_wp_additional_image_sizes;
+		$_wp_additional_image_sizes['full']['width'] = 2448;
+		$_wp_additional_image_sizes['full']['height'] = 2448;
 	}
 
 	/*function test_default()
@@ -45,9 +57,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
                     	'value' => 'test'
 	                )
 				),
-				//'smallestImage' => 'thumbnail',
+				'smallestImage' => 'thumbnail',
 				'breakpoints' => array(
-					array( 'image_size' => 'thumbnail', 'value' => '480px' ),
 					array( 'image_size' => 'medium', 'property' => 'min-width', 'value' => '500px' ),
 					array( 'image_size' => 'large', 'property' => 'min-width', 'value' => '900px' ),
 					array( 'image_size' => 'full', 'property' => 'min-width', 'value' => '1440px' )

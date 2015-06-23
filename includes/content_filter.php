@@ -73,20 +73,23 @@ class Content_Filter
     	if ( is_feed() ) return $content;
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
-
+		global $_wp_additional_image_sizes;
         $custom_media_queries = get_option( 'rwp_custom_media_queries' );
 		if ( $custom_media_queries ) {
 			foreach ($custom_media_queries as $custom_media_query) {
 				if ( $custom_media_query['rule']['default'] ) {
 				} else {
 					$rwp_settings = array();
-					$rwp_settings['attributes']['sizes'][] = $custom_media_query['breakpoints'][0]['value'];
-					for ($i=1; $i < count($custom_media_query['breakpoints']); $i++) { 
-						$rwp_settings['sizes'][] = $custom_media_query['breakpoints'][$i]['image_size'];
-						$rwp_settings['attributes']['sizes'][] = '('.$custom_media_query['breakpoints'][$i]['property'].': '.$custom_media_query['breakpoints'][$i]['value'].') '.$custom_media_query['breakpoints'][$i-1]['value'];
+					$rwp_settings['sizes'][] = $custom_media_query['smallestImage'];
+					$rwp_settings['attributes']['sizes'][] = $this->get_image_dimentions($custom_media_query['smallestImage'])['width'] . 'px';
+					for ($i=0; $i < count($custom_media_query['breakpoints']); $i++) { 
+						$breakpoint = $custom_media_query['breakpoints'][$i];
+						$rwp_settings['sizes'][] = $breakpoint['image_size'];
+						$rwp_settings['attributes']['sizes'][] = '('.$breakpoint['property'].': '.$breakpoint['value'].') '.$this->get_image_dimentions($custom_media_query['breakpoints'][$i]['image_size'])['width'].'px';
 					}
 					$sizes = join(array_reverse($rwp_settings['attributes']['sizes']), ', ');
-					die(var_dump( $sizes ));
+					$rwp_settings['attributes']['sizes'] = $sizes;
+					$this->user_settings = $rwp_settings;
 				}
 			}
 		}
@@ -174,6 +177,26 @@ class Content_Filter
 			$attachment_id = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $prefix . "posts" . " WHERE guid='%s';", $original_image_url ));
 		}
 		return !empty($attachment_id) ? $attachment_id[0] : false;
+	}
+
+	public function get_image_dimentions( $size )
+	{
+		global $_wp_additional_image_sizes;
+		$image_dimentions = array();
+		foreach ( get_intermediate_image_sizes() as $image_size ) {
+			$image_dimention['width'] = get_option( $image_size . '_size_w' );
+		    
+		    // If the width of the image size is not found, it's a custom image size.
+		    // The dimentions of these is stored in the $_wp_additional_image_sizes array.
+		    if ( $image_dimention['width'] ) {
+		    	$image_dimention['height'] = get_option( $image_size . '_size_h' );
+		    } else {
+		    	$image_dimention['width'] = $_wp_additional_image_sizes[$image_size]['width'];
+		    	$image_dimention['height'] = $_wp_additional_image_sizes[$image_size]['height'];
+		    }
+		    $image_dimentions[$image_size] = $image_dimention;
+		}
+		return $image_dimentions[$size];
 	}
 
 }
