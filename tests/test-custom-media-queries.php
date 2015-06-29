@@ -45,12 +45,12 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 		$this->assertEquals($expected, $page);
 	}*/
 
-	function test_custom_settings_when_slug_is_test()
+	function test_custom_settings_when_rule_is_default()
 	{
 		$custom_media_queries = array(
 			'cid' => array(
 				'rule' => array(
-	                'default' => false,
+	                'default' => true,
 	                'when' => array(
                     	'key' => 'page-slug',
                     	'compare' => '==',
