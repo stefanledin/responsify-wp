@@ -168,10 +168,11 @@ class Content_Filter
 
 	public function apply_custom_media_queries( $custom_media_queries )
 	{
+		global $post;
 		$rwp_settings = array();
 		foreach ( $custom_media_queries as $custom_media_query ) {
-			if ( $custom_media_query['rule']['default'] ) {
-				// Use everywhere!
+			if ( $custom_media_query['rule']['default'] == 'true' ) {
+				// This setting should be used everywhere!
 				$rwp_settings['sizes'][] = $custom_media_query['smallestImage'];
 				$rwp_settings['attributes']['sizes'][] = $this->get_image_dimentions($custom_media_query['smallestImage'])['width'] . 'px';
 				for ($i=0; $i < count($custom_media_query['breakpoints']); $i++) { 
@@ -183,6 +184,20 @@ class Content_Filter
 				$rwp_settings['attributes']['sizes'] = $sizes;
 			} else {
 				// TODO: check if the setting should be applied now.
+				$key = $custom_media_query['rule']['when']['key'];
+				if ( $key == 'page-slug' ) {
+					if ( $post->post_name == $custom_media_query['rule']['when']['value'] ) {
+						$rwp_settings['sizes'][] = $custom_media_query['smallestImage'];
+						$rwp_settings['attributes']['sizes'][] = $this->get_image_dimentions($custom_media_query['smallestImage'])['width'] . 'px';
+						for ($i=0; $i < count($custom_media_query['breakpoints']); $i++) { 
+							$breakpoint = $custom_media_query['breakpoints'][$i];
+							$rwp_settings['sizes'][] = $breakpoint['image_size'];
+							$rwp_settings['attributes']['sizes'][] = '('.$breakpoint['property'].': '.$breakpoint['value'].') '.$this->get_image_dimentions($breakpoint['image_size'])['width'].'px';
+						}
+						$sizes = join(array_reverse($rwp_settings['attributes']['sizes']), ', ');
+						$rwp_settings['attributes']['sizes'] = $sizes;
+					}
+				}
 			}
 		}
 		return (count($rwp_settings)) ? $rwp_settings : null;
