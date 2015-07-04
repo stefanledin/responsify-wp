@@ -198,6 +198,19 @@ class Content_Filter
 						$rwp_settings['attributes']['sizes'] = $sizes;
 					}
 				}
+				if ( $key == 'page-id' ) {
+					if ( $post->ID == (int) $custom_media_query['rule']['when']['value'] ) {
+						$rwp_settings['sizes'][] = $custom_media_query['smallestImage'];
+						$rwp_settings['attributes']['sizes'][] = $this->get_image_dimentions($custom_media_query['smallestImage'])['width'] . 'px';
+						for ($i=0; $i < count($custom_media_query['breakpoints']); $i++) { 
+							$breakpoint = $custom_media_query['breakpoints'][$i];
+							$rwp_settings['sizes'][] = $breakpoint['image_size'];
+							$rwp_settings['attributes']['sizes'][] = '('.$breakpoint['property'].': '.$breakpoint['value'].') '.$this->get_image_dimentions($breakpoint['image_size'])['width'].'px';
+						}
+						$sizes = join(array_reverse($rwp_settings['attributes']['sizes']), ', ');
+						$rwp_settings['attributes']['sizes'] = $sizes;
+					}
+				}
 			}
 		}
 		return (count($rwp_settings)) ? $rwp_settings : null;

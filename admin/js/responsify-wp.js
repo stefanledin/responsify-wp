@@ -283,7 +283,7 @@
 				},
 				updateRules: function (e) {
 					var rule = this.model.get('rule');
-					rule.default = (e.currentTarget.value === 'true');
+					rule.default = e.currentTarget.value;
 					rule.when.key = this.$el.find('select.rwp-setting-rule-when').val();
 					rule.when.value = this.$el.find('input.rwp-setting-rule-value').val();
 					this.model.set(rule);
@@ -303,7 +303,7 @@
 					this.scenarioBuilderVisibility();
 				},
 				scenarioBuilderVisibility: function () {
-					var scenarioBuilderdisplayValue = (this.model.get('rule').default === true) ? 'none' : 'inline';
+					var scenarioBuilderdisplayValue = (this.model.get('rule').default === 'true') ? 'none' : 'inline';
 					var whenImageDisplayValue = (this.model.get('rule').when.key === 'image') ? 'inline' : 'none';
 					this.$el.find('.rwp-setting-rule-scenario-builder').css('display', scenarioBuilderdisplayValue);
 					this.$el.find('.rwp-setting-rule-when-image').css('display', whenImageDisplayValue);

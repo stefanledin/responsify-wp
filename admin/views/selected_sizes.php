@@ -4,7 +4,6 @@
 global $_wp_additional_image_sizes;
 $selected_sizes = get_option( 'selected_sizes' );
 $image_sizes = get_intermediate_image_sizes();
-array_push($image_sizes, 'full');
 
 $html = '<ul>';
 foreach ( $image_sizes as $image_size ) {
