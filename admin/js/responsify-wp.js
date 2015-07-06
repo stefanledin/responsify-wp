@@ -14,7 +14,7 @@
 					edit_mode: 0,
 					name: '',
 					rule: {
-						default: true,
+						default: 'true',
 						when: {}
 					}
 				}
@@ -325,9 +325,8 @@
 							html += '<option value="image">Image</option>';
 						html += '</select>';
 						html += '<select class="rwp-setting-rule-when-image" name="'+name+'[when][image]">';
-							html += '<option>class</option>';
-							html += '<option>id</option>';
-							html += '<option>size is</option>';
+							html += '<option value="class">class</option>';
+							html += '<option class="size-is">size is</option>';
 						html += '</select>';
 						html += ' <select class="rwp-setting-rule-compare" name="'+name+'[when][compare]">';
 							html += '<option value="==">is equal to</option>';

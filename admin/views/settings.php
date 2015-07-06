@@ -3,7 +3,8 @@
 	<form method="post" action="options.php">
 		<script type="text/javascript">
 			window.rwp = window.rwp || {};
-			rwp.image_sizes = <?php echo json_encode(get_intermediate_image_sizes());?>
+			rwp.image_sizes = <?php echo json_encode(get_intermediate_image_sizes());?>;
+			rwp.image_sizes.push('full');
 		</script>
 		<?php 
 		settings_fields( 'responsify-wp-settings' );

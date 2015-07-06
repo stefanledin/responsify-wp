@@ -28,7 +28,6 @@ class Media_Queries
 				);
 			}
 		}
-		var_dump($this->images);
 		return $this->images;
 	}
 
