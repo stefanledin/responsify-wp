@@ -283,7 +283,7 @@
 				},
 				updateRules: function (e) {
 					var rule = this.model.get('rule');
-					rule.default = e.currentTarget.value;
+					rule.default = this.$el.find('select.rwp-setting-rule-default').val();
 					rule.when.key = this.$el.find('select.rwp-setting-rule-when').val();
 					rule.when.value = this.$el.find('input.rwp-setting-rule-value').val();
 					this.model.set(rule);
