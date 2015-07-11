@@ -52,10 +52,11 @@ abstract class Create_Responsive_image
         $images = array();
         $image_srcs = array();
         $image_meta_data = wp_get_attachment_metadata( $this->id );
-        $image_meta_data['sizes']['full'] = array(
-            'width' => $image_meta_data['width'],
-            'height' => $image_meta_data['height']
-        );
+        $image_meta_data['sizes']['full']['width'] = $image_meta_data['width'];
+        // According to a thread in the support forum, 'height' isn't always avaliable on full size images.
+        if ( $image_meta_data['height'] ) {
+            $image_meta_data['sizes']['full']['height'] = $image_meta_data['height'];
+        }
         foreach ( $sizes as $size ) {
             $image = $this->get_image($size);
             if ( isset($image_meta_data['sizes'][$size]) ) {
