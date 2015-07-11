@@ -3,12 +3,15 @@
 class Content_Filter
 {
 	public $user_settings;
+	protected $custom_media_queries;
 
 	public function __construct( $filter )
 	{
 		add_action( 'parse_query', array( $this, 'get_user_settings' ) );
 
 		add_filter( $filter, array( $this, 'filter_images' ), 11 );
+
+		$this->custom_media_queries = new Custom_Media_Queries( get_option( 'rwp_custom_media_queries' ) );
 	}
 
     /**
@@ -68,6 +71,7 @@ class Content_Filter
      * @return mixed
      */
     public function filter_images( $content ) {
+    	global $post;
     	// Don't do anything with the RSS feed.
     	if ( is_feed() ) return $content;
 		
@@ -75,14 +79,8 @@ class Content_Filter
 		$self = $this;
         
         // Look for and apply custom media queries that the user has selected in the backend.
-        $custom_media_queries = get_option( 'rwp_custom_media_queries' );
-		if ( $custom_media_queries ) {
-			$this->user_settings = $this->check_custom_media_queries_rules_for_post( $custom_media_queries );
-			#Custom_Media_Queries::checkPost()
-			#Custom_Media_Queries::checkImage()
-			Custom_Media_Queries::checkRulesFor( $post );
-			Custom_Media_Queries::checkRulesFor( $attributes );
-			$cmq = new Custom_Media_Queries( $custom_media_queries );
+		if ( $this->custom_media_queries->should_be_applied_when( 'post', $post ) ) {
+			$this->user_settings = $this->custom_media_queries->get_settings();
 		}
 
 		$ignored_image_formats = $this->get_ignored_image_formats();
@@ -98,8 +96,8 @@ class Content_Filter
 				),
 				'retina' => ( get_option( 'rwp_retina', 'off' ) == 'off' ) ? false : true
 			);
-			if ( $custom_media_queries ) {
-				#$self->user_settings = $self->check_custom_media_queries_rules_for_image( $settings['attributes'], $custom_media_queries );
+			if ( $this->custom_media_queries->should_be_applied_when( 'image', $settings['attributes'] ) ) {
+				$self->user_settings = $self->custom_media_queries->get_settings();
 			}
 
 			$src = $settings['attributes']['img']['src'];

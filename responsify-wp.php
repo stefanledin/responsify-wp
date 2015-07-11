@@ -9,6 +9,7 @@ Plugin URI: https://github.com/stefanledin/responsify-wp
 */
 
 require 'includes/media_queries.php';
+require 'includes/custom_media_query_rules.php';
 require 'includes/custom_media_queries.php';
 require 'includes/create_responsive_image.php';
 require 'includes/img.php';

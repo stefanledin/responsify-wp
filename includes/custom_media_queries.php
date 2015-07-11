@@ -1,11 +1,13 @@
 <?php
 class Custom_Media_Queries {
 
+	protected $rules;
 	protected $custom_media_queries;
 	protected $rwp_settings = array();
 
 	public function __construct( $custom_media_queries )
 	{
+		$this->rules = new Custom_Media_Query_Rules;
 		$this->custom_media_queries = $custom_media_queries;
 	}
 
@@ -43,73 +45,36 @@ class Custom_Media_Queries {
 			}
 
 			$key = $media_query['rule']['when']['key'];
+			if ( $key == 'image' ) return;
 			$value = $media_query['rule']['when']['value'];
 			$compare = $media_query['rule']['when']['compare'];
 
-			$rule_to_check = 'check_rule_when_';
-			$rule_to_check .= str_replace('-', '_', $key) . '_';
-			$rule_to_check .= ( $compare == '==' ) ? 'equals' : 'not_equals';
-			if ( call_user_func( array($this, $rule_to_check), $post_object, $value ) ) {
+			$rule_to_check = $key . '_';
+			$rule_to_check .= $compare;
+			if ( call_user_func( array($this->rules, $rule_to_check), $post_object, $value ) ) {
 				$this->apply_custom_media_queries( $media_query );
 			}
 
-			/*if ( $media_query['rule']['when']['compare'] == '==' ) {
-				if ( $key == 'page-id' ) {
-					if ( $post_object->ID == (int) $value ) {
-						$this->apply_custom_media_queries( $media_query );
-					}
-				}
-				if ( $key == 'page-slug' ) {
-					if ( $post_object->post_name == $value ) {
-						$this->apply_custom_media_queries( $media_query );
-					}
-				}		
-			} else {
-				if ( $key == 'page-id' ) {
-					if ( $post_object->ID != (int) $value ) {
-						$this->apply_custom_media_queries( $media_query );
-					}
-				}
-				if ( $key == 'page-slug' ) {
-					if ( $post_object->post_name != $value ) {
-						$this->apply_custom_media_queries( $media_query );
-					}
-				}
-			}*/
-			
 		}
-	}
-	protected function check_rule_when_page_id_equals( $post_object, $value )
-	{
-		return ( $post_object->ID == (int) $value );
-	}
-	protected function check_rule_when_page_id_not_equals( $post_object, $value )
-	{
-		return ( $post_object->ID != (int) $value );
-	}
-
-	protected function check_rule_when_page_slug_equals( $post_object, $value )
-	{
-		return ( $post_object->post_name == $value );
-	}
-	protected function check_rule_when_page_slug_not_equals( $post_object, $value )
-	{
-		return ( $post_object->post_name != $value );
 	}
 
 	protected function check_rule_for_image( $attributes )
 	{
-		foreach ($this->custom_media_queries as $media_query) {
+		foreach ( $this->custom_media_queries as $media_query ) {
 			if ( $media_query['rule']['default'] == 'true' ) {
 				$this->apply_custom_media_queries( $media_query );
+				return;
 			}
 			$key = $media_query['rule']['when']['key'];
+			if ( $key != 'image' ) return;
 			$value = $media_query['rule']['when']['value'];
+			$compare = $media_query['rule']['when']['compare'];
 
-			if ( $key == 'image' ) {
-				if ( is_integer( strpos($attributes['img']['class'], 'size-' . $value) ) ) {
-					$this->apply_custom_media_queries( $media_query );
-				}
+			$rule_to_check = $key . '_';
+			$rule_to_check .= $media_query['rule']['when']['image'] . '_';
+			$rule_to_check .= $compare;
+			if ( call_user_func( array($this->rules, $rule_to_check), $attributes, $value ) ) {
+				$this->apply_custom_media_queries( $media_query );
 			}
 		}
 	}

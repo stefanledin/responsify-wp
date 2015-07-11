@@ -298,6 +298,7 @@
 					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
 					this.$el.find('select.rwp-setting-rule-when')[0].value = this.model.get('rule').when.key;
 					this.$el.find('select.rwp-setting-rule-when-image')[0].value = this.model.get('rule').when.image;
+					this.$el.find('select.rwp-setting-rule-compare')[0].value = this.model.get('rule').when.compare;
 					if (this.model.get('rule').when.value) {
 						this.$el.find('input.rwp-setting-rule-value')[0].value = this.model.get('rule').when.value;
 					}
@@ -320,18 +321,18 @@
 					
 					html += '<div class="rwp-setting-rule-scenario-builder">';
 						html += '<select class="rwp-setting-rule-when" name="'+name+'[when][key]">';
-							html += '<option value="page-id">Page ID</option>';
-							html += '<option value="page-slug">Page slug</option>';
-							html += '<option value="page-template">Page template</option>';
+							html += '<option value="page_id">Page ID</option>';
+							html += '<option value="page_slug">Page slug</option>';
+							html += '<option value="page_template">Page template</option>';
 							html += '<option value="image">Image</option>';
 						html += '</select>';
 						html += '<select class="rwp-setting-rule-when-image" name="'+name+'[when][image]">';
 							html += '<option value="class">class</option>';
-							html += '<option value="size-is">size is</option>';
+							html += '<option value="size">size is</option>';
 						html += '</select>';
 						html += ' <select class="rwp-setting-rule-compare" name="'+name+'[when][compare]">';
-							html += '<option value="==">is equal to</option>';
-							html += '<option value="!=">is not equal to</option>';
+							html += '<option value="equals">is equal to</option>';
+							html += '<option value="not_equals">is not equal to</option>';
 						html += '</select>';
 						html += '<input type="text" class="rwp-setting-rule-value" name="'+name+'[when][value]">';
 					html += '</div>';

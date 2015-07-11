@@ -44,8 +44,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 				'rule' => array(
 	                'default' => 'true',
 	                'when' => array(
-                    	'key' => 'page-id',
-                    	'compare' => '==',
+                    	'key' => 'page_id',
+                    	'compare' => 'equals',
                     	'value' => '1'
 	                )
 				),
@@ -74,8 +74,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 				'rule' => array(
 	                'default' => 'false',
 	                'when' => array(
-                    	'key' => 'page-id',
-                    	'compare' => '==',
+                    	'key' => 'page_id',
+                    	'compare' => 'equals',
                     	'value' => '1'
 	                )
 				),
@@ -104,8 +104,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 				'rule' => array(
 	                'default' => 'false',
 	                'when' => array(
-                    	'key' => 'page-slug',
-                    	'compare' => '==',
+                    	'key' => 'page_slug',
+                    	'compare' => 'equals',
                     	'value' => 'test'
 	                )
 				),
@@ -120,8 +120,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
             	'rule' => array(
 	                'default' => 'false',
 	                'when' => array(
-                    	'key' => 'page-id',
-                    	'compare' => '==',
+                    	'key' => 'page_id',
+                    	'compare' => 'equals',
                     	'value' => '1'
 	                )
 				)
@@ -155,8 +155,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 	                'default' => 'false',
 	                'when' => array(
                     	'key' => 'image',
-                    	'image' => 'size-is',
-                    	'compare' => '==',
+                    	'image' => 'size',
+                    	'compare' => 'equals',
                     	'value' => 'medium'
 	                )
 				),
@@ -191,8 +191,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 				'rule' => array(
 	                'default' => 'false',
 	                'when' => array(
-                    	'key' => 'page-slug',
-                    	'compare' => '!=',
+                    	'key' => 'page_slug',
+                    	'compare' => 'not_equals',
                     	'value' => 'test'
 	                )
 				),
@@ -207,8 +207,8 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
             	'rule' => array(
             		'default' => false,
             		'when' =>  array(
-	            		'key' => 'page-slug',
-	            		'compare' => '==',
+	            		'key' => 'page_slug',
+	            		'compare' => 'equals',
 	            		'value' => 'yet-another-test'
             		)
         		)
@@ -231,6 +231,43 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 		);
 
 		$this->assertTrue( $custom_media_queries->should_be_applied_when('post', $wp_post_object) );
+		$this->assertEquals($expected, $custom_media_queries->get_settings());
+	}
+
+	function test_when_image_size_is_medium()
+	{
+		$custom_media_queries = array(
+			'cid' => array(
+				'rule' => array(
+	                'default' => 'false',
+	                'when' => array(
+                    	'key' => 'image',
+                    	'image' => 'size',
+                    	'compare' => 'equals',
+                    	'value' => 'medium'
+	                )
+				),
+				'smallestImage' => 'thumbnail',
+				'breakpoints' => array(
+					array( 'image_size' => 'medium', 'property' => 'min-width', 'value' => '500px' )
+				)
+			)
+		);
+		$attributes = array(
+			'img' => array(
+				'class' => 'wp-image size-medium',
+				'alt' => 'Some image alt'
+			)
+		);
+		$expected = array(
+			'sizes' => array('thumbnail', 'medium'),
+			'media_queries' => array(
+				'medium' => array( 'property' => 'min-width', 'value' => '500px' )
+			)
+		);
+		$custom_media_queries = new Custom_Media_Queries( $custom_media_queries );
+		
+		$this->assertTrue($custom_media_queries->should_be_applied_when('image', $attributes));
 		$this->assertEquals($expected, $custom_media_queries->get_settings());
 	}
 
