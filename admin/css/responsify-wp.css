@@ -33,8 +33,12 @@ tr.rwp-editing-breakpoint .rwp-hide-when-editing-breakpoints {
 .rwp-setting-rule-scenario-builder.rwp-is-default {
 	display: none;
 }
-tr.ui-sortable-handle {
+tr.ui-sortable-handle,
+tr.rwp-setting-row-open tr.sortable {
 	cursor: move;
+}
+tr.ui-sortable-handle.rwp-setting-row-open {
+	cursor: default;
 }
 
 .option-message {

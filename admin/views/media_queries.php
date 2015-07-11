@@ -1,5 +1,4 @@
 <?php
-#delete_option('rwp_custom_media_queries');
 echo '<pre>';
     print_r(get_option('rwp_custom_media_queries'));
 echo '</pre>';

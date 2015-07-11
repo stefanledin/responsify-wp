@@ -36,6 +36,10 @@
 				},
 				initialize: function () {
 					this.collection.each(this.addSetting, this);
+					this.$el.sortable({
+						axis: 'y',
+						items: '> tr.sortable'
+					});
 				},
 				addSetting: function (setting) {
 					var row = new rwp.cmq.views.SettingsTableRow({
@@ -47,6 +51,9 @@
 			}),
 			SettingsTableRow: Backbone.View.extend({
 				tagName: 'tr',
+				attributes: {
+					'class': 'sortable'
+				},
 				events: {
 					'click .rwp-add-breakpoint button': 'addMediaQuery',
 					'click .row-title a': 'toggleSettings',
