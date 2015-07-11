@@ -2,6 +2,9 @@
 
 class Custom_Media_Query_Rules {
 
+	/**
+	 * Page ID
+	 */
 	public function page_id_equals( $post_object, $value )
 	{
 		return ( $post_object->ID == (int) $value );
@@ -11,6 +14,9 @@ class Custom_Media_Query_Rules {
 		return ( $post_object->ID != (int) $value );
 	}
 
+	/**
+	 * Page slug
+	 */
 	public function page_slug_equals( $post_object, $value )
 	{
 		return ( $post_object->post_name == $value );
@@ -20,6 +26,9 @@ class Custom_Media_Query_Rules {
 		return ( $post_object->post_name != $value );
 	}
 	
+	/**
+	 * Page templates
+	 */
 	public function page_template_equals( $post_object, $value )
 	{
 		return is_integer( strpos(get_page_template(), $value) );
@@ -29,6 +38,9 @@ class Custom_Media_Query_Rules {
 		return ! is_integer( strpos(get_page_template(), $value) );
 	}
 
+	/**
+	 * Image class
+	 */
 	public function image_class_equals( $attributes, $value )
 	{
 		return is_integer( strpos($attributes['img']['class'], $value) );
@@ -38,6 +50,9 @@ class Custom_Media_Query_Rules {
 		return ! is_integer( strpos($attributes['img']['class'], $value) );
 	}
 
+	/**
+	 * Image size
+	 */
 	public function image_size_equals( $attributes, $value )
 	{
 		return is_integer( strpos($attributes['img']['class'], 'size-' . $value) );
