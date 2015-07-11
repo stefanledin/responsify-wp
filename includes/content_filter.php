@@ -67,7 +67,7 @@ class Content_Filter
      * @param $content
      * @return mixed
      */
-    public function filter_images ( $content ) {
+    public function filter_images( $content ) {
     	// Don't do anything with the RSS feed.
     	if ( is_feed() ) return $content;
 		
@@ -78,6 +78,11 @@ class Content_Filter
         $custom_media_queries = get_option( 'rwp_custom_media_queries' );
 		if ( $custom_media_queries ) {
 			$this->user_settings = $this->check_custom_media_queries_rules_for_post( $custom_media_queries );
+			#Custom_Media_Queries::checkPost()
+			#Custom_Media_Queries::checkImage()
+			Custom_Media_Queries::checkRulesFor( $post );
+			Custom_Media_Queries::checkRulesFor( $attributes );
+			$cmq = new Custom_Media_Queries( $custom_media_queries );
 		}
 
 		$ignored_image_formats = $this->get_ignored_image_formats();
@@ -94,7 +99,7 @@ class Content_Filter
 				'retina' => ( get_option( 'rwp_retina', 'off' ) == 'off' ) ? false : true
 			);
 			if ( $custom_media_queries ) {
-				$self->user_settings = $self->check_custom_media_queries_rules_for_image( $settings['attributes'], $custom_media_queries );
+				#$self->user_settings = $self->check_custom_media_queries_rules_for_image( $settings['attributes'], $custom_media_queries );
 			}
 
 			$src = $settings['attributes']['img']['src'];
@@ -247,7 +252,6 @@ class Content_Filter
 			);
 			$rwp_settings['sizes'][] = $breakpoint['image_size'];
 		}
-		
 		return $rwp_settings;
 	}
 

@@ -37,24 +37,46 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 		$_wp_additional_image_sizes['full']['height'] = 2448;
 	}
 
-	/*function test_default()
+	function test_when_rule_is_default()
 	{
-		$page = get_post($this->page);
-		$page = trim(apply_filters( 'the_content', $page->post_content ));
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"></p>';
-		$this->assertEquals($expected, $page);
+		$custom_media_queries = array(
+			'cid' => array(
+				'rule' => array(
+	                'default' => 'true',
+	                'when' => array(
+                    	'key' => 'page-id',
+                    	'compare' => '==',
+                    	'value' => '1'
+	                )
+				),
+				'smallestImage' => 'thumbnail',
+				'breakpoints' => array(
+					array( 'image_size' => 'medium', 'property' => 'min-width', 'value' => '500px' ),
+					array( 'image_size' => 'large', 'property' => 'min-width', 'value' => '900px' ),
+					array( 'image_size' => 'full', 'property' => 'min-width', 'value' => '1440px' )
+				)
+            )
+      	);
+      	$wp_post_object = (object) array(
+      		'ID' => 13,
+      		'post_name' => 'test',
+      		'post_title' => 'Test'
+  		);
+		$custom_media_queries = new Custom_Media_Queries( $custom_media_queries );
+		
+		$this->assertTrue( $custom_media_queries->should_be_applied_when('post', $wp_post_object) );
 	}
 
-	function test_custom_settings_when_rule_is_default()
+	function test_when_media_queries_should_not_be_applied()
 	{
 		$custom_media_queries = array(
 			'cid' => array(
 				'rule' => array(
-	                'default' => true,
+	                'default' => 'false',
 	                'when' => array(
-                    	'key' => 'page-slug',
+                    	'key' => 'page-id',
                     	'compare' => '==',
-                    	'value' => 'test'
+                    	'value' => '1'
 	                )
 				),
 				'smallestImage' => 'thumbnail',
@@ -65,20 +87,22 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 				)
             )
       	);
-		update_option( 'rwp_custom_media_queries', $custom_media_queries );
-		$page = get_post($this->page);
-		$page = trim(apply_filters( 'the_content', $page->post_content ));
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 1440px) 2448px, (min-width: 900px) 1024px, (min-width: 500px) 600px, 480px"></p>';
-		$this->assertEquals($expected, $page);	
-		delete_option( 'rwp_custom_media_queries' );
-	}*/
+      	$wp_post_object = (object) array(
+      		'ID' => 13,
+      		'post_name' => 'test',
+      		'post_title' => 'Test'
+  		);
+		$custom_media_queries = new Custom_Media_Queries( $custom_media_queries );
+		
+		$this->assertFalse( $custom_media_queries->should_be_applied_when('post', $wp_post_object) );
+	}
 
-	function test_custom_settings_when_rule_is_applied_when_page_slug_test()
+	function test_when_page_slug_is_test()
 	{
 		$custom_media_queries = array(
 			'cid' => array(
 				'rule' => array(
-	                'default' => false,
+	                'default' => 'false',
 	                'when' => array(
                     	'key' => 'page-slug',
                     	'compare' => '==',
@@ -91,13 +115,123 @@ class Test_Custom_Media_Queries extends WP_UnitTestCase {
 					array( 'image_size' => 'large', 'property' => 'min-width', 'value' => '900px' ),
 					array( 'image_size' => 'full', 'property' => 'min-width', 'value' => '1440px' )
 				)
+            ),
+            'cid2' => array(
+            	'rule' => array(
+	                'default' => 'false',
+	                'when' => array(
+                    	'key' => 'page-id',
+                    	'compare' => '==',
+                    	'value' => '1'
+	                )
+				)
+        	)
+      	);
+      	$wp_post_object = (object) array(
+      		'ID' => 13,
+      		'post_name' => 'test',
+      		'post_title' => 'Test'
+  		);
+		$custom_media_queries = new Custom_Media_Queries( $custom_media_queries );
+		
+		$expected = array(
+			'sizes' => array('thumbnail', 'medium', 'large', 'full'),
+			'media_queries' => array(
+				'medium' => array( 'property' => 'min-width', 'value' => '500px' ),
+				'large' => array( 'property' => 'min-width', 'value' => '900px' ),
+				'full' => array( 'property' => 'min-width', 'value' => '1440px' )
+			)
+		);
+
+		$this->assertTrue( $custom_media_queries->should_be_applied_when('post', $wp_post_object) );
+		$this->assertEquals($expected, $custom_media_queries->get_settings());
+	}
+
+	function test_when_image_is_medium_size() 
+	{
+		$custom_media_queries = array(
+			'cid' => array(
+				'rule' => array(
+	                'default' => 'false',
+	                'when' => array(
+                    	'key' => 'image',
+                    	'image' => 'size-is',
+                    	'compare' => '==',
+                    	'value' => 'medium'
+	                )
+				),
+				'smallestImage' => 'thumbnail',
+				'breakpoints' => array(
+					array( 'image_size' => 'medium', 'property' => 'min-width', 'value' => '444px' )
+				)
             )
       	);
-		update_option( 'rwp_custom_media_queries', $custom_media_queries );
-		$page = get_post($this->page);
-		$page = trim(apply_filters( 'the_content', $page->post_content ));
-		$expected = '<p><img srcset="http://example.org/wp-content/uploads/IMG_2089-480x640.jpg 480w, http://example.org/wp-content/uploads/IMG_2089-600x800.jpg 600w, http://example.org/wp-content/uploads/IMG_2089-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/IMG_2089.jpg 2448w" sizes="(min-width: 1440px) 2448px, (min-width: 900px) 1024px, (min-width: 500px) 600px, 480px"></p>';
-		$this->assertEquals($expected, $page);	
+      	$attributes = array(
+      		'img' => array(
+      			'class' => 'size-medium wp-image'
+  			)
+  		);
+  		$expected = array(
+  			'sizes' => array('thumbnail', 'medium'),
+  			'media_queries' => array(
+  				'medium' => array( 'property' => 'min-width', 'value' => '444px' )
+			)
+		);
+
+      	$custom_media_queries = new Custom_Media_Queries( $custom_media_queries );
+      	
+      	$this->assertTrue( $custom_media_queries->should_be_applied_when( 'image', $attributes ) );
+      	$this->assertEquals($expected, $custom_media_queries->get_settings());
+	}
+
+	function test_when_page_slug_is_not_test()
+	{
+		$custom_media_queries = array(
+			'cid' => array(
+				'rule' => array(
+	                'default' => 'false',
+	                'when' => array(
+                    	'key' => 'page-slug',
+                    	'compare' => '!=',
+                    	'value' => 'test'
+	                )
+				),
+				'smallestImage' => 'thumbnail',
+				'breakpoints' => array(
+					array( 'image_size' => 'medium', 'property' => 'min-width', 'value' => '500px' ),
+					array( 'image_size' => 'large', 'property' => 'min-width', 'value' => '900px' ),
+					array( 'image_size' => 'full', 'property' => 'min-width', 'value' => '1440px' )
+				)
+            ),
+            'cid2' => array(
+            	'rule' => array(
+            		'default' => false,
+            		'when' =>  array(
+	            		'key' => 'page-slug',
+	            		'compare' => '==',
+	            		'value' => 'yet-another-test'
+            		)
+        		)
+        	)
+      	);
+      	$wp_post_object = (object) array(
+      		'ID' => 13,
+      		'post_name' => 'other-test',
+      		'post_title' => 'Other Test'
+  		);
+		$custom_media_queries = new Custom_Media_Queries( $custom_media_queries );
+		
+		$expected = array(
+			'sizes' => array('thumbnail', 'medium', 'large', 'full'),
+			'media_queries' => array(
+				'medium' => array( 'property' => 'min-width', 'value' => '500px' ),
+				'large' => array( 'property' => 'min-width', 'value' => '900px' ),
+				'full' => array( 'property' => 'min-width', 'value' => '1440px' )
+			)
+		);
+
+		$this->assertTrue( $custom_media_queries->should_be_applied_when('post', $wp_post_object) );
+		$this->assertEquals($expected, $custom_media_queries->get_settings());
 	}
 
 }

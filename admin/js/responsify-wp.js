@@ -297,6 +297,7 @@
 					this.elements.$scenarioBuilder = this.$el.find('.rwp-setting-rule-scenario-builder');
 					this.$el.find('select.rwp-setting-rule-default')[0].value = this.model.get('rule').default;
 					this.$el.find('select.rwp-setting-rule-when')[0].value = this.model.get('rule').when.key;
+					this.$el.find('select.rwp-setting-rule-when-image')[0].value = this.model.get('rule').when.image;
 					if (this.model.get('rule').when.value) {
 						this.$el.find('input.rwp-setting-rule-value')[0].value = this.model.get('rule').when.value;
 					}
@@ -326,7 +327,7 @@
 						html += '</select>';
 						html += '<select class="rwp-setting-rule-when-image" name="'+name+'[when][image]">';
 							html += '<option value="class">class</option>';
-							html += '<option class="size-is">size is</option>';
+							html += '<option value="size-is">size is</option>';
 						html += '</select>';
 						html += ' <select class="rwp-setting-rule-compare" name="'+name+'[when][compare]">';
 							html += '<option value="==">is equal to</option>';
