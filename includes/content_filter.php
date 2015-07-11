@@ -73,7 +73,7 @@ class Content_Filter
     public function filter_images( $content ) {
     	global $post;
     	// Don't do anything with the RSS feed.
-    	if ( is_feed() ) return $content;
+    	if ( is_feed() || is_admin() ) return $content;
 		
 		// Cache $this. Javascript style for PHP 5.3
 		$self = $this;
