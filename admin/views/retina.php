@@ -1,3 +1,4 @@
+<a name="retina"></a>
 <div class="postbox">
 	<div class="inside">
 		<?php

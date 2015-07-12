@@ -1,3 +1,4 @@
+<a name="image-sizes"></a>
 <div class="postbox">
 	<div class="inside">
 		<h3><?php _e('Image sizes'); ?></h3>

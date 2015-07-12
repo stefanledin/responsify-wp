@@ -1,3 +1,4 @@
+<a name="ignored-image-formats"></a>
 <div class="postbox">
 	<div class="inside">
 		<h3><?php _e('Ignored image formats'); ?></h3>

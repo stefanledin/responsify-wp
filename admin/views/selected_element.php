@@ -1,3 +1,4 @@
+<a name="markup-pattern"></a>
 <div class="postbox">
     <div class="inside">
         <?php 

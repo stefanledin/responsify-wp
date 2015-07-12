@@ -1,5 +1,14 @@
 <div class="wrap">
 	<h2>Responsify WP</h2>
+	<p>
+		<a href="#use-on">Use on</a> | 
+		<a href="#markup-pattern">Markup pattern</a> | 
+		<a href="#image-sizes">Image sizes</a> | 
+		<a href="#retina">Retina</a> | 
+		<a href="#custom-media-queries">Custom media queries</a> | 
+		<a href="#ignored-image-formats">Ignored image formats</a> | 
+		<a href="#picturefill">Picturefill</a>
+	</p>
 	<form method="post" action="options.php">
 		<script type="text/javascript">
 			window.rwp = window.rwp || {};
