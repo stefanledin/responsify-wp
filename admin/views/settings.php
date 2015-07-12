@@ -34,5 +34,14 @@
 		
 		include 'picturefill.php';
 		?>
+		<div class="postbox">
+			<div class="inside">
+				<h3>Thank you!</h3>
+				<p>Thanks for using Responsify WP. If you find RWP useful, please consider leaving a <a href="https://wordpress.org/support/view/plugin-reviews/responsify-wp" target="_blank">review at wordpress.org</a>.<br>
+				You can also show your support by writing a tweet, a blog post or by simply telling your friends about RWP.</p>
+				<p>If something is not working as expected or if you need any help, please contact me in the <a href="https://wordpress.org/support/plugin/responsify-wp">support forums</a>.</p>
+				<p>Thanks for caring about responsive images!</p>
+			</div>
+		</div>
 	</form>
 </div>
