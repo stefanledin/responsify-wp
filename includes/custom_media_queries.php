@@ -19,6 +19,7 @@ class Custom_Media_Queries {
 	 */
 	public function should_be_applied_when( $type, $data )
 	{
+		if ( ! is_array($this->custom_media_queries) ) return false;
 		$this->rwp_settings = array();
 		$method_to_call = 'check_rule_for_' . $type;
 		call_user_func( array($this, $method_to_call), $data );
