@@ -56,6 +56,7 @@
 				},
 				events: {
 					'click .rwp-add-breakpoint button': 'addMediaQuery',
+					'keydown input[name="breakpoint"]': 'addMediaQueryOnReturn',
 					'click .row-title a': 'toggleSettings',
 					'click .edit a': 'toggleSettings',
 					'click a.submitdelete': 'deleteMediaQuery',
@@ -80,6 +81,12 @@
 				hideSettings: function () {
 					this.model.set('edit_mode', 0);
 					this.$el.removeClass('rwp-setting-row-open');
+				},
+				addMediaQueryOnReturn: function (e) {
+					if (e.keyCode === 13) {
+						e.preventDefault();
+						this.addMediaQuery(e);
+					}
 				},
 				addMediaQuery: function (e) {
 					e.preventDefault();
