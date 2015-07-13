@@ -3,7 +3,7 @@
 class Content_Filter
 {
 	public $user_settings;
-	protected $custom_media_queries;
+	public $custom_media_queries;
 
 	public function __construct( $filter )
 	{
@@ -96,7 +96,7 @@ class Content_Filter
 				),
 				'retina' => ( get_option( 'rwp_retina', 'off' ) == 'off' ) ? false : true
 			);
-			if ( $this->custom_media_queries->should_be_applied_when( 'image', $settings['attributes'] ) ) {
+			if ( $self->custom_media_queries->should_be_applied_when( 'image', $settings['attributes'] ) ) {
 				$self->user_settings = $self->custom_media_queries->get_settings();
 			}
 
