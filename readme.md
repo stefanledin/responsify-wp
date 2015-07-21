@@ -37,6 +37,7 @@
 		    - [picture](#functions-reference-example-attributes-picture)
 		    - [span](#functions-reference-example-attributes-span)
 - [Filters](#filters)
+	- [Edit generated element](#filters-edit-generated-element)
 	- [Edit attributes](#filters-edit-attributes)
 	- [Add filters](#filters-add-filters)
 - [Ignore images](#ignore-images)
@@ -681,6 +682,27 @@ echo rwp_picture( $attachment_id, $settings );
 ````
 
 ##<a name="filters"></a>Filters   
+###<a name="filters-edit-generated-element"></a>Edit generated element  
+The ``rwp_edit_generated_element`` filter allows you to edit and modify the generated element before it's inserted back into the content.  
+````php
+<?php
+function edit_responsive_image( $element ) {
+	// Do something with $element
+	return $element;
+}
+add_filter( 'rwp_edit_generated_element', 'edit_responsive_image' );
+?>
+````
+One use case might be replacing the ``srcset`` attribute with ``data-srcset`` for implementing some kind of lazy load solution.  
+````php
+<?php
+function replace_srcset_with_data_srcset( $element ) {
+	$element = str_replace('srcset', 'data-srcset', $element);
+	return $element;
+}
+add_filter( 'rwp_edit_generated_element', 'replace_srcset_with_data_srcset' );
+?>
+````
 ###<a name="filters-edit-attributes"></a>Edit attributes  
 The ``rwp_edit_attributes`` filter allows you to edit the attributes of the generated element.  
 ````php
