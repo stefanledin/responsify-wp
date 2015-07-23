@@ -42,9 +42,8 @@ class Custom_Media_Queries {
 		foreach ( $this->custom_media_queries as $media_query ) {
 			if ( $media_query['rule']['default'] == 'true' ) {
 				$this->apply_custom_media_queries( $media_query );
-				return;
+				continue;
 			}
-
 			$key = $media_query['rule']['when']['key'];
 			if ( $key == 'image' ) return;
 			$value = $media_query['rule']['when']['value'];
@@ -55,17 +54,15 @@ class Custom_Media_Queries {
 			if ( call_user_func( array($this->rules, $rule_to_check), $post_object, $value ) ) {
 				$this->apply_custom_media_queries( $media_query );
 			}
-
 		}
 	}
 
 	protected function check_rule_for_image( $attributes )
 	{
 		foreach ( $this->custom_media_queries as $media_query ) {
-			if ( $media_query['rule']['default'] == 'true' ) {
-				$this->apply_custom_media_queries( $media_query );
-				return;
-			}
+			// Ignore default settings. It has already been set in check_rule_for_post()
+			if ( $media_query['rule']['default'] == 'true' ) continue;
+
 			$key = $media_query['rule']['when']['key'];
 			if ( $key != 'image' ) return;
 			$value = $media_query['rule']['when']['value'];
