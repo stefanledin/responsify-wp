@@ -183,9 +183,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 == Screenshots ==
 
 1. Select which filters that RWP should be applied on. Thumbnails (post_thumbnail_html) and content (the_content) is used by default.You can also select which markup pattern RWP should generate.
-2. You can also select which image sizes RWP should use, select if RWP should use retina images, ignore image formats and if Picturefill should be used or not.
-3. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
-4. A <style> tag will be created and contains the generated media queries for the background.
+2. 
+3. You can easily override the default media queries for each image size. You can specify different settings for different scenarios.
+4. 
 
 == Changelog ==
 = 1.8.0 =
