@@ -41,6 +41,11 @@ tr.ui-sortable-handle.rwp-setting-row-open {
 	cursor: default;
 }
 
+tr.rwp-setting-row-open > td {
+	border-top: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+}
+
 .option-message {
 	display: inline-block;
 	line-height: 19px;
