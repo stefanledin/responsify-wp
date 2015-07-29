@@ -142,8 +142,7 @@ if ( $query->have_posts() ) {
 ````
 
 ###<a name="settings-sizes-attribute"></a>Sizes attribute
-By default, ``<img>`` tags with ``sizes``/``srcset`` is the selected markup pattern. ``100vw`` is the default value of 
-the ``sizes`` attribute, but it's possible to specify your own. 
+By default, ``<img>`` tags with ``sizes``/``srcset`` is the selected markup pattern. You can override the calculated value of the ``sizes`` attribute by doing this:   
 ````php
 <?php
 $posts = get_posts(array(
@@ -281,9 +280,6 @@ the generated markup looks like:
 	large_retina.jpg 2048w"
 	sizes="(min-width: 300px) 1024px, (min-width: 150px) 300px, 150px">
 ````
-
-Notice that this is the first version of the retina feature, so if you comes across any bug or unexpected behavior, 
-please notify me at the [support forum](https://wordpress.org/support/plugin/responsify-wp) or here at Github.
 
 ###<a name="retina-setup"></a>Setup  
 If you want to use retina images, they has to be generated first. This requires you to manually add custom image sizes 

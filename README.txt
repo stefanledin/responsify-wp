@@ -2,8 +2,8 @@
 Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
-Tested up to: 4.3
-Stable tag: 1.8.0
+Tested up to: 4.3 beta 3
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,11 +183,17 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 == Screenshots ==
 
 1. Select which filters that RWP should be applied on. Thumbnails (post_thumbnail_html) and content (the_content) is used by default.You can also select which markup pattern RWP should generate.
-2. You can also select which image sizes RWP should use, select if RWP should use retina images, ignore image formats and if Picturefill should be used or not.
-3. You can also use the Picture::create( 'style' ) function to generate CSS and media queries for large background images.
-4. A <style> tag will be created and contains the generated media queries for the background.
+2. 
+3. You can easily override the default media queries for each image size. You can specify different settings for different scenarios.
+4. 
 
 == Changelog ==
+= 1.9.0 =
+* Introducing a brand new user interface for managing custom media queries for the images.
+* New filter: rwp_edit_generated_element. It allows you to make changes to the generated element before it's inserted into the content.
+* Tested with WordPress 4.3 beta 3.
+* Improvements under the hood.
+
 = 1.8.0 =
 * Picture::create() has been replaced by rwp_img(), rwp_picture(), rwp_span(), rwp_style() and rwp_attributes(). (Picture::create() will still work)
 * New filter: rwp_edit_attributes. It allows you to edit the attributes before they are applied to the generated element.
@@ -272,6 +278,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.0 =
+Introducing a brand new user interface for managing custom media queries for the images. New filter: rwp_edit_generated_element.
+
 = 1.8.0 =
 Picture::create() has been replaced with new functions. Upgraded Picturefill to 2.3.1. Bugfixes and improvements. 
 
