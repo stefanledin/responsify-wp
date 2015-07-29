@@ -30,7 +30,7 @@ class Responsify_WP_Admin
 		wp_enqueue_style( 'rwp_stylesheet', plugins_url( '/css/responsify-wp.css', __FILE__ ), null, null );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'backbone' );
-		wp_enqueue_script( 'rwp_scripts', plugins_url( '/js/responsify-wp.js', __FILE__ ), array( 'jquery', 'backbone' ), null, true );
+		wp_enqueue_script( 'rwp_scripts', plugins_url( '/js/responsify-wp.js', __FILE__ ), array( 'jquery', 'backbone' ), '1.9', true );
 	}
 
 	public function view_settings_page()
