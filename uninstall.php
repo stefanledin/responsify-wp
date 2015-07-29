@@ -10,7 +10,8 @@ $rwp_settings = array(
 	'rwp_picturefill',
 	'rwp_retina',
 	'selected_element',
-	'ignored_image_formats'
+	'ignored_image_formats',
+	'rwp_custom_media_queries'
 );
 foreach ( $rwp_settings as $rwp_setting ) {
 	delete_option( $rwp_setting );
