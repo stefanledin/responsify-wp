@@ -37,6 +37,7 @@
 		    - [picture](#functions-reference-example-attributes-picture)
 		    - [span](#functions-reference-example-attributes-span)
 - [Filters](#filters)
+	- [Edit generated element](#filters-edit-generated-element)
 	- [Edit attributes](#filters-edit-attributes)
 	- [Add filters](#filters-add-filters)
 - [Ignore images](#ignore-images)
@@ -109,7 +110,7 @@ limitations and is not the recommended.
 ````
 
 ##<a name="settings"></a>Settings
-###<a name"settings-image-sizes"></a>Image sizes
+###<a name="settings-image-sizes"></a>Image sizes
 You can **select which image sizes** that the plugin should use from the settings page.  
 These settings can be overwritten from your templates. 
 
@@ -140,7 +141,7 @@ if ( $query->have_posts() ) {
 ?>
 ````
 
-###<a name"settings-sizes-attribute"></a>Sizes attribute
+###<a name="settings-sizes-attribute"></a>Sizes attribute
 By default, ``<img>`` tags with ``sizes``/``srcset`` is the selected markup pattern. ``100vw`` is the default value of 
 the ``sizes`` attribute, but it's possible to specify your own. 
 ````php
@@ -164,7 +165,7 @@ This will produce the following:
 
 ``large.jpg`` will be selected when the window width is at least 500px. On smaller screens, ``medium.jpg`` will be selected.  
 
-###<a name"settings-media-queries"></a>Media queries
+###<a name="settings-media-queries"></a>Media queries
 If you've selected the ``picture`` element in the settings, you can specify your own media queries for the different image sizes.
 
 ````php
@@ -193,7 +194,7 @@ In the example above, ``thumbnail`` is the smallest image size and should theref
 </picture>
 ````
 
-###<a name"settings-retina"></a>Retina
+###<a name="settings-retina"></a>Retina
 On the RWP settings page, you can choose if high resolution (retina) images should be used or not. This can be overwritten 
 by setting ``retina`` to either ``true`` or ``false`` in the ``rwp_settings`` array.  
 If set to ``true``, RWP will use all images that has the ``@[value]x`` suffix in the name, like ``thumbnail@2x`` or 
@@ -681,6 +682,27 @@ echo rwp_picture( $attachment_id, $settings );
 ````
 
 ##<a name="filters"></a>Filters   
+###<a name="filters-edit-generated-element"></a>Edit generated element  
+The ``rwp_edit_generated_element`` filter allows you to edit and modify the generated element before it's inserted back into the content.  
+````php
+<?php
+function edit_responsive_image( $element ) {
+	// Do something with $element
+	return $element;
+}
+add_filter( 'rwp_edit_generated_element', 'edit_responsive_image' );
+?>
+````
+One use case might be replacing the ``srcset`` attribute with ``data-srcset`` for implementing some kind of lazy load solution.  
+````php
+<?php
+function replace_srcset_with_data_srcset( $element ) {
+	$element = str_replace('srcset', 'data-srcset', $element);
+	return $element;
+}
+add_filter( 'rwp_edit_generated_element', 'replace_srcset_with_data_srcset' );
+?>
+````
 ###<a name="filters-edit-attributes"></a>Edit attributes  
 The ``rwp_edit_attributes`` filter allows you to edit the attributes of the generated element.  
 ````php
