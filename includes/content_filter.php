@@ -100,7 +100,7 @@ class Content_Filter
 				$self->user_settings = $self->custom_media_queries->get_settings();
 			}
 
-			$src = $settings['attributes']['img']['src'];
+			$src = (isset($settings['attributes']['img']['src'])) ? $settings['attributes']['img']['src'] : '';
 			$settings['notBiggerThan'] = $src;
 			// We don't wanna have an src attribute on the <img>
 			unset($settings['attributes']['img']['src']);
