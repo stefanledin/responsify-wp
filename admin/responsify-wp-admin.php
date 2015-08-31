@@ -22,7 +22,7 @@ class Responsify_WP_Admin
 
 	public function add_settings_to_menu()
 	{
-		$plask = add_options_page( 'Responsify WP', 'RWP Settings', 'manage_options', 'responsify-wp', array( $this, 'view_settings_page' ) );
+		add_options_page( 'Responsify WP', 'RWP Settings', 'manage_options', 'responsify-wp', array( $this, 'view_settings_page' ) );
 	}
 
 	public function enqueue_scripts()
