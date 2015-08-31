@@ -363,15 +363,14 @@
 				render: function () {
 					var select = new rwp.cmq.views.ImageSizeSelect();
 					var html = [
-						'<br><label>Add breakpoint: '+
+						'<br><label>Add breakpoint: </label>'+
 							'<div class="rwp-image-size-select" style="display: inline;"></div>'+
 							'<select name="property">'+
 								'<option>min-width</option>'+
 								'<option>max-width</option>'+
 							'</select>'+
 							'<input type="text" name="breakpoint" placeholder="Breakpoint">'+
-							'<button class="button">Add</button>'+
-						'</label>'
+							'<button class="button">Add</button>'
 					].join('');
 					this.$el.append(html);
 					this.$el.find('div.rwp-image-size-select').append(select.el);
