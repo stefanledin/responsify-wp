@@ -63,7 +63,9 @@ class Responsify_WP
     {
         $default_filters = array( 'the_content' => 'on', 'post_thumbnail_html' => 'on' );
         $filters = get_option( 'rwp_added_filters', $default_filters );
-        $filters = array_keys($filters);
+        if ( is_array($filters) ) {
+            $filters = array_keys($filters);
+        }
         if ( has_filter( 'rwp_add_filters' ) ) {
             $filters = apply_filters( 'rwp_add_filters', $filters );
         }
