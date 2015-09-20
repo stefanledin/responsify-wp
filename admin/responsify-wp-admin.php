@@ -48,6 +48,7 @@ class Responsify_WP_Admin
 		register_setting( 'responsify-wp-settings', 'selected_element' );
 		register_setting( 'responsify-wp-settings', 'ignored_image_formats' );
 		register_setting( 'responsify-wp-settings', 'rwp_custom_media_queries' );
+		register_setting( 'responsify-wp-settings', 'rwp_debug_mode' );
 	}
 
 }

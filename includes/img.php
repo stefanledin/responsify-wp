@@ -11,7 +11,13 @@ class Img extends Create_Responsive_image
         if ( has_filter( 'rwp_edit_attributes' ) ) {
             $this->settings['attributes'] = apply_filters( 'rwp_edit_attributes', $this->settings['attributes'] );
         }
-        $this->markup = $this->create_markup();
+        $markup = $this->create_markup();
+        if ( get_option( 'rwp_debug_mode', 'off' ) == 'on' ) {
+            $this->markup = "<!--\n### RWP Debug ###\n$this->debug_information-->";
+            $this->markup .= $markup;
+        } else {
+            $this->markup = $markup;
+        }
     }
 
     protected function set_attributes()

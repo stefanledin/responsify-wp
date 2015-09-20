@@ -5,9 +5,11 @@ abstract class Create_Responsive_image
     protected $id;
     protected $images;
     protected $settings;
+    protected $debug_information;
     public function __construct( $id, $settings )
     {
         $this->id = $id;
+        $this->debug_information = "Attachment ID: $this->id\n";
         $this->settings = $settings;
         // 1. Get sizes
         $this->image_sizes = $this->get_image_sizes();

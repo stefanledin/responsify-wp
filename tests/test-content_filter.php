@@ -32,6 +32,34 @@ class Test_Content_Filter extends WP_UnitTestCase {
 		$this->assertEquals($expected, $post);
 	}
 
+	function test_debug_mode()
+	{
+		$attachment = create_attachment( 'debug' );
+		$image_data = wp_get_attachment_metadata( $attachment );
+		$upload_url = wp_upload_dir()['baseurl'];
+		$image = '<img src="'.$upload_url.'/'.$image_data['file'].'">';
+		$post = wp_insert_post( array(
+			'post_name' => 'test',
+			'post_content' => $image,
+			'post_status' => 'publish'
+		) );
+		update_option( 'rwp_debug_mode', 'on' );
+		$post = get_post($post);
+		$post = trim(apply_filters( 'the_content', $post->post_content ));
+		update_option( 'rwp_debug_mode', 'off' );
+		$debug_html_comment = array(
+			"<!--",
+				"### RWP Debug ###",
+				"Attachment ID: $attachment",
+			"-->"
+		);
+		$debug_html_comment = implode("\n", $debug_html_comment);
+		$expected = '<p>'.$debug_html_comment.'<img srcset="http://example.org/wp-content/uploads/debug-480x640.jpg 480w, http://example.org/wp-content/uploads/debug-600x800.jpg 600w, http://example.org/wp-content/uploads/debug-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/debug.jpg 2448w" sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"></p>';
+		#var_dump($expected);
+		#die(var_dump($post));
+		$this->assertEquals($expected, $post);
+	}
+
 	function test_include_full_size_when_smaller_than_large()
 	{
 		$img = wp_insert_attachment( array(
