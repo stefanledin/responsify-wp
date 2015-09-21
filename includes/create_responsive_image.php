@@ -1,23 +1,27 @@
 <?php
 abstract class Create_Responsive_image
 {
-    protected $image_sizes;
+    protected $image_sizes = array();
     protected $id;
     protected $images;
     protected $settings;
-    protected $debug_information;
+    protected $log;
     public function __construct( $id, $settings )
     {
         $this->id = $id;
-        $this->debug_information = "Attachment ID: $this->id\n";
+        $this->log['Attachment ID'] = $this->id;
+        
         $this->settings = $settings;
         // 1. Get sizes
         $this->image_sizes = $this->get_image_sizes();
+
         // Retina
         if ( isset($this->settings['retina']) ) {
             $retina = new Retina( $this->settings );
             $this->image_sizes = $retina->set_sizes( $this->image_sizes );
         }
+        $this->log['Image sizes'] = $this->image_sizes;
+
         // 2. Get images 
         $this->images = $this->get_images( $this->image_sizes );
         // 3. Order the images by width
@@ -63,6 +67,8 @@ abstract class Create_Responsive_image
                     'height' => $image_meta_data['sizes'][$size]['height']
                 ));
                 array_push($image_srcs, $image[0]);
+                $this->log['Image sizes found'][] = $size;
+                $this->log['Image found'][] = "$size: $image[0]\n";
             } 
         }
         return $images;

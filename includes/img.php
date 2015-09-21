@@ -13,11 +13,23 @@ class Img extends Create_Responsive_image
         }
         $markup = $this->create_markup();
         if ( get_option( 'rwp_debug_mode', 'off' ) == 'on' ) {
-            $this->markup = "<!--\n### RWP Debug ###\n$this->debug_information-->";
-            $this->markup .= $markup;
-        } else {
-            $this->markup = $markup;
+            $markup = $this->prepend_debug_information( $markup );
         }
+        $this->markup = $markup;
+    }
+
+    protected function prepend_debug_information( $markup )
+    {
+        $debug_information = "<!--\n### RWP Debug ###\n";
+        foreach ( $this->log as $key => $value ) {
+            if ( is_array($value) ) {
+                $value = implode(', ', $value);
+            }
+            $debug_information .= "$key: $value\n";
+        }
+        $debug_information .= '-->';
+        $markup = $debug_information . $markup;
+        return $markup;
     }
 
     protected function set_attributes()
