@@ -68,7 +68,7 @@ abstract class Create_Responsive_image
                 ));
                 array_push($image_srcs, $image[0]);
                 $this->log['Image sizes found'][] = $size;
-                $this->log['Image found'][] = "$size: $image[0]\n";
+                $this->log['Image found'][] = "\n- $size: $image[0]";
             } 
         }
         return $images;

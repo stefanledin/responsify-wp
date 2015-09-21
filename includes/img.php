@@ -23,7 +23,7 @@ class Img extends Create_Responsive_image
         $debug_information = "<!--\n### RWP Debug ###\n";
         foreach ( $this->log as $key => $value ) {
             if ( is_array($value) ) {
-                $value = implode(', ', $value);
+                $value = implode(", ", $value);
             }
             $debug_information .= "$key: $value\n";
         }

@@ -53,17 +53,15 @@ class Test_Content_Filter extends WP_UnitTestCase {
 				"Attachment ID: $attachment",
 				"Image sizes: thumbnail, medium, large, post-thumbnail, full",
 				"Image sizes found: thumbnail, medium, large, full",
-				"Image found: thumbnail: http://example.org/wp-content/uploads/debug-480x640.jpg",
-				"Image found: medium: http://example.org/wp-content/uploads/debug-600x800.jpg",
-				"Image found: large: http://example.org/wp-content/uploads/debug-1024x1365.jpg",
-				"Image found: full: http://example.org/wp-content/uploads/debug.jpg",
+				"Image found: ",
+				"- thumbnail: http://example.org/wp-content/uploads/debug-480x640.jpg, ",
+				"- medium: http://example.org/wp-content/uploads/debug-600x800.jpg, ",
+				"- large: http://example.org/wp-content/uploads/debug-1024x1365.jpg, ",
+				"- full: http://example.org/wp-content/uploads/debug.jpg",
 			"-->"
 		);
 		$debug_html_comment = implode("\n", $debug_html_comment);
 		$expected = '<p>'.$debug_html_comment.'<img srcset="http://example.org/wp-content/uploads/debug-480x640.jpg 480w, http://example.org/wp-content/uploads/debug-600x800.jpg 600w, http://example.org/wp-content/uploads/debug-1024x1365.jpg 1024w, http://example.org/wp-content/uploads/debug.jpg 2448w" sizes="(min-width: 1024px) 2448px, (min-width: 600px) 1024px, (min-width: 480px) 600px, 480px"></p>';
-		var_dump($expected);
-		var_dump($post);
-		die();
 		$this->assertEquals($expected, $post);
 	}
 
