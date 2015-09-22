@@ -62,9 +62,9 @@ class Test_Content_Filter extends WP_UnitTestCase {
 				"- full: http://example.org/wp-content/uploads/debug.jpg",
 				"Largest size that should be used: http://example.org/wp-content/uploads/2014/10/debug.jpg",
 				"Media queries: ",
-				"- Use medium when min-width is 480px, ",
-				"- Use large when min-width is 600px, ",
-				"- Use full when min-width is 1024px",
+				"- Use medium when min-width: 480px, ",
+				"- Use large when min-width: 600px, ",
+				"- Use full when min-width: 1024px",
 			"-->"
 		);
 		$debug_html_comment = implode("\n", $debug_html_comment);

@@ -43,9 +43,12 @@ class Logger
         foreach ( $images as $image ) {
             if ( ! isset($image['media_query']) ) continue;
             $size = $image['size'];
-            $property = $image['media_query']['property'];
-            $value = $image['media_query']['value'];
-            $this->log['Media queries'][] = "\n- Use $size when $property is $value";
+            if ( is_array($image['media_query']) ) {
+	            $media_query = $image['media_query']['property'] . ': ' . $image['media_query']['value'];
+            } else {
+            	$media_query = $image['media_query'];
+            }
+            $this->log['Media queries'][] = "\n- Use $size when $media_query";
         }
     }
 }
