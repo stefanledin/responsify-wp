@@ -18,20 +18,6 @@ class Img extends Create_Responsive_image
         $this->markup = $markup;
     }
 
-    protected function prepend_debug_information( $markup )
-    {
-        $debug_information = "<!--\n### RWP Debug ###\n";
-        foreach ( $this->log as $key => $value ) {
-            if ( is_array($value) ) {
-                $value = implode(", ", $value);
-            }
-            $debug_information .= "$key: $value\n";
-        }
-        $debug_information .= '-->';
-        $markup = $debug_information . $markup;
-        return $markup;
-    }
-
     protected function set_attributes()
     {
         $default_attributes = array(

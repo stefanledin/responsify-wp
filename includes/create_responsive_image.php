@@ -187,4 +187,24 @@ abstract class Create_Responsive_image
         // Removes the extra space after the last attribute
         return substr($attributes, 0, -1);
     }
+
+    /**
+     * Add an HTML comment with all the
+     * debug information from the Logger.
+     * @param  string $markup 
+     * @return string
+     */
+    protected function prepend_debug_information( $markup )
+    {
+        $debug_information = "<!--\n### RWP Debug ###\n";
+        foreach ( $this->log as $key => $value ) {
+            if ( is_array($value) ) {
+                $value = implode(", ", $value);
+            }
+            $debug_information .= "$key: $value\n";
+        }
+        $debug_information .= '-->';
+        $markup = $debug_information . $markup;
+        return $markup;
+    }
 }

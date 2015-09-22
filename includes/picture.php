@@ -55,6 +55,11 @@ class Picture
         if ( isset($settings['output']) && $settings['output'] == 'attributes' ) {
             return $responsive_image->attributes;
         }
-        return $responsive_image->markup;
+        
+        $element = $responsive_image->markup;
+        if ( has_filter( 'rwp_edit_generated_element' ) ) {
+            $element = apply_filters( 'rwp_edit_generated_element', $element );
+        }
+        return $element;
 	}
 }

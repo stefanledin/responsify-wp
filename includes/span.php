@@ -7,7 +7,11 @@ class Span extends Create_Responsive_image
     {
         parent::__construct( $id, $settings );
         $this->set_attributes();
-        $this->markup = $this->create_markup();
+        $markup = $this->create_markup();
+        if ( get_option( 'rwp_debug_mode', 'off' ) == 'on' ) {
+            $markup = $this->prepend_debug_information( $markup );
+        }
+        $this->markup = $markup;
     }
 
     protected function set_attributes()
