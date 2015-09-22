@@ -2,7 +2,7 @@
 Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
-Tested up to: 4.3
+Tested up to: 4.3.1
 Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,11 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 4. 
 
 == Changelog ==
+= 1.9.2 =
+* New feature: Debug mode. RWP adds an HTML comment with information about the image.
+* Bugfix. Retina + specified image.
+* Bugfix. The rwp_edit_generated_element filter is applied when calling rwp_img() and rwp_picture().
+
 = 1.9.1 =
 * Bugfix for the custom media query interface in Safari.
 * The ability to deselect the full image size is back. (Accidentally removed in RWP 1.9)
@@ -283,6 +288,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.2 =
+New feature: Debug mode. Bugfixes.
+
 = 1.9.1 =
 Bugfixes and minor improvements.
 
