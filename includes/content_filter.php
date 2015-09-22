@@ -117,9 +117,7 @@ class Content_Filter
 			// Create responsive image markup.
             $type = get_option( 'selected_element', 'img' );
             $element = Picture::create( $type, $id, $settings );
-            if ( has_filter( 'rwp_edit_generated_element' ) ) {
-            	$element = apply_filters( 'rwp_edit_generated_element', $element );
-            }
+
 			return $element;
 		}, $content);
 
