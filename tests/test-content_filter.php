@@ -55,7 +55,7 @@ class Test_Content_Filter extends WP_UnitTestCase {
 				"Image width: 2448",
 				"Image height: 3264",
 				"Image sizes found: thumbnail, medium, large, full",
-				"Image found: ",
+				"Images found: ",
 				"- thumbnail: http://example.org/wp-content/uploads/debug-480x640.jpg, ",
 				"- medium: http://example.org/wp-content/uploads/debug-600x800.jpg, ",
 				"- large: http://example.org/wp-content/uploads/debug-1024x1365.jpg, ",
