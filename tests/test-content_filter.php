@@ -52,12 +52,19 @@ class Test_Content_Filter extends WP_UnitTestCase {
 				"### RWP Debug ###",
 				"Attachment ID: $attachment",
 				"Image sizes: thumbnail, medium, large, post-thumbnail, full",
+				"Image width: 2448",
+				"Image height: 3264",
 				"Image sizes found: thumbnail, medium, large, full",
 				"Image found: ",
 				"- thumbnail: http://example.org/wp-content/uploads/debug-480x640.jpg, ",
 				"- medium: http://example.org/wp-content/uploads/debug-600x800.jpg, ",
 				"- large: http://example.org/wp-content/uploads/debug-1024x1365.jpg, ",
 				"- full: http://example.org/wp-content/uploads/debug.jpg",
+				"Largest size that should be used: http://example.org/wp-content/uploads/2014/10/debug.jpg",
+				"Media queries: ",
+				"- Use medium when min-width is 480px, ",
+				"- Use large when min-width is 600px, ",
+				"- Use full when min-width is 1024px",
 			"-->"
 		);
 		$debug_html_comment = implode("\n", $debug_html_comment);

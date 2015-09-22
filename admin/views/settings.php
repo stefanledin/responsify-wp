@@ -33,6 +33,8 @@
 		include 'ignored_image_formats.php';
 		
 		include 'picturefill.php';
+		
+		include 'debug_mode.php';
 		?>
 		<div class="postbox">
 			<div class="inside">

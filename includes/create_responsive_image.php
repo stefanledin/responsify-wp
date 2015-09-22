@@ -6,12 +6,17 @@ abstract class Create_Responsive_image
     protected $images;
     protected $settings;
     protected $log;
+    protected $logger;
+    
     public function __construct( $id, $settings )
     {
+        $this->logger = new Logger;
+
         $this->id = $id;
-        $this->log['Attachment ID'] = $this->id;
+        $this->logger->add('Attachment ID', $this->id);
         
         $this->settings = $settings;
+
         // 1. Get sizes
         $this->image_sizes = $this->get_image_sizes();
 
@@ -20,7 +25,7 @@ abstract class Create_Responsive_image
             $retina = new Retina( $this->settings );
             $this->image_sizes = $retina->set_sizes( $this->image_sizes );
         }
-        $this->log['Image sizes'] = $this->image_sizes;
+        $this->logger->add('Image sizes', $this->image_sizes);
 
         // 2. Get images 
         $this->images = $this->get_images( $this->image_sizes );
@@ -33,6 +38,7 @@ abstract class Create_Responsive_image
         // 5. Remove images that is larger than the one inserted into the editor.
         if ( isset($this->settings['notBiggerThan']) ) {
             $this->images = $this->remove_images_larger_than_inserted( $this->images, $this->settings['notBiggerThan'] );
+            $this->logger->add('Largest size that should be used', $this->settings['notBiggerThan']);
         }
         
         $this->images = array_values($this->images);
@@ -40,7 +46,11 @@ abstract class Create_Responsive_image
         $user_media_queries = ( isset($settings['media_queries']) ) ? $settings['media_queries'] : null;
         $media_queries = new Media_Queries( $this->images, $user_media_queries );
         $this->images = $media_queries->set();
+        $this->logger->log_media_queries( $this->images );
+        
+        $this->log = $this->logger->get();
     }
+    
     /**
      * Finds images in the selected sizes.
      *
@@ -57,6 +67,10 @@ abstract class Create_Responsive_image
         if ( $image_meta_data['height'] ) {
             $image_meta_data['sizes']['full']['height'] = $image_meta_data['height'];
         }
+        
+        $this->logger->add('Image width', ( isset($image_meta_data['width']) ) ?$image_meta_data['width'] : 'No width avaliable');
+        $this->logger->add('Image height', ( isset($image_meta_data['height']) ) ?$image_meta_data['height'] : 'No height avaliable');
+        
         foreach ( $sizes as $size ) {
             $image = $this->get_image($size);
             if ( isset($image_meta_data['sizes'][$size]) ) {
@@ -67,8 +81,8 @@ abstract class Create_Responsive_image
                     'height' => $image_meta_data['sizes'][$size]['height']
                 ));
                 array_push($image_srcs, $image[0]);
-                $this->log['Image sizes found'][] = $size;
-                $this->log['Image found'][] = "\n- $size: $image[0]";
+                $this->logger->addArray( 'Image sizes found', $size );
+                $this->logger->addArray('Image found', "\n- $size: $image[0]");
             } 
         }
         return $images;
