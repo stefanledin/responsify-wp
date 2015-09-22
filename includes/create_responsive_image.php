@@ -38,7 +38,7 @@ abstract class Create_Responsive_image
         // 5. Remove images that is larger than the one inserted into the editor.
         if ( isset($this->settings['notBiggerThan']) ) {
             $this->images = $this->remove_images_larger_than_inserted( $this->images, $this->settings['notBiggerThan'] );
-            $this->logger->add('Largest size that should be used', $this->settings['notBiggerThan']);
+            $this->logger->add( 'Largest size that should be used', $this->settings['notBiggerThan'] );
         }
         
         $this->images = array_values($this->images);
@@ -68,11 +68,11 @@ abstract class Create_Responsive_image
             $image_meta_data['sizes']['full']['height'] = $image_meta_data['height'];
         }
         
-        $this->logger->add('Image width', ( isset($image_meta_data['width']) ) ?$image_meta_data['width'] : 'No width avaliable');
-        $this->logger->add('Image height', ( isset($image_meta_data['height']) ) ?$image_meta_data['height'] : 'No height avaliable');
+        $this->logger->add( 'Image width', ( isset($image_meta_data['width']) ) ? $image_meta_data['width'] : 'No width avaliable' );
+        $this->logger->add( 'Image height', ( isset($image_meta_data['height']) ) ? $image_meta_data['height'] : 'No height avaliable' );
         
         foreach ( $sizes as $size ) {
-            $image = $this->get_image($size);
+            $image = $this->get_image( $size );
             if ( isset($image_meta_data['sizes'][$size]) ) {
                 array_push($images, array(
                     'src' => $image[0],
@@ -82,12 +82,16 @@ abstract class Create_Responsive_image
                 ));
                 array_push($image_srcs, $image[0]);
                 $this->logger->addArray( 'Image sizes found', $size );
-                $this->logger->addArray('Image found', "\n- $size: $image[0]");
+                $this->logger->addArray( 'Image found', "\n- $size: $image[0]" );
             } 
         }
         return $images;
     }
     
+    /**
+     * Adds retina versions to the same array as
+     * the regular image. Thus they are grouped together.
+     */
     protected function group_highres() {
         $retina_image_indexes = array();
         for ($i=0; $i < count($this->images); $i++) { 
@@ -107,6 +111,7 @@ abstract class Create_Responsive_image
             unset($this->images[$retina_image_indexes[$i]]);
         }
     }
+
     /**
      * Finds a single image in the selected size
      *
@@ -117,6 +122,7 @@ abstract class Create_Responsive_image
     {
         return wp_get_attachment_image_src( $this->id, $size );
     }
+
     /**
      * Orders the array of images based on width.
      *
@@ -130,6 +136,7 @@ abstract class Create_Responsive_image
         });
         return $images;
     }
+
     /**
      * Removes images that is larger than the one inserted into the editor.
      * For example, if medium is inserted, ignore large and full.
@@ -146,6 +153,7 @@ abstract class Create_Responsive_image
         }
         return $valid_images;
     }
+
     /**
      * Finds and returns all available image sizes.
      *
@@ -170,8 +178,9 @@ abstract class Create_Responsive_image
      */
     protected function get_image_meta( $meta )
     {
-        return get_post_meta($this->id, '_wp_attachment_image_' . $meta, true);
+        return get_post_meta( $this->id, '_wp_attachment_image_' . $meta, true );
     }
+
     /**
      * Makes a string with all attributes.
      *
