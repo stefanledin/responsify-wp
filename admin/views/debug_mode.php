@@ -6,7 +6,7 @@
 		?>
 		<h3><?php _e('Debug mode'); ?></h3>
 		<p>
-			<?php _e('Add HTML comments with handy information about what RWP has done with the image.'); ?>
+			<?php _e('Add HTML comments with handy information about the image and what RWP could or could not do.'); ?>
 		</p>
 		<label>
 			<?php _e('On (recommended)'); ?>
