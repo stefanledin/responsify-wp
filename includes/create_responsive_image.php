@@ -82,7 +82,7 @@ abstract class Create_Responsive_image
                 ));
                 array_push($image_srcs, $image[0]);
                 $this->logger->addArray( 'Image sizes found', $size );
-                $this->logger->addArray( 'Image found', "\n- $size: $image[0]" );
+                $this->logger->addArray( 'Images found', "\n- $size: $image[0]" );
             } 
         }
         return $images;
