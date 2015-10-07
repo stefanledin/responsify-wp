@@ -98,7 +98,7 @@ class Responsify_WP
 		if ( $selected_element == 'span' ) {
             wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.1.2.1.js', __FILE__),  null, null, true);
         } else {
-            wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.2.3.1.min.js', __FILE__),  null, null, true);
+            wp_enqueue_script( 'picturefill', plugins_url('/src/picturefill.3.0.1.min.js', __FILE__),  null, null, true);
         }
 	}
 }
