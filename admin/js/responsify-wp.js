@@ -451,8 +451,10 @@
 				})
 			];
 			var models = [];
-			for (var customMediaQuery in rwp.customMediaQueries) {
-				models.push(new rwp.cmq.models.SettingsModel(rwp.customMediaQueries[customMediaQuery]));
+			if(rwp.customMediaQueries) {
+				for (var customMediaQuery in rwp.customMediaQueries) {
+					models.push(new rwp.cmq.models.SettingsModel(rwp.customMediaQueries[customMediaQuery]));
+				}
 			}
 			var settings = new rwp.cmq.collections.SettingsCollection(models);
 			var settingsTable = new rwp.cmq.views.SettingsTable({
