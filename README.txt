@@ -3,7 +3,7 @@ Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.3.1
-Stable tag: 1.9.3
+Stable tag: 1.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,6 +188,10 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 4. 
 
 == Changelog ==
+= 1.9.4 =
+* Bugfix, Custom Media Queries.
+* Support for WordPress 4.4
+
 = 1.9.3 =
 * Updated the Picturefill polyfill to version 3.0.1.
 
@@ -291,6 +295,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.4 =
+Bugfixes and support for WordPress 4.4.
+
 = 1.9.3 =
 Updated the Picturefill polyfill to version 3.0.1.
 
