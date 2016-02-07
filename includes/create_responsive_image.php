@@ -18,8 +18,7 @@ abstract class Create_Responsive_image
         $this->settings = $settings;
 
         // 1. Get sizes
-        $this->image_sizes = $this->get_image_sizes();
-
+        $this->image_sizes = $this->get_all_avaliable_image_sizes();
         // Retina
         if ( isset($this->settings['retina']) ) {
             $retina = new Retina( $this->settings );
@@ -40,6 +39,7 @@ abstract class Create_Responsive_image
             $this->images = $this->remove_images_larger_than_inserted( $this->images, $this->settings['notBiggerThan'] );
             $this->logger->add( 'Largest size that should be used', $this->settings['notBiggerThan'] );
         }
+        $this->images = $this->remove_images_in_sizes_not_selected( $this->images, $this->get_image_sizes_selected_by_user());
         
         $this->images = array_values($this->images);
         // 5. Set the media queries
@@ -52,7 +52,7 @@ abstract class Create_Responsive_image
     }
     
     /**
-     * Finds images in the selected sizes.
+     * Finds images in all avaliable sizes
      *
      * @param $sizes
      * @return array
@@ -70,7 +70,7 @@ abstract class Create_Responsive_image
         
         $this->logger->add( 'Image width', ( isset($image_meta_data['width']) ) ? $image_meta_data['width'] : 'No width avaliable' );
         $this->logger->add( 'Image height', ( isset($image_meta_data['height']) ) ? $image_meta_data['height'] : 'No height avaliable' );
-        
+
         foreach ( $sizes as $size ) {
             $image = $this->get_image( $size );
             if ( isset($image_meta_data['sizes'][$size]) ) {
@@ -155,15 +155,56 @@ abstract class Create_Responsive_image
     }
 
     /**
-     * Finds and returns all available image sizes.
+     * Removes images in sizes that has not been selected by the user.
+     * If medium has been deselected, it will be removed. (Unless it's the sizes
+     * that has been inserted through the editor, that's why this method exists.)
+     *
+     * @param array $images
+     * @param array $selected_sizes
+     * @return array
+     */
+    protected function remove_images_in_sizes_not_selected( $images, $selected_sizes )
+    {
+        $valid_images = array_map( function( $image ) use ($selected_sizes) {
+            if ( isset( $this->settings['notBiggerThan'] ) ) {
+                if ( $image['src'] == $this->settings['notBiggerThan'] ) {
+                    return $image;
+                }
+            }
+            if ( in_array( $image['size'], $selected_sizes ) ) {
+                return $image;
+            } else {
+                return null;
+            }
+        }, $images);
+        $valid_images = array_filter( $valid_images );
+        return $valid_images;
+    }
+
+    /**
+     * Finds and returns image sizes that has been selected by the user.
      *
      * @return array
      */
-    protected function get_image_sizes()
+    protected function get_image_sizes_selected_by_user()
     {
         if ( isset($this->settings['sizes'])  ) return $this->settings['sizes'];
         $selected_sizes = get_option( 'selected_sizes' );
         $image_sizes = ( $selected_sizes ) ? array_keys($selected_sizes) : get_intermediate_image_sizes() ;
+        if ( !in_array('full', $image_sizes) ) {
+            array_push($image_sizes, 'full');
+        }
+        return $image_sizes;
+    }
+
+    /**
+     * Finds and returns all available image sizes.
+     *
+     * @return array
+     */
+    protected function get_all_avaliable_image_sizes()
+    {
+        $image_sizes = get_intermediate_image_sizes();
         if ( !in_array('full', $image_sizes) ) {
             array_push($image_sizes, 'full');
         }
