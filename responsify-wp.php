@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Responsify WP
-Version: 1.9.4
+Version: 1.9.5
 Description: Responsify WP is the WordPress plugin that cares about responsive images.
 Author: Stefan Ledin
 Author URI: http://stefanledin.com
@@ -28,7 +28,7 @@ require 'includes/content_filter.php';
 
 class Responsify_WP
 {
-	const VERSION = '1.9.4';
+	const VERSION = '1.9.5';
 
 	protected static $instance = null;
 
@@ -37,12 +37,31 @@ class Responsify_WP
      */
     public function __construct()
 	{
+        $this->disable_native_responsive_images();
+        
         if ( get_option( 'rwp_picturefill', 'on' ) == 'on' ) {
-		  add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+          add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         }
         add_action( 'after_setup_theme', array( $this, 'apply_content_filters' ) );
+        
+        
         add_filter('plugin_action_links_'.plugin_basename(__FILE__), array( $this, 'settings_link' ) );
 	}
+
+    /**
+     * WordPress 4.4 and above has native support
+     * for responsive images. This feature collides with
+     * RWP and has to be disabled in order for RWP to work.
+     */
+    public function disable_native_responsive_images()
+    {
+        remove_filter( 'the_content', 'wp_make_content_images_responsive' );
+        add_filter( 'wp_calculate_image_srcset', array( $this, 'remove_wp_calculate_image_srcset_filter' ) );
+    }
+    public function remove_wp_calculate_image_srcset_filter( $image_data )
+    {
+        return false;
+    }
 
     /**
      * Creates the singleton
