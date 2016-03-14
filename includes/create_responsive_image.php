@@ -165,9 +165,10 @@ abstract class Create_Responsive_image
      */
     protected function remove_images_in_sizes_not_selected( $images, $selected_sizes )
     {
+        $self = $this;
         $valid_images = array_map( function( $image ) use ($selected_sizes) {
-            if ( isset( $this->settings['notBiggerThan'] ) ) {
-                if ( $image['src'] == $this->settings['notBiggerThan'] ) {
+            if ( isset( $self->settings['notBiggerThan'] ) ) {
+                if ( $image['src'] == $self->settings['notBiggerThan'] ) {
                     return $image;
                 }
             }
