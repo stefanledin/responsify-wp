@@ -3,7 +3,7 @@ Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.4
-Stable tag: 1.9.5
+Stable tag: 1.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,6 +188,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 4. 
 
 == Changelog ==
+= 1.9.6 =
+* Critical PHP 5.3 bugfix
+
 = 1.9.5 =
 * Bugfix. All image sizes was used if the one inserted through the editor wasn't selected by the user.
 
@@ -298,6 +301,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.6 =
+* Critical PHP 5.3 bugfix
+
 = 1.9.5 ==
 Bugfix.
 
