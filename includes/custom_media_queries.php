@@ -88,8 +88,7 @@ class Custom_Media_Queries {
 			'sizes' => array( $custom_media_query['smallestImage'] ),
 			'media_queries' => array()
 		);
-		for ($i=0; $i < count($custom_media_query['breakpoints']); $i++) { 
-			$breakpoint = $custom_media_query['breakpoints'][$i];
+		foreach ($custom_media_query['breakpoints'] as $breakpoint) {
 			$rwp_settings['media_queries'][$breakpoint['image_size']] = array(
 				'property' => $breakpoint['property'],
 				'value' => $breakpoint['value']
