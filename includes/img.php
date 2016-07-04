@@ -35,7 +35,10 @@ class Img extends Create_Responsive_image
 
     protected function sizes_attribute()
     {
-        $images = array_reverse($this->images);
+        $images = $this->images;
+        usort($images, array($this, 'order_images_by_media_query'));
+        $images = $this->find_smallest_image_and_place_it_last_in_array( $images );
+
         $attribute = array();
         for ($i=0; $i < count($images); $i++) { 
             if ( isset($images[$i]['media_query']) ) {
@@ -47,6 +50,31 @@ class Img extends Create_Responsive_image
         }
         $this->attributes['sizes'] = implode(', ', $attribute);
         return $this->attributes['sizes'];
+    }
+    protected function order_images_by_media_query( $a, $b )
+    {
+        if ( isset($a['media_query']['value']) && isset($b['media_query']['value']) ) {
+            if ( (int) $a['media_query']['value'] == (int) $b['media_query']['value'] ) {
+                return 0;
+            }
+            return ( (int) $a['media_query']['value'] < (int) $b['media_query']['value'] ) ? -1 : 1;
+        }
+    }
+    
+    protected function find_smallest_image_and_place_it_last_in_array( $images )
+    {
+        $smallest_image = array_filter($images, array($this, 'find_smallest_image'));
+        unset($images[key($smallest_image)]);
+        $images = array_reverse($images);
+        $images[] = $smallest_image[key($smallest_image)];
+        return $images;
+    }
+
+    protected function find_smallest_image( $image )
+    {
+        if ( empty($image['media_query']) ) {
+            return $image;
+        }
     }
 
     protected function srcset_attribute()
