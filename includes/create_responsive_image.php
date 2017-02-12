@@ -10,7 +10,7 @@ abstract class Create_Responsive_image
     
     public function __construct( $id, $settings )
     {
-        $this->logger = new Logger;
+        $this->logger = new Responsify_WP_Logger;
 
         $this->id = $id;
         $this->logger->add('Attachment ID', $this->id);
