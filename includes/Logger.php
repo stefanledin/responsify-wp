@@ -1,6 +1,6 @@
 <?php
 
-class Logger
+class Responsify_WP_Logger
 {
 	protected $log = array();
 
