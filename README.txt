@@ -3,7 +3,7 @@ Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
 Tested up to: 4.7
-Stable tag: 1.9.7
+Stable tag: 1.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,8 +23,7 @@ Responsify WP is the WordPress plugin that cares about responsive images.
 * Handpick which image sizes to use.
 * Responsive background images.
 
-### Demo
-[youtube https://www.youtube.com/watch?v=3ThYWO6vHKI](https://www.youtube.com/watch?v=3ThYWO6vHKI&spfreload=10)  
+### [Demo](https://www.youtube.com/watch?v=3ThYWO6vHKI&spfreload=10)
 
 Responsify WP finds featured images and all images inside the content and makes them responsive.
 For example, you might have a template that looks like this:  
@@ -188,6 +187,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 4. 
 
 == Changelog ==
+= 1.9.8 =
+* Renamed the Logger class to Responsify_WP_Logger. Thx to @victorsebrito!
+
 = 1.9.7 =
 * Fixed a bug in the Custom Media Queries interface.
 * Support for WordPress 4.7
@@ -305,6 +307,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.8 =
+* Renamed the Logger class to Responsify_WP_Logger. Thx to @victorsebrito!
+
 = 1.9.7 =
 Bugfixes and support for WordPress 4.7.
 
