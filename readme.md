@@ -14,7 +14,7 @@
 **Demo site**  
 [http://responsifywp.com/demo/](http://responsifywp.com/demo/)
 
-###Content
+### Content
 - [Description](#description)
 - [Settings](#settings)
 	- [Image sizes](#settings-image-sizes)
@@ -42,7 +42,7 @@
 	- [Add filters](#filters-add-filters)
 - [Ignore images](#ignore-images)
 
-##<a name="description"></a>Description
+## <a name="description"></a>Description
 In short, it will replace all ``<img>`` tags within ``the_content`` (or other filters that you can [add yourself](#filters)) with responsive images.
 For example, you might have a template that looks like this:  
 
@@ -109,8 +109,8 @@ limitations and is not the recommended.
 </span>
 ````
 
-##<a name="settings"></a>Settings
-###<a name="settings-image-sizes"></a>Image sizes
+## <a name="settings"></a>Settings
+### <a name="settings-image-sizes"></a>Image sizes
 You can **select which image sizes** that the plugin should use from the settings page.  
 These settings can be overwritten from your templates. 
 
@@ -141,7 +141,7 @@ if ( $query->have_posts() ) {
 ?>
 ````
 
-###<a name="settings-sizes-attribute"></a>Sizes attribute
+### <a name="settings-sizes-attribute"></a>Sizes attribute
 By default, ``<img>`` tags with ``sizes``/``srcset`` is the selected markup pattern. You can override the calculated value of the ``sizes`` attribute by doing this:   
 ````php
 <?php
@@ -164,7 +164,7 @@ This will produce the following:
 
 ``large.jpg`` will be selected when the window width is at least 500px. On smaller screens, ``medium.jpg`` will be selected.  
 
-###<a name="settings-media-queries"></a>Media queries
+### <a name="settings-media-queries"></a>Media queries
 If you've selected the ``picture`` element in the settings, you can specify your own media queries for the different image sizes.
 
 ````php
@@ -193,7 +193,7 @@ In the example above, ``thumbnail`` is the smallest image size and should theref
 </picture>
 ````
 
-###<a name="settings-retina"></a>Retina
+### <a name="settings-retina"></a>Retina
 On the RWP settings page, you can choose if high resolution (retina) images should be used or not. This can be overwritten 
 by setting ``retina`` to either ``true`` or ``false`` in the ``rwp_settings`` array.  
 If set to ``true``, RWP will use all images that has the ``@[value]x`` suffix in the name, like ``thumbnail@2x`` or 
@@ -257,7 +257,7 @@ For a single density, you can of course pass it as a string.
 ?>
 ````
 
-##<a name="retina"></a>Retina
+## <a name="retina"></a>Retina
 A new feature in Responsify WP 1.7 is the support for high resolution (retina) images. This means that devices with 
 high pixel density screens will receive larger images which will look crisp and sharp.  
 However, larger images means heavier images, which is something RWP is meant to prevent. With that said, this is how 
@@ -281,7 +281,7 @@ the generated markup looks like:
 	sizes="(min-width: 300px) 1024px, (min-width: 150px) 300px, 150px">
 ````
 
-###<a name="retina-setup"></a>Setup  
+### <a name="retina-setup"></a>Setup  
 If you want to use retina images, they has to be generated first. This requires you to manually add custom image sizes 
 using the [`add_image_size`](http://codex.wordpress.org/Function_Reference/add_image_size) function.  
 Let's use the three default image sizes that ships with WordPress and their default settings as an example:
@@ -310,7 +310,7 @@ is that you name your custom image sizes like this:
 [original]@[value]x`  
 ````
 
-###<a name="retina-examples"></a>Examples  
+### <a name="retina-examples"></a>Examples  
 Add `1.5x` and `2x` versions of the default image sizes: 
 ````php
 <?php
@@ -353,9 +353,9 @@ add_image_size( 'tablet-landscape@3x', 2400, 1800 );
 	sizes="(min-width: 800px) 1024px, (min-width: 300px) 800px, (min-width: 150px) 300px, 150px">
 ````
 
-##<a name="functions"></a>Functions 
+## <a name="functions"></a>Functions 
 RWP provides a number of functions that can generate responsive images in your templates. 
-###<a name="functions-element"></a>Element / Img
+### <a name="functions-element"></a>Element / Img
 Based on an attachment ID, you can generate either a **picture** element or a **img** tag with ``srcset``/``sizes`` attributes.
 
 ````php
@@ -397,7 +397,7 @@ echo rwp_picture( $thumbnail_id, array(
 ?>
 ````
 
-###<a name="functions-style"></a>Style
+### <a name="functions-style"></a>Style
 There might be times when you have a ``div`` with a very large background image. It's very easy to replace the image with a smaller one using media queries in your stylesheet, but that requires you to hard code the filename.  
 What if it's some kind of header image that can be changed later by the administrator of the site? In that case, you cannot hard code the filename inside your stylesheet.  
 You might have done something like this in the past:
@@ -450,7 +450,7 @@ echo rwp_style( $dynamic_header_image_ID, array(
 ) );
 ?>
 ````
-###<a name="functions-attributes"></a>Attributes
+### <a name="functions-attributes"></a>Attributes
 The ``rwp_attributes()`` function returns an array of attributes for the selected element. This might be 
 useful if you for example want to create the elements later with Javascript.
 
@@ -522,7 +522,7 @@ $picture_attributes = array(
 ?>
 ````
 
-###<a name="functions-reference"></a>Reference
+### <a name="functions-reference"></a>Reference
 RWP is providing the following functions:
 
 - ``rwp_img( $attachment_id, $settings )``
@@ -531,7 +531,7 @@ RWP is providing the following functions:
 - ``rwp_attributes( $attachment_id, $settings )``
 - ``rwp_style( $attachment_id, $settings )``
   
-####<a name="functions-reference-settings"></a>Settings
+#### <a name="functions-reference-settings"></a>Settings
 These are the settings that is currently avaliable:
 
 * **sizes** (array): The image sizes that you want to use.
@@ -540,7 +540,7 @@ These are the settings that is currently avaliable:
 * **retina** (bool|string|array): True/false. String or array of pixel densities (x descriptor).
 * **ignored_image_formats** (array): An array of image formats that you want RWP to ignore.
 
-#####<a name="functions-reference-example-sizes"></a>Example - sizes
+##### <a name="functions-reference-example-sizes"></a>Example - sizes
 
 ````php
 <?php
@@ -565,7 +565,7 @@ echo rwp_picture( $attachment_id, $settings );
 </picture>
 ````
 
-#####<a name="functions-reference-example-custom-media-queries"></a>Example - custom media queries
+##### <a name="functions-reference-example-custom-media-queries"></a>Example - custom media queries
 
 ````php
 <?php
@@ -591,9 +591,9 @@ all the selected image sizes.
 </picture>
 ````
 
-#####<a name="functions-reference-example-attributes"></a>Example - attributes
+##### <a name="functions-reference-example-attributes"></a>Example - attributes
 
-######<a name="functions-reference-example-attributes-img"></a>img
+###### <a name="functions-reference-example-attributes-img"></a>img
 
 ````php
 <?php
@@ -616,7 +616,7 @@ echo rwp_img( $attachment_id, $settings );
 	    alt="Image description">
 ````
 
-######<a name="functions-reference-example-attributes-picture"></a>picture
+###### <a name="functions-reference-example-attributes-picture"></a>picture
 
 ````php
 <?php
@@ -646,7 +646,7 @@ echo rwp_picture( $attachment_id, $settings );
 </picture>
 ````
 
-######<a name="functions-reference-example-attributes-span"></a>span
+###### <a name="functions-reference-example-attributes-span"></a>span
 
 ````php
 <?php
@@ -677,8 +677,8 @@ echo rwp_picture( $attachment_id, $settings );
 </span>
 ````
 
-##<a name="filters"></a>Filters   
-###<a name="filters-edit-generated-element"></a>Edit generated element  
+## <a name="filters"></a>Filters   
+### <a name="filters-edit-generated-element"></a>Edit generated element  
 The ``rwp_edit_generated_element`` filter allows you to edit and modify the generated element before it's inserted back into the content.  
 ````php
 <?php
@@ -699,7 +699,7 @@ function replace_srcset_with_data_srcset( $element ) {
 add_filter( 'rwp_edit_generated_element', 'replace_srcset_with_data_srcset' );
 ?>
 ````
-###<a name="filters-edit-attributes"></a>Edit attributes  
+### <a name="filters-edit-attributes"></a>Edit attributes  
 The ``rwp_edit_attributes`` filter allows you to edit the attributes of the generated element.  
 ````php
 <?php
@@ -743,7 +743,7 @@ add_filter( 'rwp_edit_attributes', 'edit_attributes' );
 ?>
 ````
 
-###<a name="filters-add-filters"></a>Add filters  
+### <a name="filters-add-filters"></a>Add filters  
 The ``rwp_add_filters`` filter allows you to add additional filters (confusing, I know) that RWP 
 should be applied on.  
 RWP is by default applied to the ``post_thumbnail_html`` and ``the_content`` filters. Any images found inside 
@@ -759,7 +759,7 @@ add_filter( 'rwp_add_filters', 'add_filters' );
 ?>
 ````
 
-##<a name="ignore-images"></a>Ignored images  
+## <a name="ignore-images"></a>Ignored images  
 There might be times when you simply don't want RWP to do anything with an image. This can be achived by adding the 
 `rwp-not-responsive` class to the image.
 
