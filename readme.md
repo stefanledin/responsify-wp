@@ -1,4 +1,4 @@
-#Responsify WP
+# Responsify WP
 [Responsify WP](https://wordpress.org/plugins/responsify-wp/) is the WordPress plugin that cares about responsive images.
 
 * Use ``img`` with srcset/sizes attributes.
