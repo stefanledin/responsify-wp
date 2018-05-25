@@ -62,6 +62,12 @@ abstract class Create_Responsive_image
         $images = array();
         $image_srcs = array();
         $image_meta_data = wp_get_attachment_metadata( $this->id );
+        
+        // Fix E_WARNING: Illegal string offset 'width' 
+        if(!is_array($image_meta_data['sizes']['full'])) {
+            $image_meta_data['sizes']['full'] = array();
+        }
+           
         $image_meta_data['sizes']['full']['width'] = $image_meta_data['width'];
         // According to a thread in the support forum, 'height' isn't always avaliable on full size images.
         if ( $image_meta_data['height'] ) {
