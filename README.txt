@@ -2,8 +2,8 @@
 Contributors: stefanledin
 Tags: responsive images, picture, srcset, sizes, picture element, picture markup, picturefill, images, mobile, performance, responsive, retina, responsive background
 Requires at least: 3.8.1
-Tested up to: 4.9
-Stable tag: 1.9.8
+Tested up to: 4.9.6
+Stable tag: 1.9.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -187,6 +187,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 4. 
 
 == Changelog ==
+= 1.9.9 =
+* Fixed for the "E_WARNING: Illegal string offset 'width'" error message. Thx to John Gadbois!
+
 = 1.9.8 =
 * Renamed the Logger class to Responsify_WP_Logger. Thx to @victorsebrito!
 
@@ -307,6 +310,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.9 =
+* Fixed for the "E_WARNING: Illegal string offset 'width'" error message. Thx to John Gadbois!
+
 = 1.9.8 =
 * Renamed the Logger class to Responsify_WP_Logger. Thx to @victorsebrito!
 
