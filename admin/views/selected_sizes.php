@@ -17,13 +17,15 @@
 				$checked_attribute = ((isset($selected_sizes[$image_size])) ? 'checked="checked"' : '');
 			}
 		    $image_dimention['width'] = get_option( $image_size . '_size_w' );
-		    if ( $image_dimention['width'] ) {
-		    	$image_dimention['height'] = get_option( $image_size . '_size_h' );
-		    } else {
+		    if ( isset( $image_dimention['width'] ) ) {
+				$image_dimention['height'] = get_option( $image_size . '_size_h' );
+
+				// Fix for the missing "full" size in $_wp_additional_image_sizes
+		    } elseif ( isset( $_wp_additional_image_sizes[$image_size] ) ) {
 		    	$image_dimention['width'] = $_wp_additional_image_sizes[$image_size]['width'];
 		    	$image_dimention['height'] = $_wp_additional_image_sizes[$image_size]['height'];
 		    }
-		    $image_dimention['print'] = ($image_dimention['width']) ? '('.$image_dimention['width'].' x '.$image_dimention['height'].' px)' : '';
+			$image_dimention['print'] = ($image_dimention['width']) ? '('.$image_dimention['width'].' x '.$image_dimention['height'].' px)' : '';
 
 			$html .= '<li>';
 				$html .= '<label>';
