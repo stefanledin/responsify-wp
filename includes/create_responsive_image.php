@@ -62,23 +62,12 @@ abstract class Create_Responsive_image
         $images = array();
         $image_srcs = array();
         $image_meta_data = wp_get_attachment_metadata( $this->id );
-        
-        if( $image_meta_data !== false ) {
-            if ( ! isset($image_meta_data['sizes'] ) ) {
-                $image_meta_data['sizes'] = array();
-            }
-
-            // Fix E_WARNING: Illegal string offset 'width' 
-            if( ! ( isset( $image_meta_data['sizes']['full'] ) && is_array( $image_meta_data['sizes']['full'] ) ) ) {
-                $image_meta_data['sizes']['full'] = array();
-            }
-           
-            $image_meta_data['sizes']['full']['width'] = $image_meta_data['width'];
+          
+        $image_meta_data['sizes']['full'] = array(
+            'width' => $image_meta_data['width'],
             // According to a thread in the support forum, 'height' isn't always avaliable on full size images.
-            if ( $image_meta_data['height'] ) {
-                $image_meta_data['sizes']['full']['height'] = $image_meta_data['height'];
-            }
-        }
+            'height' => ( isset( $image_meta_data['height'] ) ) ? $image_meta_data['height'] : ''
+        );
         
         $this->logger->add( 'Image width', ( isset($image_meta_data['width']) ) ? $image_meta_data['width'] : 'No width avaliable' );
         $this->logger->add( 'Image height', ( isset($image_meta_data['height']) ) ? $image_meta_data['height'] : 'No height avaliable' );
