@@ -187,6 +187,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 4. 
 
 == Changelog ==
+= 1.9.11 =
+* Minor updates.
+
 = 1.9.10 =
 * Fix for the "E_NOTICE: Undefined index 'full'" error message. Thx to Jesse Norell!
 
@@ -313,6 +316,9 @@ But you don't want to send a big 1440px image to a mobile device. This can easil
 * The content filter now works on PHP 5.3
 
 == Upgrade Notice ==
+= 1.9.11 =
+* Minor updates.
+
 = 1.9.10 =
 * Fix for the "E_NOTICE: Undefined index 'full'" error message. Thx to Jesse Norell!
 
