@@ -11,7 +11,7 @@ class Style extends Create_Responsive_image
 
 	protected function build_css($selector)
 	{
-		$css = '<style>';
+		$css = '<style scoped>';
 			$css .= $selector . ' {';
 				$css .= 'background-image: url("'.$this->images[0]['src'].'");';
 			$css .= '}';
